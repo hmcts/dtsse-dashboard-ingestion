@@ -1049,7 +1049,7 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-applicationinsights@^2.3.5:
+applicationinsights@^2.3.4:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/applicationinsights/-/applicationinsights-2.3.5.tgz#a48d1e759f8003968adac811af88ca094ef1edaa"
   integrity sha512-QU6EEZbobj9NL2o/XLIDStCMfwrrLwFrbJrDw9ih1wb5bz7v0cwUm6kPXiKtNAAny4hWp9/BtBhtFKvc3tWZ3w==
