@@ -9,6 +9,7 @@
     "start": "NODE_ENV=production ts-node -r tsconfig-paths/register src/main/server.ts",
     "lint": "eslint . --ext .js,.ts && prettier --check .",
     "lint:fix": "prettier --write . && eslint --fix .",
+    "build": "exit 0",
     "test": "npx if-env CI=true && exit 0 || yarn test:unit",
     "test:unit": "jest",
     "test:coverage": "jest --coverage",
