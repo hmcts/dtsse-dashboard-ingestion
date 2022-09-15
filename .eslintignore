@@ -9,7 +9,7 @@ coverage/*
 # custom definition files
 /src/main/types/
 jest.*config.js
-.eslintrc.js
+.eslintrc
 src/test/*/codecept.conf.js
 src/test/config.ts
 **/*.js
