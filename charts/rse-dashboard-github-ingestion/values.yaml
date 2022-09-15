@@ -1,0 +1,11 @@
+nodejs:
+  applicationPort: 3080
+  aadIdentityName: rse
+  ingressHost: rse-dashboard-github-ingestion.{{ .Values.global.environment }}.platform.hmcts.net
+  image: 'hmctspublic.azurecr.io/rse/dashboard-github-ingestion:latest'
+  #  Uncomment once the vault containing the app insights key has been set up
+  #  keyVaults:
+  #    rse:
+  #      secrets:
+  #        - AppInsightsInstrumentationKey
+  environment:
