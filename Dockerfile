@@ -7,15 +7,9 @@ USER hmcts
 
 COPY --chown=hmcts:hmcts . .
 
-# ---- Build image ----
-FROM base as build
-
-RUN yarn build:prod && \
-    rm -rf webpack/ webpack.config.js
-
 # ---- Runtime image ----
 FROM base as runtime
 
-COPY --from=build $WORKDIR/src/main ./src/main
-# TODO: expose the right port for your application
+COPY --from=base $WORKDIR/src/main ./src/main
+
 EXPOSE 3080
