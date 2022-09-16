@@ -5,6 +5,6 @@ name: rse-dashboard-github-ingestion
 home: https://github.com/hmcts/rse-dashboard-github-ingestion
 version: 0.0.1
 dependencies:
-  - name: nodejs
-    version: 2.4.6
+  - name: job
+    version: v0.7.3
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
