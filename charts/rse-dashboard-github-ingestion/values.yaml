@@ -4,8 +4,8 @@ job:
   keyVaults:
     rse:
       secrets:
-        - name: AppInsightsInstrumentationKey
-          alias: APP_INSIGHTS_KEY
+        - AppInsightsConnectionString
+        - github-token
   schedule: "0 0/10 * * *"
 global:
   jobKind: CronJob
