@@ -1,4 +1,5 @@
 import { query } from '../github';
+import * as applicationInsights from 'applicationinsights';
 
 const gql = `
 {
@@ -26,6 +27,23 @@ const gql = `
 `;
 
 export const openPullRequestsQuery = async () => {
-  const result = await query(gql, { team: 'rse' });
-  console.log(result);
+  const results: Result[] = await query(gql, { team: 'rse' });
+
+  for (const result of results) {
+    applicationInsights.defaultClient.trackEvent({
+      name: 'openPullRequestsQuery',
+      properties: {
+        name: result.name,
+        repository: result.url,
+        pullRequests: result.pullRequests.totalCount,
+      },
+    });
+  }
 };
+
+interface Result {
+  url: string;
+  name: string;
+  isPrivate: boolean;
+  pullRequests: { totalCount: number; nodes: never[] };
+}
