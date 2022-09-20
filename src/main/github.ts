@@ -18,15 +18,16 @@ export const query = async <T>(queryString: string, values: Values = undefined):
     throw new Error(response.errors[0].message);
   }
 
-  const result = response.search.edges.map(edge => edge.node);
+  const results = response.search.edges.map(edge => edge.node);
 
   if (response.search.pageInfo.hasNextPage) {
-    const nextResult = await query<T>(queryString, { ...values, after: ', after: "' + response.search.pageInfo.endCursor + '"' });
+    const after = ', after: "' + response.search.pageInfo.endCursor + '"';
+    const nextPages = await query<T>(queryString, { ...values, after });
 
-    return result.concat(nextResult);
+    return results.concat(nextPages);
   }
 
-  return result;
+  return results;
 };
 
 const formatQuery = (queryString: string, values: Values): string => {
@@ -45,7 +46,7 @@ const isError = (result: QueryResult<unknown>): result is QueryError => {
 };
 
 type QueryError = {
-  errors: Exclude<GraphQlQueryResponse<any>['errors'], undefined>;
+  errors: Exclude<GraphQlQueryResponse<never>['errors'], undefined>;
 };
 
 type QueryResult<T> =
