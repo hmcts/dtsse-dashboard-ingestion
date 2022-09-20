@@ -20,7 +20,7 @@ export const query = async <T>(queryString: string, values: Values = undefined):
 
   const results = response.search.edges.map(edge => edge.node);
 
-  if (response.search.pageInfo.hasNextPage) {
+  if (response.search.pageInfo?.hasNextPage) {
     const after = ', after: "' + response.search.pageInfo.endCursor + '"';
     const nextPages = await query<T>(queryString, { ...values, after });
 
@@ -53,7 +53,7 @@ type QueryResult<T> =
   | QueryError
   | {
       search: {
-        pageInfo: {
+        pageInfo?: {
           endCursor: string;
           hasNextPage: boolean;
         };
