@@ -1,5 +1,4 @@
 import { query } from '../github';
-import * as applicationInsights from 'applicationinsights';
 
 const gql = `
 {
@@ -26,19 +25,14 @@ const gql = `
 }
 `;
 
-export const openPullRequestsQuery = async () => {
+const openPullRequestsQuery = async () => {
   const results: Result[] = await query(gql, { team: 'rse' });
 
-  for (const result of results) {
-    applicationInsights.defaultClient.trackEvent({
-      name: 'openPullRequestsQuery',
-      properties: {
-        name: result.name,
-        repository: result.url,
-        pullRequests: result.pullRequests.totalCount,
-      },
-    });
-  }
+  return results.map(result => ({
+    name: result.name,
+    repository: result.url,
+    pullRequests: result.pullRequests.totalCount,
+  }));
 };
 
 interface Result {
@@ -47,3 +41,5 @@ interface Result {
   isPrivate: boolean;
   pullRequests: { totalCount: number; nodes: never[] };
 }
+
+export default openPullRequestsQuery;

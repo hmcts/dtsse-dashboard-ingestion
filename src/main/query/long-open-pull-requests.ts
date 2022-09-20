@@ -25,11 +25,16 @@ const gql = `
 }
 `;
 
-export const longOpenPullRequestsQuery = async () => {
+const longOpenPullRequestsQuery = async () => {
   const created = get14DaysAgo();
-  const result = await query(gql, { team: 'rse', created });
+  const result = await query<Result>(gql, { team: 'rse', created });
 
-  console.log(result);
+  return result.reduce(
+    (result, item) => ({
+      [item.repository.name]: result[item.repository.name] ? result[item.repository.name] + 1 : 1,
+    }),
+    {} as Record<string, number>
+  );
 };
 
 const get14DaysAgo = () => {
@@ -37,3 +42,14 @@ const get14DaysAgo = () => {
   date.setDate(date.getDate() - 14);
   return date.toISOString();
 };
+
+interface Result {
+  repository: {
+    name: string;
+  };
+  headRefName: string;
+  createdAt: string;
+  state: string;
+}
+
+export default longOpenPullRequestsQuery;
