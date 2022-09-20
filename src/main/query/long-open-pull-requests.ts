@@ -29,12 +29,15 @@ const longOpenPullRequestsQuery = async () => {
   const created = get14DaysAgo();
   const result = await query<Result>(gql, { team: 'rse', created });
 
-  return result.reduce(
+  const openPrsPerRepo = result.reduce(
     (result, item) => ({
+      ...result,
       [item.repository.name]: result[item.repository.name] ? result[item.repository.name] + 1 : 1,
     }),
     {} as Record<string, number>
   );
+
+  return Object.entries(openPrsPerRepo).map(([name, pullRequests]) => ({ name, pullRequests }));
 };
 
 const get14DaysAgo = () => {

@@ -19,7 +19,7 @@ describe('application insights client', () => {
   });
 
   test('tracks event', () => {
-    store('test', { value: 'test' });
+    store('test', [{ value: 'test' }]);
 
     expect(mock.defaultClient.trackEvent).toHaveBeenCalledWith({ name: 'test', properties: { value: 'test' } });
   });
