@@ -29,7 +29,6 @@ $ yarn start
 ### Code style
 
 We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
-alongside [sass-lint](https://github.com/sasstools/sass-lint)
 
 Running the linting with auto fix:
 
