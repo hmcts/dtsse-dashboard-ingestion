@@ -26,8 +26,3 @@ variable "jenkins_AAD_objectId" {
 variable "common_tags" {
   type = map(string)
 }
-
-variable "appinsights_location" {
-  default     = "West Europe"
-  description = "Location for Application Insights"
-}
