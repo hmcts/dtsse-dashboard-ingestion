@@ -29,9 +29,9 @@ const openPullRequestsQuery = async () => {
   const results: Result[] = await query(gql, { team: 'rse' });
 
   return results.map(result => ({
-    name: result.name,
-    repository: result.url,
-    pullRequests: result.pullRequests.totalCount,
+    repository: result.name,
+    url: result.url,
+    count: result.pullRequests.totalCount,
   }));
 };
 

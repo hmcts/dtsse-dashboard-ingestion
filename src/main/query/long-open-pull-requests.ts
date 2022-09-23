@@ -37,7 +37,7 @@ const longOpenPullRequestsQuery = async () => {
     {} as Record<string, number>
   );
 
-  return Object.entries(openPrsPerRepo).map(([name, pullRequests]) => ({ name, pullRequests }));
+  return Object.entries(openPrsPerRepo).map(([team, count]) => ({ team, count }));
 };
 
 const get14DaysAgo = () => {
