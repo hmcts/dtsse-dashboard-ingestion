@@ -3,7 +3,7 @@
 @Library("Infrastructure")
 
 def type = "nodejs"
-def product = "rse"
+def product = "dtsse"
 def component = "dashboard-github-ingestion"
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)

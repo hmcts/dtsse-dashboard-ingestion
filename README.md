@@ -1,4 +1,4 @@
-# rse-dashboard-github-ingestion
+# dtsse-dashboard-github-ingestion
 
 ## Getting Started
 

@@ -4,6 +4,6 @@ const vault: Record<string, string> = {};
 addTo(vault);
 
 export const config = {
-  appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets.rse.AppInsightsConnectionString'],
-  githubToken: process.env.GITHUB_TOKEN || vault['secrets.rse.github-token'],
+  appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets.dtsse.AppInsightsConnectionString'],
+  githubToken: process.env.GITHUB_TOKEN || vault['secrets.dtsse.github-token'],
 };

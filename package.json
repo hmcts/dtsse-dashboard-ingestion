@@ -1,5 +1,5 @@
 {
-  "name": "rse-dashboard-github-ingestion",
+  "name": "dtsse-dashboard-github-ingestion",
   "version": "0.0.1",
   "private": true,
   "engines": {

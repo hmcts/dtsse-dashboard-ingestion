@@ -1,10 +1,11 @@
 job:
-  image: hmctspublic.azurecr.io/rse/dashboard-github-ingestion:latest
-  aadIdentityName: rse
+  image: hmctspublic.azurecr.io/dtsse/dashboard-github-ingestion:latest
+  aadIdentityName: dtsse
   keyVaults:
-    rse:
+    dtsse:
       secrets:
-        - AppInsightsConnectionString
+        - name: AppInsightsConnectionString
+          alias: APPLICATIONINSIGHTS_CONNECTION_STRING
         - github-token
   schedule: "0 0/10 * * *"
 global:
