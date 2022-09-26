@@ -35,6 +35,8 @@ GITHUB_TOKEN=[your github token]
 DATABASE_URL=postgres://localhost:5432/dashboard
 ```
 
+You will also need to have a local postgres database running on port 5432 with a database called `dashboard` and a schema called `github`.
+
 ## Developing
 
 ### Code style

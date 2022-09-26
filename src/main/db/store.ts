@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import { config } from '../config';
 import format from 'pg-format';
 
-const pool = new Pool({ connectionString: config.dbUrl });
+const pool = new Pool({ connectionString: config.dbUrl, options: '-c search_path=github' });
 
 pool.on('error', (err: Error) => {
   console.error('Unexpected error on idle client', err);

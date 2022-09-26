@@ -7,6 +7,7 @@ export const migrate = async () => {
       dev: {
         use_env_variable: 'DATABASE_URL',
         ssl,
+        schema: 'github',
       },
     },
   });
