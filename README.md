@@ -39,6 +39,18 @@ You will also need to have a local postgres database running on port 5432 with a
 
 ## Developing
 
+### Queries
+
+All queries in `./src/main/query` will be executed and the rows returned will be persisted in the database. The `store` function expects a
+table with the file name of the query to have been created with the migration scripts. Hyphens will be converted to underscores, so results from
+`query/open-pull-requests.ts` will be stored in the `open_pull_requests` table.
+
+### Migrations
+
+Run: `yarn migratation:generate [name]` to create a new migration.
+
+Migrations are automatically run when before the queries are executed.
+
 ### Code style
 
 We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
