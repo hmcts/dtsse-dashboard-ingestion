@@ -1,16 +1,18 @@
 # dtsse-dashboard-github-ingestion
 
+K8S job to import stats from Github to the DTSSE dashboard database.
+
 ## Getting Started
 
 ### Prerequisites
 
-Running the application requires the following tools to be installed in your environment:
+Running the script requires the following tools to be installed in your environment:
 
 - [Node.js](https://nodejs.org/) v16.0.0 or later
 - [yarn](https://yarnpkg.com/)
 - [Docker](https://www.docker.com)
 
-### Running the application
+### Running the script
 
 Install dependencies by executing the following command:
 
@@ -22,6 +24,15 @@ Run:
 
 ```bash
 $ yarn start
+```
+
+### Local environment variables
+
+To run the script locally you will need some environment variables set in `.env`:
+
+```dotenv
+GITHUB_TOKEN=[your github token]
+DATABASE_URL=postgres://localhost:5432/dashboard
 ```
 
 ## Developing
