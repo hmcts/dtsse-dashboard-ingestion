@@ -11,14 +11,14 @@ const getConnectionString = (dbUrl: string): string => {
   ].join('');
 };
 
-const vault: Record<string, string> = {};
+const vault: Record<string, never> = {};
 addTo(vault);
 
-const unencodedDbUrl = process.env.DATABASE_URL || vault['secrets.dtsse.db-url'];
+const unencodedDbUrl = process.env.DATABASE_URL || vault['secrets']?.['dtsse']?.['db-url'];
 const encodedDbUrl = (process.env.DATABASE_URL = getConnectionString(unencodedDbUrl));
 
 export const config = {
-  appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets.dtsse.AppInsightsConnectionString'],
-  githubToken: process.env.GITHUB_TOKEN || vault['secrets.dtsse.github-token'],
+  appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets']?.['dtsse']?.['AppInsightsConnectionString'],
+  githubToken: process.env.GITHUB_TOKEN || vault['secrets']?.['dtsse']?.['github-token'],
   dbUrl: encodedDbUrl,
 };
