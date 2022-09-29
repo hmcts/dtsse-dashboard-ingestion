@@ -8,9 +8,9 @@ const instance = DBMigrate.getInstance(true, {
       ssl,
       schema: 'github',
     },
-    cmdOptions: {
-      'sql-file': true,
-    },
+  },
+  cmdOptions: {
+    'sql-file': true,
   },
 });
 
@@ -23,7 +23,8 @@ export const migrateDown = async () => {
 };
 
 export const create = async () => {
-  await instance.create(process.argv[3]);
+  instance.internals.argv._ = [];
+  await instance.create(process.argv[4]);
 };
 
 if (process.argv[2] === 'create') {

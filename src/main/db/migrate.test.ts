@@ -7,13 +7,37 @@ jest.mock('db-migrate');
 const mockInstance = jest.fn();
 const mockDbMigrate = DBMigrate as MockedFunction<typeof DBMigrate>;
 
-mockDbMigrate.getInstance.mockReturnValue({ up: mockInstance });
+mockDbMigrate.getInstance.mockReturnValue({
+  up: mockInstance,
+  create: mockInstance,
+  down: mockInstance,
+  internals: { argv: { _: [] } },
+});
 
-import { migrate } from './migrate';
+import { create, migrate, migrateDown } from './migrate';
 
 describe('migrate', () => {
   test('runs up', async () => {
     await migrate();
+
+    expect(mockDbMigrate.getInstance).toHaveBeenCalled();
+    expect(mockInstance).toHaveBeenCalled();
+  });
+});
+
+describe('create', () => {
+  test('runs create', async () => {
+    process.argv[4] = 'test';
+    await create();
+
+    expect(mockDbMigrate.getInstance).toHaveBeenCalled();
+    expect(mockInstance).toHaveBeenCalled();
+  });
+});
+
+describe('migrateDown', () => {
+  test('runs down', async () => {
+    await migrateDown();
 
     expect(mockDbMigrate.getInstance).toHaveBeenCalled();
     expect(mockInstance).toHaveBeenCalled();
