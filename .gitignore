@@ -24,6 +24,7 @@ npm-debug.log.*
 dist/
 public/
 src/main/views/govuk
+coverage/
 
 .eslintcache
 
