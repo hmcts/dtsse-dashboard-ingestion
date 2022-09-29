@@ -43,13 +43,21 @@ You will also need to have a local postgres database running on port 5432 with a
 
 All queries in `./src/main/query` will be executed and the rows returned will be persisted in the database. The `store` function expects a
 table with the file name of the query to have been created with the migration scripts. Hyphens will be converted to underscores, so results from
-`query/open-pull-requests.ts` will be stored in the `open_pull_requests` table.
+`query/open-pull-request.ts` will be stored in the `open_pull_requests` table.
+
+To run an individual query use:
+
+```bash
+yarn start:dev [your-query-file-name] # e.g. yarn start:dev open-pull-requests
+```
 
 ### Migrations
 
-Run: `yarn migratation:generate [name]` to create a new migration.
+Run: `yarn migration:create [name]` to create a new migration.
 
 Migrations are automatically run when before the queries are executed.
+
+To roll back a migration run: `Run: `yarn migration:down [name]`.
 
 ### Code style
 

@@ -12,8 +12,9 @@ const runQueryAndStore = async (file: string) => {
 const run = async () => {
   await migrate();
 
+  const queryName = process.argv[2] && process.argv[2] + '.ts';
   const queries = readdirSync(__dirname + '/query')
-    .filter(file => file.endsWith('.ts'))
+    .filter(file => file.endsWith('.ts') && (!queryName || file.endsWith(queryName)))
     .map(file => runQueryAndStore(file));
 
   await Promise.all(queries);

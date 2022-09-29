@@ -1,16 +1,35 @@
 const DBMigrate = require('db-migrate');
 
-export const migrate = async () => {
-  const ssl = process.env.DATABASE_URL?.includes('sslmode=require') && { require: 'true' };
-  const migrate = DBMigrate.getInstance(true, {
-    config: {
-      dev: {
-        use_env_variable: 'DATABASE_URL',
-        ssl,
-        schema: 'github',
-      },
+const ssl = process.env.DATABASE_URL?.includes('sslmode=require') && { require: 'true' };
+const instance = DBMigrate.getInstance(true, {
+  config: {
+    dev: {
+      use_env_variable: 'DATABASE_URL',
+      ssl,
+      schema: 'github',
     },
-  });
+    cmdOptions: {
+      'sql-file': true,
+    },
+  },
+});
 
-  await migrate.up();
+export const migrate = async () => {
+  await instance.up();
 };
+
+export const migrateDown = async () => {
+  await instance.down();
+};
+
+export const create = async () => {
+  await instance.create(process.argv[3]);
+};
+
+if (process.argv[2] === 'create') {
+  create().catch(console.error);
+} else if (process.argv[2] === 'down') {
+  migrateDown().catch(console.error);
+} else if (process.argv[2] === 'up') {
+  migrate().catch(console.error);
+}

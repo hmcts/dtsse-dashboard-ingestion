@@ -17,8 +17,8 @@
     "test:a11y": "exit 0",
     "cichecks": "yarn lint && yarn test",
     "prepare": "husky install",
-    "migration:generate": "db-migrate create --sql-file --",
-    "migration:down": "db-migrate down"
+    "migration:create": "ts-node -r tsconfig-paths/register src/main/db/migrate.ts create --",
+    "migration:down": "ts-node -r tsconfig-paths/register src/main/db/migrate.ts down"
   },
   "dependencies": {
     "@hmcts/properties-volume": "0.0.14",
