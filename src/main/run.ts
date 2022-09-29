@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { shutdown, store } from './db/store';
-import { migrate } from './db/migrate';
+import { create, migrate, migrateDown } from './db/migrate';
 
 const runQueryAndStore = async (file: string) => {
   const results = await require(__dirname + '/query/' + file).default();
@@ -21,4 +21,12 @@ const run = async () => {
   await shutdown();
 };
 
-run().catch(console.error);
+if (process.argv[2] === 'create') {
+  create().catch(console.error);
+} else if (process.argv[2] === 'down') {
+  migrateDown().catch(console.error);
+} else if (process.argv[2] === 'up') {
+  migrate().catch(console.error);
+} else {
+  run().catch(console.error);
+}

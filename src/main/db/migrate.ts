@@ -26,11 +26,3 @@ export const create = async () => {
   instance.internals.argv._ = [];
   await instance.create(process.argv[4]);
 };
-
-if (process.argv[2] === 'create') {
-  create().catch(console.error);
-} else if (process.argv[2] === 'down') {
-  migrateDown().catch(console.error);
-} else if (process.argv[2] === 'up') {
-  migrate().catch(console.error);
-}
