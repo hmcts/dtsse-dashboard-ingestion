@@ -45,7 +45,7 @@ const run = async () => {
   const results: Result[] = await query(gql);
 
   return results.map(result => ({
-    team: result.repository.nameWithOwner.substring(0, result.repository.nameWithOwner.indexOf('-')),
+    team: result.repository.nameWithOwner.substring(0, result.repository.nameWithOwner.indexOf('-')).toLowerCase(),
     repository: result.repository.nameWithOwner,
     title: result.title,
     url: result.url,
