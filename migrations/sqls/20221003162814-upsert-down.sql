@@ -1,0 +1,2 @@
+ALTER TABLE pull_request ADD COLUMN timestamp TIMESTAMP NOT NULL;
+ALTER TABLE pull_request DROP COLUMN id;

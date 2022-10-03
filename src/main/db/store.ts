@@ -9,14 +9,15 @@ pool.on('error', (err: Error) => {
   process.exit(-1);
 });
 
-const timestamp = new Date();
-
 export const store = async (name: string, values: InsertRow[]) => {
   const client = await pool.connect();
   const tableName = name.replaceAll('-', '_');
-  const rowsWithId = values.map(values => [timestamp, ...Object.values(values)]);
-  const keys = 'timestamp, ' + Object.keys(values[0]).join(', ');
-  const sql = format(`INSERT INTO %I (${keys}) VALUES %L`, tableName, rowsWithId);
+  const rows = values.map(values => Object.values(values));
+  const keys = Object.keys(values[0]).join(', ');
+  const excluded = Object.keys(values[0])
+    .map(key => `${key} = EXCLUDED.${key}`)
+    .join(', ');
+  const sql = format(`INSERT INTO %I (${keys}) VALUES %L ON CONFLICT(id) DO UPDATE SET ${excluded}`, tableName, rows);
 
   try {
     await client.query(sql, []);

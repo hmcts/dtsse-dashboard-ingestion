@@ -25,10 +25,11 @@ const addPrData = async (issue: Result) => {
   });
 
   return {
-    team: issue.repository?.name.substring(0, issue.repository.name.indexOf('-')).toLowerCase(),
-    repository: issue.repository?.name,
-    title: issue.title,
+    id: issue.url,
     url: issue.url,
+    repository: issue.repository?.name,
+    team: issue.repository?.name.substring(0, issue.repository.name.indexOf('-')).toLowerCase(),
+    title: issue.title,
     created_at: issue.created_at.replace('T', ' ').replace('Z', ''),
     closed_at: issue.closed_at?.replace('T', ' ').replace('Z', '') || null,
     changed_files: pull.data.changed_files,
