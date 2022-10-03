@@ -6,3 +6,5 @@
 charts/
 README.md
 .github/
+coverage/
+migrations/

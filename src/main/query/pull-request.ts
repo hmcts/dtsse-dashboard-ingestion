@@ -1,65 +1,44 @@
-import { query } from '../github';
+import { Octokit } from '@octokit/rest';
+import { config } from '../config';
 
-const gql = `
-{
-  search(query: "repo:\\"NOT cnp NOT aks NOT azure\\" org:hmcts sort:created is:pr is:unmerged is:public archived:false", type: ISSUE, first: 50%after){
-    pageInfo {
-        startCursor
-        hasNextPage
-        endCursor
-    }
-    issueCount
-    edges {
-      node {
-        ... on PullRequest {
-          title
-          repository {
-            nameWithOwner
-          }
-          createdAt
-          closedAt
-          url
-          changedFiles
-          additions
-          deletions
-          author {
-            login
-          }
-          bodyText
-          reviewDecision
-          labels (first: 100) {
-            edges {
-              node {
-                name
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-`;
+const octokit = new Octokit({
+  auth: `token ${config.githubToken}`,
+});
 
 const run = async () => {
-  const results: Result[] = await query(gql);
+  const results = (await octokit.paginate(octokit.rest.issues.list, {
+    filter: 'all',
+    state: 'open',
+    owner: 'hmcts',
+    pulls: true,
+    since: '2022-10-01T00:00:00Z',
+  })) as Result[];
 
-  return results.map(result => ({
-    team: result.repository.nameWithOwner.substring(0, result.repository.nameWithOwner.indexOf('-')).toLowerCase(),
-    repository: result.repository.nameWithOwner,
-    title: result.title,
-    url: result.url,
-    created_at: result.createdAt.replace('T', ' ').replace('Z', ''),
-    closed_at: result.closedAt?.replace('T', ' ').replace('Z', ''),
-    changed_files: result.changedFiles,
-    additions: result.additions,
-    deletions: result.deletions,
-    author: result.author.login,
-    body_text: result.bodyText,
-    review_decision: result.reviewDecision?.toLowerCase(),
-    labels: result.labels.edges.map(edge => edge.node.name).join(','),
-    jira_refs: jiraRef(result.title + result.bodyText)?.join(',') || null,
-  }));
+  return Promise.all(results.filter(issue => !issue.repository.archived && issue.pull_request?.url).map(issue => addPrData(issue)));
+};
+
+const addPrData = async (issue: Result) => {
+  const pull = await octokit.rest.pulls.get({
+    owner: 'hmcts',
+    repo: issue.repository.name,
+    pull_number: issue.number,
+  });
+
+  return {
+    team: issue.repository?.name.substring(0, issue.repository.name.indexOf('-')).toLowerCase(),
+    repository: issue.repository?.name,
+    title: issue.title,
+    url: issue.url,
+    created_at: issue.created_at.replace('T', ' ').replace('Z', ''),
+    closed_at: issue.closed_at?.replace('T', ' ').replace('Z', '') || null,
+    changed_files: pull.data.changed_files,
+    additions: pull.data.additions,
+    deletions: pull.data.deletions,
+    author: issue.user.login,
+    body_text: issue.body,
+    labels: issue.labels.map(label => label.name).join(','),
+    jira_refs: jiraRef(issue.title + issue.body)?.join(',') || null,
+  };
 };
 
 const jiraRef = (text: string) => {
@@ -74,27 +53,24 @@ const jiraRef = (text: string) => {
 
 interface Result {
   title: string;
-  repository: {
-    nameWithOwner: string;
+  number: number;
+  pull_request?: {
+    url: string;
   };
-  createdAt: string;
-  closedAt: string | null;
+  repository: {
+    name: string;
+    archived: boolean;
+  };
+  created_at: string;
+  closed_at: string | null;
   url: string;
-  changedFiles: number;
-  additions: number;
-  deletions: number;
-  author: {
+  user: {
     login: string;
   };
-  bodyText: string;
-  reviewDecision: 'REVIEW_REQUIRED' | 'APPROVED' | 'CHANGES_REQUESTED' | 'DISMISSED' | null;
+  body: string;
   labels: {
-    edges: {
-      node: {
-        name: string;
-      };
-    }[];
-  };
+    name: string;
+  }[];
 }
 
 export default run;
