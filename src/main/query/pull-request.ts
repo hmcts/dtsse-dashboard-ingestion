@@ -6,15 +6,21 @@ const octokit = new Octokit({
 });
 
 const run = async () => {
+  const date = new Date();
+  date.setDate(date.getDate() - 1);
+
   const results = (await octokit.paginate(octokit.rest.issues.list, {
     filter: 'all',
     state: 'open',
-    owner: 'hmcts',
     pulls: true,
-    since: '2022-10-01T00:00:00Z',
+    since: date.toISOString(),
   })) as Result[];
 
-  return Promise.all(results.filter(issue => !issue.repository.archived && issue.pull_request?.url).map(issue => addPrData(issue)));
+  const prs = results
+    .filter(issue => issue.repository.owner.login === 'hmcts' && !issue.repository.archived && issue.pull_request?.url)
+    .map(issue => addPrData(issue));
+
+  return Promise.all(prs);
 };
 
 const addPrData = async (issue: Result) => {
@@ -61,6 +67,9 @@ interface Result {
   repository: {
     name: string;
     archived: boolean;
+    owner: {
+      login: string;
+    };
   };
   created_at: string;
   closed_at: string | null;
