@@ -7,16 +7,21 @@ const octokit = new Octokit({
 
 const run = async () => {
   const date = new Date();
-  date.setDate(date.getDate() - 1);
+  date.setHours(date.getHours() - 4);
 
   const results = (await octokit.paginate(octokit.rest.issues.list, {
     filter: 'all',
-    state: 'open',
+    state: 'all',
     pulls: true,
     since: date.toISOString(),
   })) as Result[];
 
-  const prs = results
+  const uniqueResults = results.reduce((acc: Record<string, Result>, issue: Result) => {
+    acc[issue.url] = issue;
+    return acc;
+  }, {});
+
+  const prs = Object.values(uniqueResults)
     .filter(issue => issue.repository.owner.login === 'hmcts' && !issue.repository.archived && issue.pull_request?.url)
     .map(issue => addPrData(issue));
 
@@ -32,7 +37,7 @@ const addPrData = async (issue: Result) => {
 
   return {
     id: issue.url,
-    url: issue.url,
+    url: issue.pull_request?.html_url,
     repository: issue.repository?.name,
     team: issue.repository?.name.substring(0, issue.repository.name.indexOf('-')).toLowerCase(),
     title: issue.title,
@@ -43,6 +48,7 @@ const addPrData = async (issue: Result) => {
     deletions: pull.data.deletions,
     author: issue.user.login,
     body_text: issue.body,
+    state: issue.state,
     labels: issue.labels.map(label => label.name).join(','),
     jira_refs: jiraRef(issue.title + issue.body)?.join(',') || null,
   };
@@ -52,17 +58,22 @@ const jiraRef = (text: string) => {
   const regex = /\d+-[A-Z]+(?!-?[a-zA-Z]{1,10})/g;
   const reversed = text.split('').reverse().join('');
 
-  return reversed
+  const refs = reversed
     .match(regex)
     ?.map(match => match.split('').reverse().join(''))
-    .reverse();
+    .reverse()
+    .filter(ref => !ref.startsWith('CVE-'));
+
+  return refs?.filter((ref, index) => refs?.indexOf(ref) === index);
 };
 
 interface Result {
   title: string;
   number: number;
+  state: string;
   pull_request?: {
     url: string;
+    html_url: string;
   };
   repository: {
     name: string;
