@@ -1,5 +1,6 @@
 import { Octokit } from '@octokit/rest';
 import { config } from '../config';
+import { getTeamName } from '../team';
 
 const octokit = new Octokit({
   auth: `token ${config.githubToken}`,
@@ -39,7 +40,7 @@ const addPrData = async (issue: Result) => {
     id: issue.url,
     url: issue.pull_request?.html_url,
     repository: issue.repository?.name,
-    team: issue.repository?.name.substring(0, issue.repository.name.indexOf('-')).toLowerCase(),
+    team: getTeamName(issue.repository?.name),
     title: issue.title,
     created_at: issue.created_at.replace('T', ' ').replace('Z', ''),
     closed_at: issue.closed_at?.replace('T', ' ').replace('Z', '') || null,
