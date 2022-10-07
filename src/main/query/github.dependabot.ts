@@ -1,5 +1,5 @@
-import { query } from '../github';
-import { getTeamName } from '../team';
+import { query } from '../github/graphql';
+import { getTeamName } from '../github/team';
 
 const gql = `
 {
