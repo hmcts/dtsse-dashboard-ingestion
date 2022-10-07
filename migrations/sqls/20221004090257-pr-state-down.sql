@@ -1,1 +1,1 @@
-ALTER TABLE pull_request DROP COLUMN state;
+ALTER TABLE github.pull_request DROP COLUMN state;

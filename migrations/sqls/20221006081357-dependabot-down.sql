@@ -1,1 +1,1 @@
-DROP TABLE dependabot;
+DROP TABLE github.dependabot;

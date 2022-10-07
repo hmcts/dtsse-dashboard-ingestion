@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import { config } from '../config';
 import format from 'pg-format';
 
-const pool = new Pool({ connectionString: config.dbUrl, options: '-c search_path=github' });
+const pool = new Pool({ connectionString: config.dbUrl });
 
 pool.on('error', (err: Error) => {
   console.error('Unexpected error on idle client', err);
@@ -17,7 +17,7 @@ export const store = async (name: string, values: InsertRow[]) => {
   const excluded = Object.keys(values[0])
     .map(key => `${key} = EXCLUDED.${key}`)
     .join(', ');
-  const sql = format(`INSERT INTO %I (${keys}) VALUES %L ON CONFLICT(id) DO UPDATE SET ${excluded}`, tableName, rows);
+  const sql = format(`INSERT INTO ${tableName} (${keys}) VALUES %L ON CONFLICT(id) DO UPDATE SET ${excluded}`, rows);
 
   try {
     await client.query(sql, []);

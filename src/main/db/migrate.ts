@@ -6,7 +6,6 @@ const instance = DBMigrate.getInstance(true, {
     dev: {
       use_env_variable: 'DATABASE_URL',
       ssl,
-      schema: 'github',
     },
   },
   cmdOptions: {
