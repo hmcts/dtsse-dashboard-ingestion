@@ -16,16 +16,9 @@ describe('metrics', () => {
 
     process.env.DATABASE_URL = `postgresql://postgres:postgres@localhost:${container.getMappedPort(5432)}/dashboard`;
 
-    const { migrate } = require('../db/migrate');
+    const { runFiles } = require('../executor');
 
-    await migrate();
-
-    const { runQueryAndStore } = require('../executor');
-    const { shutdown } = require('../db/store');
-
-    await runQueryAndStore('jenkins.metrics');
-
-    await shutdown();
+    await runFiles(['jenkins.metrics']);
 
     await container.stop();
   });
