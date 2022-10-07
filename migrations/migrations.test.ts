@@ -1,7 +1,4 @@
 import { describe, jest, test } from '@jest/globals';
-
-
-import { instance } from "../src/main/db/migrate";
 import { StartedTestContainer, PostgreSqlContainer } from 'testcontainers';
 
 jest.setTimeout(180_000);
@@ -18,12 +15,13 @@ describe('migrations', () => {
 
     process.env.DATABASE_URL = `postgresql://postgres:postgres@localhost:${container.getMappedPort(5432)}/dashboard`
 
-    const migrator = instance();
+    const { migrate, migrateDown } = require('../src/main/db/migrate');
 
-    await migrator.migrate();
-    await migrator.migrateDown();
+
+    await migrate();
+    await migrateDown();
     // Test that down works properly by rerunning the migrations.
-    await migrator.migrate();
+    await migrate();
 
     await container.stop();
   });
