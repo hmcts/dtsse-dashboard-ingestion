@@ -4,7 +4,7 @@
 
 def type = "nodejs"
 def product = "dtsse"
-def component = "dashboard-github-ingestion"
+def component = "dashboard-ingestion"
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 

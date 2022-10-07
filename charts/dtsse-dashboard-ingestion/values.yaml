@@ -1,5 +1,5 @@
 job:
-  image: hmctspublic.azurecr.io/dtsse/dashboard-github-ingestion:latest
+  image: hmctspublic.azurecr.io/dtsse/dashboard-ingestion:latest
   aadIdentityName: dtsse
   keyVaults:
     dtsse:

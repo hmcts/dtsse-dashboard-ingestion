@@ -1,6 +1,6 @@
-# dtsse-dashboard-github-ingestion
+# dtsse-dashboard-ingestion
 
-K8S job to import stats from Github to the DTSSE dashboard database.
+K8S job to import data to the DTSSE dashboard database.
 
 ## Getting Started
 
