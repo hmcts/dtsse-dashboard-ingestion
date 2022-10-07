@@ -16,7 +16,7 @@
     "test:integration": "jest -c jest.integration.config.js",
     "test:coverage": "jest --coverage",
     "test:a11y": "exit 0",
-    "cichecks": "yarn lint && yarn test",
+    "cichecks": "yarn lint && yarn test && yarn test:integration",
     "prepare": "husky install",
     "migration:create": "ts-node -r dotenv/config -r tsconfig-paths/register src/main/run.ts create --",
     "migration:down": "yarn start:dev down"
