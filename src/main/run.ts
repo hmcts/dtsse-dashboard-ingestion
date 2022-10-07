@@ -28,7 +28,7 @@ if (process.argv[2] === 'create') {
 } else if (process.argv[2] === 'down') {
   migrator.migrateDown().catch(console.error);
 } else if (process.argv[2] === 'up') {
-  migrator.create().catch(console.error);
+  migrator.migrate().catch(console.error);
 } else {
   run().catch(console.error);
 }
