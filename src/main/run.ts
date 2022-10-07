@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { shutdown, store } from './db/store';
-import { create, migrate, migrateDown } from './db/migrate';
+import { instance } from './db/migrate';
 
 const runQueryAndStore = async (file: string) => {
   const results = await require(__dirname + '/query/' + file).default();
@@ -9,8 +9,10 @@ const runQueryAndStore = async (file: string) => {
   await store(queryName, results);
 };
 
+const migrator = instance();
+
 const run = async () => {
-  await migrate();
+  await migrator.migrate();
 
   const queryName = process.argv[2] && process.argv[2] + '.ts';
   const queries = readdirSync(__dirname + '/query')
@@ -22,11 +24,11 @@ const run = async () => {
 };
 
 if (process.argv[2] === 'create') {
-  create().catch(console.error);
+  migrator.create().catch(console.error);
 } else if (process.argv[2] === 'down') {
-  migrateDown().catch(console.error);
+  migrator.migrateDown().catch(console.error);
 } else if (process.argv[2] === 'up') {
-  migrate().catch(console.error);
+  migrator.create().catch(console.error);
 } else {
   run().catch(console.error);
 }
