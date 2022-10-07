@@ -1,15 +1,9 @@
 import { readdirSync } from 'fs';
-import { shutdown, store } from './db/store';
+import { shutdown } from './db/store';
 import { create, migrate, migrateDown } from './db/migrate';
+import { runQueryAndStore } from './executor';
 
-const runQueryAndStore = async (file: string) => {
-  const results = await require(__dirname + '/query/' + file).default();
-  const queryName = file.replace('.ts', '');
-
-  await store(queryName, results);
-};
-
-const run = async () => {
+export const run = async () => {
   await migrate();
 
   const queryName = process.argv[2] && process.argv[2] + '.ts';
