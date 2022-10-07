@@ -2,13 +2,13 @@ import { describe, expect, jest, test, afterAll } from '@jest/globals';
 import { graphql } from '@octokit/graphql';
 import { MockedFunction } from 'jest-mock';
 
-jest.mock('./config', () => ({ config: { githubToken: 'test' } }));
+jest.mock('../config', () => ({ config: { githubToken: 'test' } }));
 jest.mock('@octokit/graphql');
 
 const mockGraphql = graphql as MockedFunction<typeof graphql>;
 mockGraphql.defaults.mockReturnValue(mockGraphql);
 
-import { query } from './github';
+import { query } from './graphql';
 
 describe('github client', () => {
   const consoleMock = jest.spyOn(console, 'error').mockImplementation(() => {});

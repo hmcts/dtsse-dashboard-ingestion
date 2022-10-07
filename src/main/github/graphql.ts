@@ -1,5 +1,5 @@
 import { graphql } from '@octokit/graphql';
-import { config } from './config';
+import { config } from '../config';
 import { GraphQlQueryResponse } from '@octokit/graphql/dist-types/types';
 
 const gql = graphql.defaults({

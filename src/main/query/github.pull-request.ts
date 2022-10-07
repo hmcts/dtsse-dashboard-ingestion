@@ -1,10 +1,5 @@
-import { Octokit } from '@octokit/rest';
-import { config } from '../config';
-import { getTeamName } from '../team';
-
-const octokit = new Octokit({
-  auth: `token ${config.githubToken}`,
-});
+import { getTeamName } from '../github/team';
+import { octokit } from '../github/rest';
 
 const run = async () => {
   const date = new Date();
