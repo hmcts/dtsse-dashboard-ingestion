@@ -19,6 +19,7 @@ const encodedDbUrl = (process.env.DATABASE_URL = getConnectionString(unencodedDb
 
 export const config = {
   appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets']?.['dtsse']?.['AppInsightsConnectionString'],
+  jiraToken: process.env.JIRA_TOKEN || vault['secrets']?.['dtsse']?.['jira-token'],
   githubToken: process.env.GITHUB_TOKEN || vault['secrets']?.['dtsse']?.['github-token'],
   dbUrl: encodedDbUrl,
 };
