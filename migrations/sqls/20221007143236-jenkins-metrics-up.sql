@@ -3,7 +3,7 @@ create schema jenkins;
 create type jenkins.BuildResult as enum ('ABORTED', 'FAILURE', 'SUCCESS', 'UNSTABLE');
 
 create table jenkins.metrics(
-  "id" uuid primary key not null,
+  "id" uuid primary key,
   "product" varchar not null,
   "branch_name" varchar not null,
   "correlation_id" uuid not null,
