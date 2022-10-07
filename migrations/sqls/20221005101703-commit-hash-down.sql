@@ -1,1 +1,1 @@
-ALTER TABLE pull_request DROP COLUMN commit_hash;
+ALTER TABLE github.pull_request DROP COLUMN commit_hash;

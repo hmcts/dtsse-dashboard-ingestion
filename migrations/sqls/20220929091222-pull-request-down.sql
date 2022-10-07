@@ -1,2 +1,2 @@
-DROP TABLE IF EXISTS "pull_request";
-  DROP TYPE IF EXISTS decision_type;
+DROP TABLE IF EXISTS github.pull_request;
+DROP TYPE IF EXISTS github.decision_type;

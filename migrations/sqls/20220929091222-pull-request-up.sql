@@ -1,6 +1,6 @@
-CREATE TYPE decision_type AS ENUM ('approved', 'review_required', 'changes_requested', 'commented', 'dismissed', 'pending');
+CREATE TYPE github.decision_type AS ENUM ('approved', 'review_required', 'changes_requested', 'commented', 'dismissed', 'pending');
 
-CREATE TABLE IF NOT EXISTS "pull_request" (
+CREATE TABLE IF NOT EXISTS github.pull_request (
   "timestamp" TIMESTAMP NOT NULL,
   "team" VARCHAR(255) NOT NULL,
   "repository" VARCHAR(256) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "pull_request" (
   "deletions" INT NOT NULL,
   "author" VARCHAR(259) NOT NULL,
   "body_text" TEXT NOT NULL,
-  "review_decision" decision_type DEFAULT NULL,
+  "review_decision" github.decision_type DEFAULT NULL,
   "labels" TEXT DEFAULT NULL,
   "jira_refs" TEXT DEFAULT NULL
 );

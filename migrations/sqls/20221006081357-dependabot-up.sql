@@ -1,4 +1,4 @@
-CREATE TABLE dependabot (
+CREATE TABLE github.dependabot (
     id VARCHAR(255) PRIMARY KEY NOT NULL,
     repository VARCHAR(255) NOT NULL,
     team VARCHAR(255) NOT NULL,
