@@ -5,7 +5,6 @@ jest.setTimeout(180_000);
 
 describe('migrations', () => {
   test('runs migrations', async () => {
-
     const container: StartedTestContainer = await new PostgreSqlContainer('postgres:11')
       .withUsername('postgres')
       .withPassword('postgres')
@@ -13,10 +12,9 @@ describe('migrations', () => {
       .withDatabase('dashboard')
       .start();
 
-    process.env.DATABASE_URL = `postgresql://postgres:postgres@localhost:${container.getMappedPort(5432)}/dashboard`
+    process.env.DATABASE_URL = `postgresql://postgres:postgres@localhost:${container.getMappedPort(5432)}/dashboard`;
 
-    const { migrate, migrateDown } = require('../src/main/db/migrate');
-
+    const { migrate, migrateDown } = require('./migrate');
 
     await migrate();
     await migrateDown();
