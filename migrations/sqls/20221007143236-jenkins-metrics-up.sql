@@ -6,8 +6,9 @@ create table jenkins.builds(
   "correlation_id" uuid primary key,
   "product" varchar not null,
   "branch_name" varchar not null,
-  "component" varchar not null,
+  "component" varchar,
   "build_number" varchar not null,
+  "git_url" varchar not null,
   "build_url" varchar not null
 );
 
