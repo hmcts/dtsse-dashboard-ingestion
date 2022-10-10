@@ -1,7 +1,9 @@
 import { StartedTestContainer, PostgreSqlContainer } from 'testcontainers';
 
+let container: StartedTestContainer;
+
 export const startPostgres = async () => {
-  const container: StartedTestContainer = await new PostgreSqlContainer('postgres:11')
+  container = await new PostgreSqlContainer('postgres:11')
     .withUsername('postgres')
     .withPassword('postgres')
     .withExposedPorts(5432)
@@ -9,5 +11,8 @@ export const startPostgres = async () => {
     .start();
 
   process.env.DATABASE_URL = `postgresql://postgres:postgres@localhost:${container.getMappedPort(5432)}/dashboard`;
-  return container;
+};
+
+export const stopPostgres = async () => {
+  container.stop();
 };
