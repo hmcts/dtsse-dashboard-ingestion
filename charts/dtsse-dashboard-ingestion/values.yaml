@@ -9,6 +9,7 @@ job:
         - github-token
         - jira-token
         - db-url
+        - cosmos-key
   schedule: "0/10 * * * *"
 global:
   jobKind: CronJob
