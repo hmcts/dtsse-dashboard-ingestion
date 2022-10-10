@@ -7,12 +7,11 @@ const client = new CosmosClient({ endpoint: 'https://pipeline-metrics.documents.
 const database = client.database('jenkins');
 const container = database.container('pipeline-metrics');
 
-const querySpec = {
-  // Get everything modified in the last hour
-  query: `SELECT * from c where c._ts > ${Date.now() / 1000 - 60 * 60}`,
-};
-
-export const getMetrics = async () => {
+export const getMetrics = async (fromUnixtime: bigint) => {
+  const querySpec = {
+    // Get everything modified in the last hour
+    query: `SELECT * from c where c._ts > ${fromUnixtime}`,
+  };
   const { resources: items } = await container.items.query(querySpec).fetchAll();
   return items;
 };
