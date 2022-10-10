@@ -19,11 +19,11 @@ export const processCosmosResults = async (json: string) => {
 };
 
 export const getUnixTimeToQueryFrom = async () => {
-  // Base off the last import time if available, otherwise an hour ago.
+  // Base off the last import time if available, otherwise the last 12 months
   const res = await pool.query(`
   select extract(epoch from max)::bigint max from (
     select max(stage_timestamp) - interval '1 minute' as max from jenkins.build_steps
-    union select now() - interval '1 hour'
+    union select now() - interval '12 month'
     order by max asc
   ) s
   `);
