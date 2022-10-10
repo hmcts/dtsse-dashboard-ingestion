@@ -2,8 +2,7 @@ import { getMetrics } from '../jenkins/cosmos';
 import { pool } from '../db/store';
 
 export const processCosmosResults = async (json: string) => {
-  const client = await pool.connect();
-  await client.query(
+  await pool.query(
     `
   with builds as (
     insert into jenkins.builds
@@ -16,7 +15,6 @@ export const processCosmosResults = async (json: string) => {
   `,
     [json]
   );
-  client.release();
 
   return [];
 };
