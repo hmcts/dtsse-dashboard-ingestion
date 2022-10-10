@@ -1,21 +1,27 @@
 import { getMetrics } from '../jenkins/cosmos';
+import { pool } from '../db/store';
 
-export const processCosmosResults = async (rows: any) => {
-  return rows.map((row: any) => ({
-    id: row.id,
-    product: row.product,
-    branch_name: row.branch_name,
-    correlation_id: row.correlation_id,
-    component: row.component,
-    build_number: row.build_number,
-    build_url: row.build_url,
-    current_step_name: row.current_step_name,
-    current_build_current_result: row.current_build_current_result,
-    timestamp: new Date(row._ts * 1000).toISOString(),
-  }));
+export const processCosmosResults = async (json: string) => {
+  const client = await pool.connect();
+  await client.query(
+    `
+  with builds as (
+    insert into jenkins.builds
+    select * from jsonb_populate_recordset(null::jenkins.builds, $1::jsonb)
+    on conflict do nothing
+  )
+  insert into jenkins.build_steps
+  select * from jsonb_populate_recordset(null::jenkins.build_steps, $1::jsonb)
+  on conflict do nothing
+  `,
+    [json]
+  );
+  client.release();
+
+  return [];
 };
 
-const run = async () => {
+export const run = async () => {
   const items = await getMetrics();
   return processCosmosResults(items);
 };

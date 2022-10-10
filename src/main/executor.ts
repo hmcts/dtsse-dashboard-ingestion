@@ -5,7 +5,9 @@ export const runQueryAndStore = async (file: string) => {
   const results = await require(__dirname + '/query/' + file).default();
   const queryName = file.replace('.ts', '');
 
-  await store(queryName, results);
+  if (results.length > 0) {
+    await store(queryName, results);
+  }
 };
 
 export const runFiles = async (files: Array<string>) => {
