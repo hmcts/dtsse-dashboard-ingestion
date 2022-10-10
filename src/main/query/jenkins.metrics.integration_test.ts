@@ -24,5 +24,6 @@ describe('metrics', () => {
     const steps = await pool.query('select count(*) from jenkins.build_steps');
     // All 10 unique build steps should be there
     expect(steps.rows[0].count).toBe('10');
+    await pool.end();
   });
 });
