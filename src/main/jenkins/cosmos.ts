@@ -9,7 +9,6 @@ const container = database.container('pipeline-metrics');
 
 export const getMetrics = async (fromUnixtime: bigint) => {
   const querySpec = {
-    // Get everything modified in the last hour
     query: `SELECT * from c where c._ts > ${fromUnixtime}`,
   };
   const { resources: items } = await container.items.query(querySpec).fetchAll();
