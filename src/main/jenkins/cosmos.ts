@@ -13,5 +13,6 @@ export const getMetrics = async (fromUnixtime: bigint) => {
     query: `SELECT * from c where c._ts > ${fromUnixtime}`,
   };
   const { resources: items } = await container.items.query(querySpec).fetchAll();
-  return items;
+  // TODO: find an api that gives us a raw json string
+  return JSON.stringify(items);
 };
