@@ -1,6 +1,38 @@
 import { config } from '../config';
 import { Axios } from 'axios';
 
+const token = Buffer.from(config.sonarToken + ':').toString('base64');
+
+const http = new Axios({
+  baseURL: 'https://sonarcloud.io/api',
+  headers: {
+    Authorization: `Basic ${token}`,
+  },
+});
+
+const metrics = [
+  'bugs',
+  'code_smells',
+  'cognitive_complexity',
+  'critical_violations',
+  'complexity',
+  'last_commit_date',
+  'duplicated_blocks',
+  'duplicated_lines',
+  'duplicated_lines_density',
+  'files',
+  'violations',
+  'lines',
+  'ncloc_language_distribution',
+  'vulnerabilities',
+  'coverage',
+  'sqale_rating',
+  'reliability_rating',
+  'security_rating',
+  'sqale_index',
+  'quality_gate_details',
+];
+
 const run = async () => {
   const projects = await getProjects();
 
@@ -44,38 +76,6 @@ const getMetric = (metric: string, value: string | undefined): string | number |
       return value ? +value : null;
   }
 };
-
-const token = Buffer.from(config.sonarToken + ':').toString('base64');
-
-const http = new Axios({
-  baseURL: 'https://sonarcloud.io/api',
-  headers: {
-    Authorization: `Basic ${token}`,
-  },
-});
-
-const metrics = [
-  'bugs',
-  'code_smells',
-  'cognitive_complexity',
-  'critical_violations',
-  'complexity',
-  'last_commit_date',
-  'duplicated_blocks',
-  'duplicated_lines',
-  'duplicated_lines_density',
-  'files',
-  'violations',
-  'lines',
-  'ncloc_language_distribution',
-  'vulnerabilities',
-  'coverage',
-  'sqale_rating',
-  'reliability_rating',
-  'security_rating',
-  'sqale_index',
-  'quality_gate_details',
-];
 
 interface Project {
   organization: string;
