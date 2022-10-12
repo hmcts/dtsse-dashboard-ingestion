@@ -6,7 +6,15 @@ export const processCosmosResults = async (json: string) => {
     `
   with builds as (
     insert into jenkins.builds
-    select * from jsonb_populate_recordset(null::jenkins.builds, $1::jsonb)
+    select
+      correlation_id,
+      product,
+      branch_name,
+      component,
+      build_number,
+      coalesce(git_url, 'https://github.com/HMCTS/' || split_part(build_url, '/', 7) || '.git'),
+      build_url
+      from jsonb_populate_recordset(null::jenkins.builds, $1::jsonb)
     on conflict do nothing
   )
   insert into jenkins.build_steps

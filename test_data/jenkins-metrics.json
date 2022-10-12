@@ -15,7 +15,7 @@
     "node_labels": "cnp-jenkins-ubuntu3036625 ubuntu",
     "build_url": "https://build.platform.hmcts.net/job/HMCTS_j_to_z/job/sscs-tribunals-case-api/job/PR-2973/8/",
     "job_url": "https://build.platform.hmcts.net/job/HMCTS_j_to_z/job/sscs-tribunals-case-api/job/PR-2973/",
-    "git_url": "https://github.com/HMCTS/sscs-tribunals-case-api.git",
+    "git_url": null,
     "current_build_number": 8,
     "current_step_name": "pact-consumer-tests",
     "current_build_result": null,
