@@ -1,5 +1,5 @@
 import { beforeAll, afterAll, describe, jest, test } from '@jest/globals';
-import { startPostgres, stopPostgres } from '../../test_support/docker_helper';
+import { startPostgres, stopPostgres } from '../../test/support/docker';
 
 jest.setTimeout(180_000);
 
