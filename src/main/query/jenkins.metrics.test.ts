@@ -30,6 +30,11 @@ describe('metrics', () => {
     const tribs = await pool.query("select * from jenkins.builds where correlation_id = 'b35f8f48-589b-48ff-8aae-98a6dcdd33b2'");
     expect(tribs.rows[0].git_url).toBe('https://github.com/HMCTS/sscs-tribunals-case-api.git');
 
+    // Should be the timestamp of our imported test data.
+    const { getUnixTimeToQueryFrom } = require('./jenkins.metrics');
+    const time = await getUnixTimeToQueryFrom(pool);
+    expect(new Date(time * 1000).getFullYear()).toBe(2022);
+
     await pool.end();
   });
 });
