@@ -1,24 +1,12 @@
 import { readdirSync } from 'fs';
-import { shutdown, store } from './db/store';
 import { create, migrate, migrateDown } from './db/migrate';
-
-const runQueryAndStore = async (file: string) => {
-  const results = await require(__dirname + '/query/' + file).default();
-  const queryName = file.replace('.ts', '');
-
-  await store(queryName, results);
-};
+import { runFiles } from './executor';
 
 const run = async () => {
-  await migrate();
-
   const queryName = process.argv[2] && process.argv[2] + '.ts';
-  const queries = readdirSync(__dirname + '/query')
-    .filter(file => file.endsWith('.ts') && (!queryName || file.endsWith(queryName)))
-    .map(file => runQueryAndStore(file));
+  const files = readdirSync(__dirname + '/query').filter(file => file.endsWith('.ts') && (!queryName || file.endsWith(queryName)));
 
-  await Promise.all(queries);
-  await shutdown();
+  await runFiles(files);
 };
 
 if (process.argv[2] === 'create') {
