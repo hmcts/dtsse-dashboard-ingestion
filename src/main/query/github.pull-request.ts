@@ -1,7 +1,7 @@
 import { getTeamName } from '../github/team';
 import { octokit } from '../github/rest';
 
-const run = async () => {
+export const run = async () => {
   const date = new Date();
   date.setHours(date.getHours() - 4);
 
@@ -90,5 +90,3 @@ interface Result {
     name: string;
   }[];
 }
-
-export default run;

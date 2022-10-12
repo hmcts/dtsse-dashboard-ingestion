@@ -33,7 +33,7 @@ const metrics = [
   'quality_gate_details',
 ];
 
-const run = async () => {
+export const run = async () => {
   const projects = await getProjects();
 
   return Promise.all(projects.map(getMetrics));
@@ -84,5 +84,3 @@ interface Project {
 }
 
 type Row = Record<string, number | Date | string | null>;
-
-export default run;

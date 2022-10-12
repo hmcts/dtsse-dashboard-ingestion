@@ -2,7 +2,7 @@ import { shutdown, store } from './db/store';
 import { migrate } from './db/migrate';
 
 const runQueryAndStore = async (file: string) => {
-  const results = await require(__dirname + '/query/' + file).default();
+  const results = await require(__dirname + '/query/' + file).run();
   const queryName = file.replace('.ts', '');
 
   if (results.length > 0) {

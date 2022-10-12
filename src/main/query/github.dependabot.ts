@@ -51,7 +51,7 @@ const gql = `
 }
 `;
 
-const run = async () => {
+export const run = async () => {
   const results: Result[] = await query(gql);
   const uniqueResults = results.reduce((acc: Record<string, Result>, repo: Result) => {
     acc[repo.url] = repo;
@@ -82,5 +82,3 @@ interface Result {
   dependabotv2main: { abbreviatedOid: string } | null;
   renovatemain: { abbreviatedOid: string } | null;
 }
-
-export default run;

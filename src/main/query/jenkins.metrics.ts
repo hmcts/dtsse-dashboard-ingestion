@@ -1,7 +1,12 @@
 import { getMetrics } from '../jenkins/cosmos';
 import { pool } from '../db/store';
 
-export const processCosmosResults = async (json: string) => {
+export const run = async () => {
+  const items = await getMetrics(await getUnixTimeToQueryFrom());
+  return processCosmosResults(items);
+};
+
+const processCosmosResults = async (json: string) => {
   await pool.query(
     `
   with builds as (
@@ -26,7 +31,7 @@ export const processCosmosResults = async (json: string) => {
   return [];
 };
 
-export const getUnixTimeToQueryFrom = async () => {
+const getUnixTimeToQueryFrom = async () => {
   // Base off the last import time if available, otherwise the last 12 months
   const res = await pool.query(`
   select extract(epoch from max)::bigint max from (
@@ -38,10 +43,3 @@ export const getUnixTimeToQueryFrom = async () => {
 
   return res.rows[0].max;
 };
-
-export const run = async () => {
-  const items = await getMetrics(await getUnixTimeToQueryFrom());
-  return processCosmosResults(items);
-};
-
-export default run;

@@ -4,7 +4,8 @@ import { runFiles } from './executor';
 
 const run = async () => {
   const queryName = process.argv[2] && process.argv[2] + '.ts';
-  const files = readdirSync(__dirname + '/query').filter(file => file.endsWith('.ts') && (!queryName || file.endsWith(queryName)));
+  const isQueryFile = (f: string) => !f.endsWith('test.ts') && f.endsWith('.ts') && (!queryName || f.endsWith(queryName));
+  const files = readdirSync(__dirname + '/query').filter(isQueryFile);
 
   await runFiles(files);
 };

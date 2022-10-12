@@ -11,17 +11,7 @@ const jira = new JiraApi({
   bearer: config.jiraToken,
 });
 
-const getIssues = async (startAt = 0): Promise<JiraApi.IssueObject[]> => {
-  const results = await jira.searchJira(`updated >= -1h`, { startAt });
-
-  if (results.startAt + results.maxResults < results.total) {
-    return [...results.issues, ...(await getIssues(startAt + results.maxResults))];
-  } else {
-    return results.issues;
-  }
-};
-
-const run = async () => {
+export const run = async () => {
   const issues = await getIssues();
   const uniqueIssues = issues.reduce((acc, issue) => {
     acc[issue.key] = issue;
@@ -44,4 +34,12 @@ const run = async () => {
   }));
 };
 
-export default run;
+const getIssues = async (startAt = 0): Promise<JiraApi.IssueObject[]> => {
+  const results = await jira.searchJira(`updated >= -1h`, { startAt });
+
+  if (results.startAt + results.maxResults < results.total) {
+    return [...results.issues, ...(await getIssues(startAt + results.maxResults))];
+  } else {
+    return results.issues;
+  }
+};

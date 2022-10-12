@@ -10,7 +10,7 @@ const jira = new JiraApi({
   bearer: config.jiraToken,
 });
 
-const run = async () => {
+export const run = async () => {
   const projects = await jira.listProjects();
 
   return projects.flat().map(project => ({
@@ -18,5 +18,3 @@ const run = async () => {
     name: project.name,
   }));
 };
-
-export default run;
