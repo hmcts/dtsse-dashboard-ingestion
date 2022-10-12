@@ -1,6 +1,6 @@
+import { runFiles } from './executor';
 import { readdirSync } from 'fs';
 import { create, migrate, migrateDown } from './db/migrate';
-import { runFiles } from './executor';
 
 const run = async () => {
   const queryName = process.argv[2] && process.argv[2] + '.ts';
