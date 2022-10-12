@@ -21,6 +21,7 @@ export const config = {
   appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets']?.['dtsse']?.['AppInsightsConnectionString'],
   jiraToken: process.env.JIRA_TOKEN || vault['secrets']?.['dtsse']?.['jira-token'],
   githubToken: process.env.GITHUB_TOKEN || vault['secrets']?.['dtsse']?.['github-token'],
+  sonarToken: process.env.SONAR_TOKEN || vault['secrets']?.['dtsse']?.['sonar-token'],
   cosmosKey: process.env.COSMOS_KEY || vault['secrets']?.['dtsse']?.['cosmos-key'],
   dbUrl: encodedDbUrl,
 };
