@@ -14,7 +14,7 @@
     "test": "npx if-env CI=true && exit 0 || yarn test:unit",
     "test:unit": "jest",
     "test:integration": "jest -c jest.integration.config.js",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage && jest -c jest.integration.config.js --coverage",
     "test:a11y": "exit 0",
     "cichecks": "yarn lint && yarn test && yarn test:integration",
     "prepare": "husky install",
