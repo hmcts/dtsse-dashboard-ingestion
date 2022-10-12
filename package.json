@@ -13,10 +13,9 @@
     "build": "exit 0",
     "test": "npx if-env CI=true && exit 0 || yarn test:unit",
     "test:unit": "jest",
-    "test:integration": "jest -c jest.integration.config.js",
-    "test:coverage": "jest --coverage && jest -c jest.integration.config.js --coverage",
+    "test:coverage": "jest --coverage",
     "test:a11y": "exit 0",
-    "cichecks": "yarn lint && yarn test && yarn test:integration",
+    "cichecks": "yarn lint && yarn test",
     "prepare": "husky install",
     "migration:create": "ts-node -r dotenv/config -r tsconfig-paths/register src/main/run.ts create --",
     "migration:down": "yarn start:dev down"
