@@ -1,10 +1,10 @@
 import { afterAll, beforeAll, describe, expect, jest, test } from '@jest/globals';
 import { Pool } from 'pg';
-import { startPostgres, stopPostgres } from '../../test_support/docker_helper';
+import { startPostgres, stopPostgres } from '../../test/support/docker';
 import * as fs from 'fs';
 
 jest.setTimeout(180_000);
-jest.mock('../jenkins/cosmos', () => ({ getMetrics: () => fs.readFileSync('test_data/jenkins-metrics.json', 'utf-8') }));
+jest.mock('../jenkins/cosmos', () => ({ getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8') }));
 
 describe('metrics', () => {
   beforeAll(startPostgres);
