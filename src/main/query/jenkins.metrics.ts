@@ -3,7 +3,7 @@ import { getMetrics } from '../jenkins/cosmos';
 import { pool } from '../db/store';
 
 export const run = async () => {
-  const items = await getMetrics(await getUnixTimeToQueryFrom());
+  const items = await getMetrics(await getUnixTimeToQueryFrom(pool));
   return processCosmosResults(items);
 };
 
@@ -44,10 +44,3 @@ export const getUnixTimeToQueryFrom = async (pool: Pool) => {
 
   return res.rows[0].max;
 };
-
-export const run = async () => {
-  const items = await getMetrics(await getUnixTimeToQueryFrom(pool));
-  return processCosmosResults(items);
-};
-
-export default run;
