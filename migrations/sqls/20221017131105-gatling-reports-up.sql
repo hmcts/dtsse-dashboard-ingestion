@@ -7,6 +7,7 @@ create table gatling.runs(
   timestamp timestamp not null
 );
 
+-- A 'transaction' represents a type of request, eg. an endpoint URL
 create table gatling.transactions(
   run_id uuid not null references gatling.runs(run_id),
   name varchar not null,
