@@ -22,5 +22,4 @@ create table gatling.transactions(
   ko_standard_deviation integer not null,
 
   unique(run_id, name)
-
 );
