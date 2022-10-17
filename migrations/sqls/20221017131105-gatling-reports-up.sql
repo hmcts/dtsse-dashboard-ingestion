@@ -1,14 +1,14 @@
 create schema gatling;
 
 create table gatling.runs(
-  id uuid primary key,
+  run_id uuid primary key,
   project varchar not null,
   branch_name varchar not null,
   timestamp timestamp not null
 );
 
 create table gatling.transactions(
-  run_id uuid not null references gatling.runs(id),
+  run_id uuid not null references gatling.runs(run_id),
   name varchar not null,
   ok_number_of_requests integer not null,
   ko_number_of_requests integer not null,
