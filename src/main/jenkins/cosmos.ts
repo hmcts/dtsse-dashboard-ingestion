@@ -10,7 +10,11 @@ const perfReports = database.container('performance-metrics');
 
 export const getMetrics = async (fromUnixtime: bigint) => {
   const querySpec = {
-    query: `SELECT * from c where c._ts > ${fromUnixtime}`,
+    query: `SELECT * from c
+              where
+                c._ts > ${fromUnixtime}
+                and is_defined(c['stats.json'])
+    `,
   };
   const { resources: items } = await pipelineMetrics.items.query(querySpec).fetchAll();
   // TODO: find an api that gives us a raw json string
