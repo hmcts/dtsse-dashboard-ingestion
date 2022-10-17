@@ -2,6 +2,7 @@ create schema gatling;
 
 create table gatling.runs(
   id uuid primary key,
+  project varchar not null,
   branch_name varchar not null,
   timestamp timestamp not null
 );

@@ -14,6 +14,7 @@ with runs as (
    insert into gatling.runs
        select
          (j->>'id')::uuid,
+         split_part(j->>'job_name', '/', 2),
          j->'branch_name',
          (j->>'stage_timestamp')::timestamp as timestamp
        from jsonb_array_elements($1::jsonb) j

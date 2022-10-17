@@ -17,8 +17,9 @@ describe('gatling', () => {
     await runFiles(['gatling']);
 
     const pool = new Pool({ connectionString: config.dbUrl });
-    const runs = await pool.query('select count(*) from gatling.runs');
-    expect(runs.rows[0].count).toBe('1');
+    const runs = await pool.query('select * from gatling.runs');
+    expect(runs.rowCount).toBe(1);
+    expect(runs.rows[0].project).toBe('sscs-performance-tests');
 
     const sum = await pool.query('select sum(ok_number_of_requests) from gatling.transactions');
     expect(sum.rows[0].sum).toBe('1350');
