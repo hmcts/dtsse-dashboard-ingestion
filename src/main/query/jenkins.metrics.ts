@@ -19,7 +19,8 @@ const processCosmosResults = async (json: string) => {
       component,
       build_number,
       coalesce(git_url, 'https://github.com/HMCTS/' || split_part(build_url, '/', 7) || '.git'),
-      build_url
+      build_url,
+      git_commit
       from jsonb_populate_recordset(null::jenkins.builds, $1::jsonb)
     on conflict do nothing
   )

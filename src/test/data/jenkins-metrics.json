@@ -16,6 +16,7 @@
     "build_url": "https://build.platform.hmcts.net/job/HMCTS_j_to_z/job/sscs-tribunals-case-api/job/PR-2973/8/",
     "job_url": "https://build.platform.hmcts.net/job/HMCTS_j_to_z/job/sscs-tribunals-case-api/job/PR-2973/",
     "git_url": null,
+    "git_commit": "b35f8f48589b48ff8aae98a6dcdd33b2",
     "current_build_number": 8,
     "current_step_name": "pact-consumer-tests",
     "current_build_result": null,
