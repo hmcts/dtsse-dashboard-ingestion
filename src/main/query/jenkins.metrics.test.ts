@@ -7,17 +7,22 @@ jest.setTimeout(180_000);
 jest.mock('../jenkins/cosmos', () => ({ getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8') }));
 
 describe('metrics', () => {
+  let pool: Pool;
   beforeAll(async () => {
     await startPostgres();
     const { runFiles } = require('../executor');
-
     await runFiles(['jenkins.metrics']);
+
+    const { config } = require('../config');
+    pool = new Pool({ connectionString: config.dbUrl });
   });
-  afterAll(stopPostgres);
+
+  afterAll(async () => {
+    await stopPostgres();
+    await pool.end();
+  });
 
   test('metrics', async () => {
-    const { config } = require('../config');
-    const pool = new Pool({ connectionString: config.dbUrl });
     const builds = await pool.query('select count(*) from jenkins.builds');
     // Eight unique builds in our test data
     expect(builds.rows[0].count).toBe('8');
@@ -35,16 +40,10 @@ describe('metrics', () => {
     const { getUnixTimeToQueryFrom } = require('./jenkins.metrics');
     const time = await getUnixTimeToQueryFrom(pool);
     expect(new Date(time * 1000).getFullYear()).toBe(2022);
-
-    await pool.end();
   });
 
   test('build summaries', async () => {
-    const { config } = require('../config');
-    const pool = new Pool({ connectionString: config.dbUrl });
     const summaries = await pool.query('select * from jenkins.build_summaries');
     expect(summaries.rowCount).toBe(1);
-
-    await pool.end();
   });
 });
