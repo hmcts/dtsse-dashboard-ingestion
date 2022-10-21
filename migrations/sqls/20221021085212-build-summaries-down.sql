@@ -1,1 +1,1 @@
-/* Replace with your SQL commands */
+drop view jenkins.build_summaries;

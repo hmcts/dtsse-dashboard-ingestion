@@ -43,11 +43,18 @@ describe('metrics', () => {
   });
 
   test('build summaries', async () => {
-    const summaries = await pool.query('select * from jenkins.build_summaries');
-    expect(summaries.rowCount).toBe(1);
-    //     116726ad-dd77-455e-b33e-5802a9503b59 -- failure
-    //     615f9446-12da-42cd-a474-1408df28fd09 -- failure
-    //     202d7317-976e-440a-9510-885beb17e426 -- aborted
-    //     cc5c9e84-5773-49f6-a65d-1be006ba4c1c -- success
+    const summaries = await pool.query('select * from jenkins.build_summaries order by correlation_id');
+    // We have four finished builds that should show up in the summary
+    // In progress builds should not appear
+    expect(summaries.rowCount).toBe(4);
+    expect(summaries.rows[0].result).toBe('FAILURE');
+    expect(summaries.rows[1].result).toBe('ABORTED');
+    expect(summaries.rows[2].result).toBe('FAILURE');
+    expect(summaries.rows[3].result).toBe('SUCCESS');
+
+    //         116726ad-dd77-455e-b33e-5802a9503b59 -- failure
+    //         202d7317-976e-440a-9510-885beb17e426 -- aborted
+    //         615f9446-12da-42cd-a474-1408df28fd09 -- failure
+    //         cc5c9e84-5773-49f6-a65d-1be006ba4c1c -- success
   });
 });
