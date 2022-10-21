@@ -92,7 +92,7 @@
   dependencies:
     tslib "^2.2.0"
 
-"@azure/cosmos@^3.17.1":
+"@azure/cosmos@3.17.1":
   version "3.17.1"
   resolved "https://registry.yarnpkg.com/@azure/cosmos/-/cosmos-3.17.1.tgz#10a654f59720681adad670b49c1f3a3ccf3e13d4"
   integrity sha512-3pgPwNwAiTgiH/OgcntDLzrANy+roaaDFYoLOhC4bxoDC94nPCjpLYRRwueIpisZAdopPVrxQloNs9fEjVlL0A==
@@ -1092,7 +1092,7 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jira-client@^7.1.4":
+"@types/jira-client@7.1.4":
   version "7.1.4"
   resolved "https://registry.yarnpkg.com/@types/jira-client/-/jira-client-7.1.4.tgz#052eb67e7932aa75c9cc6cd9fbfd83c8b71c8f6e"
   integrity sha512-ICnrqjMWK2hvwvlpCMma+9vdxulgC1M+ppnO2kpLbkhfITEv6BrA3+eaVPiBknln5jTdIv1dVwiDPV/e1H2Aug==
@@ -1575,7 +1575,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@^1.1.2:
+axios@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.1.2.tgz#8b6f6c540abf44ab98d9904e8daf55351ca4a331"
   integrity sha512-bznQyETwElsXl2RK7HLLwb5GPpOLlycxHCtrpDR/4RqqBzjARaOTo3jz4IgtntWUYee7Ne4S8UHd92VCuzPaWA==
@@ -3607,7 +3607,7 @@ jest@29.2.1:
     import-local "^3.0.2"
     jest-cli "^29.2.1"
 
-jira-client@^8.1.0:
+jira-client@8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/jira-client/-/jira-client-8.1.0.tgz#32352e204e64dedabfda753510f58ae38ec47745"
   integrity sha512-lAQ0K0biclztrNG18SVWi0oBuSQtjJj1SnygrOA9B9x2T4nPp4Y89ESfQFfAacT8y+sIneEjs/mTeyl6lHybfQ==
@@ -4983,7 +4983,7 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-testcontainers@^8.15.0:
+testcontainers@8.15.0:
   version "8.15.0"
   resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-8.15.0.tgz#e03c5b2ad91299ed8f607fcb8f9cf6836d3ae1b9"
   integrity sha512-doTJjLZvHOPfmyE45Arb5FKAGBEAIucZBGhtgMV0ySjVX85My9WIUmcqnHp/PUmxfXpYWkvAIvHTGPGhPtlGKQ==
