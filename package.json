@@ -24,7 +24,7 @@
     "@azure/cosmos": "3.17.1",
     "@hmcts/properties-volume": "0.0.14",
     "@octokit/graphql": "5.0.4",
-    "@octokit/rest": "19.0.4",
+    "@octokit/rest": "19.0.5",
     "@types/jira-client": "7.1.4",
     "@types/node": "18.7.18",
     "@types/pg": "8.6.5",
