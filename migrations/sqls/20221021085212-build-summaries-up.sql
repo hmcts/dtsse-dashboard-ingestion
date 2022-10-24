@@ -12,8 +12,14 @@ create materialized view jenkins.terminal_build_steps as
         -- Otherwise we take the last step
         else extract(epoch from stage_timestamp)::integer
      end desc,
-     -- Tie breaker for unsuccessful steps
-     stage_timestamp asc;
+     -- Tie breaker for unsuccessful steps so we get the first one that went wrong
+     stage_timestamp asc,
+     -- Tie breaker for steps with the same timestamp which happens at the end of a build;
+     -- ensures we get Pipeline Succeeded as the last step in this case.
+     case current_step_name
+        when 'Pipeline Succeeded' then 1
+        else 2
+     end asc;
 
 
 create index terminal_steps_time_result on jenkins.terminal_build_steps (stage_timestamp, current_build_current_result);
