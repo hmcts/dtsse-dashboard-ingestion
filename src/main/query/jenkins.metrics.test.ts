@@ -36,6 +36,9 @@ describe('metrics', () => {
     const tribs = await pool.query("select * from jenkins.builds where correlation_id = 'b35f8f48-589b-48ff-8aae-98a6dcdd33b2'");
     expect(tribs.rows[0].git_url).toBe('https://github.com/HMCTS/sscs-tribunals-case-api.git');
 
+    const rowsWithHash = await pool.query('select * from jenkins.builds where git_commit IS NOT NULL');
+    expect(rowsWithHash.rows[0].git_commit).toBe('b35f8f48589b48ff8aae98a6dcdd33b2');
+
     // Should be the timestamp of our imported test data.
     const { getUnixTimeToQueryFrom } = require('./jenkins.metrics');
     const time = await getUnixTimeToQueryFrom(pool);
