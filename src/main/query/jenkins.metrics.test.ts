@@ -53,10 +53,5 @@ describe('metrics', () => {
     expect(summaries.rows[3].result).toBe('SUCCESS');
     expect(summaries.rows[3].final_step_name).toBe('Pipeline Succeeded');
     expect(summaries.rows[3].correlation_id).toBe('cc5c9e84-5773-49f6-a65d-1be006ba4c1c');
-
-    //         116726ad-dd77-455e-b33e-5802a9503b59 -- failure
-    //         202d7317-976e-440a-9510-885beb17e426 -- aborted
-    //         615f9446-12da-42cd-a474-1408df28fd09 -- failure
-    //         cc5c9e84-5773-49f6-a65d-1be006ba4c1c -- success
   });
 });
