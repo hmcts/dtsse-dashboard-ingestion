@@ -29,7 +29,7 @@ describe('metrics', () => {
 
     const steps = await pool.query('select count(*) from jenkins.build_steps');
     // All 23 unique build steps should be there
-    expect(steps.rows[0].count).toBe('23');
+    expect(steps.rows[0].count).toBe('26');
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
@@ -51,6 +51,8 @@ describe('metrics', () => {
     expect(summaries.rows[1].result).toBe('ABORTED');
     expect(summaries.rows[2].result).toBe('FAILURE');
     expect(summaries.rows[3].result).toBe('SUCCESS');
+    expect(summaries.rows[3].final_step_name).toBe('Pipeline Succeeded');
+    expect(summaries.rows[3].correlation_id).toBe('cc5c9e84-5773-49f6-a65d-1be006ba4c1c');
 
     //         116726ad-dd77-455e-b33e-5802a9503b59 -- failure
     //         202d7317-976e-440a-9510-885beb17e426 -- aborted
