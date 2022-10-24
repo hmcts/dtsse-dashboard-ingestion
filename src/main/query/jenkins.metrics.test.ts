@@ -2,9 +2,11 @@ import { afterAll, beforeAll, describe, expect, jest, test } from '@jest/globals
 import { Pool } from 'pg';
 import { startPostgres, stopPostgres } from '../../test/support/docker';
 import * as fs from 'fs';
+import { silenceMigrations } from '../../test/support/migrate';
 
 jest.setTimeout(180_000);
 jest.mock('../jenkins/cosmos', () => ({ getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8') }));
+jest.mock('../db/migrate', () => silenceMigrations(() => jest.requireActual('../db/migrate')));
 
 describe('metrics', () => {
   beforeAll(startPostgres);
