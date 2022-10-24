@@ -24,11 +24,11 @@ describe('metrics', () => {
 
   test('metrics', async () => {
     const builds = await pool.query('select count(*) from jenkins.builds');
-    // Eight unique builds in our test data
+    // Total unique builds in our test data
     expect(builds.rows[0].count).toBe('9');
 
     const steps = await pool.query('select count(*) from jenkins.build_steps');
-    // All 23 unique build steps should be there
+    // All build steps should be there
     expect(steps.rows[0].count).toBe('26');
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
