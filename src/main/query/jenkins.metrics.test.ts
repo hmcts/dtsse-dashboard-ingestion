@@ -27,11 +27,11 @@ describe('metrics', () => {
   test('metrics', async () => {
     const builds = await pool.query('select count(*) from jenkins.builds');
     // Total unique builds in our test data
-    expect(builds.rows[0].count).toBe('9');
+    expect(builds.rows[0].count).toBe('10');
 
     const steps = await pool.query('select count(*) from jenkins.build_steps');
     // All build steps should be there
-    expect(steps.rows[0].count).toBe('26');
+    expect(steps.rows[0].count).toBe('29');
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
@@ -55,12 +55,20 @@ describe('metrics', () => {
     const summaries = await pool.query('select * from jenkins.build_summaries order by correlation_id');
     // We have four finished builds that should show up in the summary
     // In progress builds should not appear
-    expect(summaries.rowCount).toBe(4);
-    expect(summaries.rows[0].result).toBe('FAILURE');
-    expect(summaries.rows[1].result).toBe('ABORTED');
-    expect(summaries.rows[2].result).toBe('FAILURE');
-    expect(summaries.rows[3].result).toBe('SUCCESS');
-    expect(summaries.rows[3].final_step_name).toBe('Pipeline Succeeded');
-    expect(summaries.rows[3].correlation_id).toBe('cc5c9e84-5773-49f6-a65d-1be006ba4c1c');
+    expect(summaries.rowCount).toBe(5);
+
+    const map = new Map(
+      summaries.rows.map(r => {
+        return [r.correlation_id, r];
+      })
+    );
+
+    expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').result).toBe('FAILURE');
+    expect(map.get('202d7317-976e-440a-9510-885beb17e426').result).toBe('ABORTED');
+    expect(map.get('116726ad-dd77-455e-b33e-5802a9503b59').result).toBe('FAILURE');
+    expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').result).toBe('SUCCESS');
+    expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').final_step_name).toBe('Pipeline Succeeded');
+    expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').result).toBe('FAILURE');
+    expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').final_step_name).toBe('functionalTest:preview');
   });
 });
