@@ -21,8 +21,13 @@ const processCosmosResults = async (json: string) => {
       coalesce(git_url, 'https://github.com/HMCTS/' || split_part(build_url, '/', 7) || '.git'),
       build_url,
       git_commit,
-      build_url like '%Nightly%' is_nightly
-    from jsonb_populate_recordset(null::jenkins.builds, $1::jsonb)
+      build_url like '%Nightly%' is_nightly,
+      t.id
+    from
+      jsonb_populate_recordset(null::jenkins.builds, $1::jsonb) r
+      left join team_with_alias t on
+                  t.alias = split_part(split_part(r.git_url, '/', 5), '-', 1)
+                  or t.alias = r.product
     on conflict do nothing
   )
   insert into jenkins.build_steps
