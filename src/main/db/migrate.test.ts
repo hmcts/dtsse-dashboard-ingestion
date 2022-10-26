@@ -14,8 +14,5 @@ describe('migrations', () => {
     const { migrate, migrateDown } = require('./migrate');
 
     await migrate();
-    await migrateDown();
-    // Test that down works properly by rerunning the migrations.
-    await migrate();
   });
 });
