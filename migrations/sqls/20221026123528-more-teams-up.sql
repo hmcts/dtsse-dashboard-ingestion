@@ -12,6 +12,8 @@ alter table team_alias add constraint fk_aliases foreign key (id) references tea
 delete from team_alias where id = alias;
 
 INSERT INTO public.team VALUES ('mi', 'Management Information') ON CONFLICT DO NOTHING;
+INSERT INTO public.team VALUES ('fprl', 'Family Private Law') ON CONFLICT DO NOTHING;
+
 INSERT INTO public.team_alias VALUES ('bsp', 'bulk-scan') ON CONFLICT DO NOTHING;
 INSERT INTO public.team_alias VALUES ('platform', 'camunda') ON CONFLICT DO NOTHING;
 INSERT INTO public.team_alias VALUES ('ccd', 'cpo') ON CONFLICT DO NOTHING;
