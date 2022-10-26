@@ -29,9 +29,8 @@ create view team_with_alias as
     join team using(id);
 
 CREATE TABLE team_jira_project (
-  team_id varchar NOT NULL references team(id) on delete cascade,
-  jira_project_id varchar NOT NULL references jira.project(id) on delete cascade,
-  PRIMARY KEY (team_id)
+  team_id varchar primary key references team(id) on delete cascade,
+  jira_project_id varchar NOT NULL references jira.project(id) on delete cascade
 );
 
 INSERT INTO jira.project VALUES ('TIF', 'CFT Tech Improvement Focus Areas') ON CONFLICT DO NOTHING;
