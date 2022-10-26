@@ -1,0 +1,1 @@
+ALTER TABLE jira.issue ALTER COLUMN resolved_at DROP DEFAULT;

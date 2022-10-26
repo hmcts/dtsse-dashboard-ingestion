@@ -31,11 +31,12 @@ export const run = async () => {
     assignee: issue.fields.assignee?.name,
     created_at: issue.fields.created,
     updated_at: issue.fields.updated,
+    resolved_at: issue.fields.resolutiondate,
   }));
 };
 
 const getIssues = async (startAt = 0): Promise<JiraApi.IssueObject[]> => {
-  const results = await jira.searchJira(`updated >= -1h`, { startAt });
+  const results = await jira.searchJira(`updated >= -30m`, { startAt });
 
   if (results.startAt + results.maxResults < results.total) {
     return [...results.issues, ...(await getIssues(startAt + results.maxResults))];
