@@ -3,7 +3,7 @@ import { octokit } from '../github/rest';
 
 export const run = async () => {
   const date = new Date();
-  date.setHours(date.getHours() - 4);
+  date.setHours(date.getHours() - 1);
 
   const results = (await octokit.paginate(octokit.rest.issues.list, {
     filter: 'all',
