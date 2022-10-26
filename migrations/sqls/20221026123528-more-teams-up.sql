@@ -16,6 +16,8 @@ INSERT INTO public.team_alias VALUES ('bsp', 'bulk-scan') ON CONFLICT DO NOTHING
 INSERT INTO public.team_alias VALUES ('platform', 'camunda') ON CONFLICT DO NOTHING;
 INSERT INTO public.team_alias VALUES ('ccd', 'cpo') ON CONFLICT DO NOTHING;
 INSERT INTO public.team_alias VALUES ('em', 'dm') ON CONFLICT DO NOTHING;
+INSERT INTO public.team_alias VALUES ('rpx', 'xui') ON CONFLICT DO NOTHING;
+INSERT INTO public.team_alias VALUES ('ccd', 'ts') ON CONFLICT DO NOTHING;
 
 delete from team_alias where id = 'iac';
 delete from team where id = 'iac';
