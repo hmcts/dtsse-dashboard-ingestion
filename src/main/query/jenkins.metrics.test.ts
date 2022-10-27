@@ -64,12 +64,16 @@ describe('metrics', () => {
     );
 
     expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').result).toBe('FAILURE');
+    expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').final_step_name).toBe('functionalTest:preview');
+    // 2021-10-11T09:15:53Z -> 2021-10-11T09:18:03Z
+    expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').duration_seconds).toBe(130);
+
     expect(map.get('202d7317-976e-440a-9510-885beb17e426').result).toBe('ABORTED');
     expect(map.get('116726ad-dd77-455e-b33e-5802a9503b59').result).toBe('FAILURE');
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').result).toBe('SUCCESS');
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').final_step_name).toBe('Pipeline Succeeded');
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').team_id).toBe('ccd');
-    expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').result).toBe('FAILURE');
-    expect(map.get('3974ee85-aebd-4487-b2b9-3f75d309e2f8').final_step_name).toBe('functionalTest:preview');
+    // 2022-10-07T15:00:10Z -> 2022-10-07T15:05:57Z
+    expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').duration_seconds).toBe(347);
   });
 });
