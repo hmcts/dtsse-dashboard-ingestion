@@ -3611,10 +3611,10 @@ jest@29.2.2:
     import-local "^3.0.2"
     jest-cli "^29.2.2"
 
-jira-client@8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/jira-client/-/jira-client-8.2.0.tgz#e23a37495872b1ce8bf6023c24fb118faf8cf90f"
-  integrity sha512-04/oNCo7odn+VCuXvuUYQl2ACt9hpnnRG2xnvnVG9Dq3+HGj5saZZQvhqQbATH0AK44C5RCrCLA7yvUaBeaHKg==
+jira-client@8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/jira-client/-/jira-client-8.2.1.tgz#b5571da7bbb1211d5c9ca7aebb63250e22a2a46e"
+  integrity sha512-gDDDifhWShi9HJeEpKAXQ/gmrHGlLy07OwzcC1SWsKiTYEQXAXlliW20Gu1g7j/cPQIoM8Lc9lZj2fMyBWEZiQ==
   dependencies:
     "@babel/runtime" "^7.6.0"
     postman-request "^2.88.1-postman.30"
