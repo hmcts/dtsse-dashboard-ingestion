@@ -1,5 +1,6 @@
 import { config } from '../config';
 import { Axios } from 'axios';
+import { getTeamName } from '../sonar/team';
 
 const token = Buffer.from(config.sonarToken + ':').toString('base64');
 
@@ -40,28 +41,40 @@ export const run = async () => {
 };
 
 const getProjects = async (page = 1, pageSize = 100): Promise<Project[]> => {
-  const response = await http.get(`/components/search?organization=hmcts&p=${page}&ps=${pageSize}`);
+  const response = await http.get(`/projects/search?organization=hmcts&p=${page}&ps=${pageSize}`);
   const projects = JSON.parse(response.data);
+  const filteredProjects = projects.components.filter(analysedRecently);
 
   if (projects.paging.total > page * pageSize) {
-    return projects.components.concat(await getProjects(page + 1, pageSize));
+    return filteredProjects.concat(await getProjects(page + 1, pageSize));
   } else {
-    return projects.components;
+    return filteredProjects;
   }
+};
+
+const analysedRecently = (project: Project): boolean => {
+  const lastAnalysis = new Date(project.lastAnalysisDate);
+  const now = new Date();
+  const diff = now.getTime() - lastAnalysis.getTime();
+  const days = Math.ceil(diff / (1000 * 3600 * 24));
+
+  return !isNaN(days) && days <= 90;
 };
 
 const getMetrics = async (project: Project): Promise<Row> => {
   const response = await http.get(`measures/component?component=${project.key}&metricKeys=${metrics.join(',')}`);
   const data = JSON.parse(response.data);
-  const row: Row = { id: project.key };
+  const row: Row = {
+    id: project.key,
+    last_analysis_date: new Date(project.lastAnalysisDate),
+    team: getTeamName(project.key),
+  };
 
-  return metrics.reduce(
-    (row, metric) => ({
-      ...row,
-      [metric]: getMetric(metric, data.component.measures.find((m: any) => m.metric === metric)?.value),
-    }),
-    row
-  );
+  for (const metric of metrics) {
+    row[metric] = getMetric(metric, data.component.measures.find((m: any) => m.metric === metric)?.value);
+  }
+
+  return row;
 };
 
 const getMetric = (metric: string, value: string | undefined): string | number | Date | null => {
@@ -81,6 +94,7 @@ interface Project {
   organization: string;
   key: string;
   name: string;
+  lastAnalysisDate: string;
 }
 
 type Row = Record<string, number | Date | string | null>;
