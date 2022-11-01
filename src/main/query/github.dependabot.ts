@@ -29,6 +29,11 @@ const gql = `
                             abbreviatedOid
                         }
                     }
+                    renovateroot: object(expression: "master:renovate.json") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
                     dependabotv1main: object(expression: "main:.dependabot/config.yml") {
                         ... on Blob {
                             abbreviatedOid
@@ -40,6 +45,11 @@ const gql = `
                         }
                     }
                     renovatemain: object(expression: "main:.github/renovate.json") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    renovatemainroot: object(expression: "main:renovate.json") {
                         ... on Blob {
                             abbreviatedOid
                         }
@@ -64,11 +74,20 @@ export const run = async () => {
     team: getTeamName(result.name),
     dependabotv1: !!result.dependabotv1,
     dependabotv2: !!result.dependabotv2,
-    renovate: !!result.renovate,
+    renovate: !!(result.renovate || result.renovateroot),
     dependabotv1main: !!result.dependabotv1main,
     dependabotv2main: !!result.dependabotv2main,
-    renovatemain: !!result.renovatemain,
-    enabled: !!(result.dependabotv1 || result.dependabotv2 || result.renovate || result.dependabotv1main || result.dependabotv2main || result.renovatemain),
+    renovatemain: !!(result.renovatemain || result.renovatemainroot),
+    enabled: !!(
+      result.dependabotv1 ||
+      result.dependabotv2 ||
+      result.renovate ||
+      result.renovateroot ||
+      result.dependabotv1main ||
+      result.dependabotv2main ||
+      result.renovatemain ||
+      result.renovatemainroot
+    ),
   }));
 };
 
@@ -78,7 +97,9 @@ interface Result {
   dependabotv1: { abbreviatedOid: string } | null;
   dependabotv2: { abbreviatedOid: string } | null;
   renovate: { abbreviatedOid: string } | null;
+  renovateroot: { abbreviatedOid: string } | null;
   dependabotv1main: { abbreviatedOid: string } | null;
   dependabotv2main: { abbreviatedOid: string } | null;
   renovatemain: { abbreviatedOid: string } | null;
+  renovatemainroot: { abbreviatedOid: string } | null;
 }
