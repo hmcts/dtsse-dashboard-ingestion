@@ -36,7 +36,17 @@ const processCosmosResults = async (json: string) => {
     [json]
   );
 
-  await pool.query('refresh materialized view jenkins.terminal_build_steps_materialized');
+  const client = await pool.connect();
+  try {
+    await client.query(`
+      begin;
+      truncate table jenkins.terminal_build_steps_materialized;
+      insert into jenkins.terminal_build_steps_materialized select * from jenkins.terminal_build_steps_with_duration;
+      commit;
+      `);
+  } finally {
+    client.release();
+  }
 
   return [];
 };
