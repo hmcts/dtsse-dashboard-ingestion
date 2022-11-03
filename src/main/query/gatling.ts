@@ -20,7 +20,7 @@ with runs as (
        from jsonb_array_elements($1::jsonb) j
    on conflict do nothing
 )
-insert into gatling.transactions
+insert into gatling.transactions_raw
   select
     (el->>'id')::uuid as id,
     stat.value->>'name' as name,
@@ -37,7 +37,19 @@ insert into gatling.transactions
     (stat.value->'stats'->'meanResponseTime'->'ko')::integer as ko_mean_response_time,
 
     (stat.value->'stats'->'standardDeviation'->'ok')::integer as ok_standard_deviation,
-    (stat.value->'stats'->'standardDeviation'->'ko')::integer as ko_standard_deviation
+    (stat.value->'stats'->'standardDeviation'->'ko')::integer as ko_standard_deviation,
+
+    (stat.value->'stats'->'percentiles1'->'ok')::integer as ok_percentiles_1,
+    (stat.value->'stats'->'percentiles1'->'ko')::integer as ko_percentiles_1,
+
+    (stat.value->'stats'->'percentiles2'->'ok')::integer as ok_percentiles_2,
+    (stat.value->'stats'->'percentiles2'->'ko')::integer as ko_percentiles_2,
+
+    (stat.value->'stats'->'percentiles3'->'ok')::integer as ok_percentiles_3,
+    (stat.value->'stats'->'percentiles3'->'ko')::integer as ko_percentiles_3,
+
+    (stat.value->'stats'->'percentiles4'->'ok')::integer as ok_percentiles_4,
+    (stat.value->'stats'->'percentiles4'->'ko')::integer as ko_percentiles_4
   from
     jsonb_array_elements($1::jsonb) el,
     jsonb_each(el->'stats.json'->'contents') stat
