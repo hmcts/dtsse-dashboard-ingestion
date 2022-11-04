@@ -13,7 +13,7 @@ describe('metrics', () => {
   beforeAll(async () => {
     await startPostgres();
     const { runFiles } = require('../executor');
-    await runFiles(['jenkins.metrics']);
+    await runFiles(['jenkins.metrics'], []);
 
     const { config } = require('../config');
     pool = new Pool({ connectionString: config.dbUrl });

@@ -1,5 +1,6 @@
 import JiraApi from 'jira-client';
 import { config } from '../config';
+import { store } from '../db/store';
 
 // Initialize
 const jira = new JiraApi({
@@ -18,7 +19,7 @@ export const run = async () => {
     return acc;
   }, {} as Record<string, JiraApi.IssueObject>);
 
-  return Object.values(uniqueIssues).map(issue => ({
+  const rows = Object.values(uniqueIssues).map(issue => ({
     id: issue.key,
     project_id: issue.fields.project.key,
     title: issue.fields.summary,
@@ -33,6 +34,8 @@ export const run = async () => {
     updated_at: issue.fields.updated,
     resolved_at: issue.fields.resolutiondate,
   }));
+
+  await store('jira.issue', rows);
 };
 
 const getIssues = async (startAt = 0): Promise<JiraApi.IssueObject[]> => {

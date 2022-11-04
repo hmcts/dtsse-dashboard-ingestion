@@ -16,7 +16,7 @@ describe('gatling', () => {
     const { runFiles } = require('../executor');
     const { config } = require('../config');
 
-    await runFiles(['gatling']);
+    await runFiles(['gatling'], []);
 
     const pool = new Pool({ connectionString: config.dbUrl });
     const runs = await pool.query('select * from gatling.runs');

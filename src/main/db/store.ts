@@ -10,6 +10,10 @@ pool.on('error', (err: Error) => {
 });
 
 export const store = async (name: string, values: InsertRow[]) => {
+  if (values.length === 0) {
+    return;
+  }
+
   const client = await pool.connect();
   const tableName = name.replaceAll('-', '_');
   const rows = values.map(values => Object.values(values));
@@ -33,4 +37,4 @@ export const shutdown = async () => {
   await pool.end();
 };
 
-export type InsertRow = Record<string, string | number | boolean | null | Date>;
+export type InsertRow = Record<string, string | number | boolean | null | Date | undefined>;

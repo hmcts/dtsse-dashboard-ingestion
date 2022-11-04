@@ -1,5 +1,6 @@
 import JiraApi from 'jira-client';
 import { config } from '../config';
+import { store } from '../db/store';
 
 const jira = new JiraApi({
   protocol: 'https',
@@ -13,8 +14,10 @@ const jira = new JiraApi({
 export const run = async () => {
   const projects = await jira.listProjects();
 
-  return projects.flat().map(project => ({
+  const rows = projects.flat().map(project => ({
     id: project.key,
     name: project.name,
   }));
+
+  await store('jira.project', rows);
 };

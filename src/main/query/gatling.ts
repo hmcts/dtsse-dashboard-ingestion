@@ -4,7 +4,8 @@ import { pool } from '../db/store';
 
 export const run = async () => {
   const items = await getGatlingReports(await getUnixTimeToQueryFrom(pool));
-  return processCosmosResults(items);
+
+  await processCosmosResults(items);
 };
 
 const processCosmosResults = async (json: string) => {

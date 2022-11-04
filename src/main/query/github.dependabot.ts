@@ -1,5 +1,6 @@
 import { query } from '../github/graphql';
 import { getTeamName } from '../github/team';
+import { store } from '../db/store';
 
 const gql = `
 {
@@ -68,7 +69,7 @@ export const run = async () => {
     return acc;
   }, {});
 
-  return Object.values(uniqueResults).map(result => ({
+  const rows = Object.values(uniqueResults).map(result => ({
     id: result.url,
     repository: result.name,
     team: getTeamName(result.name),
@@ -89,6 +90,8 @@ export const run = async () => {
       result.renovatemainroot
     ),
   }));
+
+  await store('github.dependabot', rows);
 };
 
 interface Result {

@@ -47,8 +47,6 @@ const processCosmosResults = async (json: string) => {
   } finally {
     client.release();
   }
-
-  return [];
 };
 
 export const getUnixTimeToQueryFrom = async (pool: Pool) => {

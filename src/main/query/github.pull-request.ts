@@ -1,5 +1,6 @@
 import { getTeamName } from '../github/team';
 import { octokit } from '../github/rest';
+import { store } from '../db/store';
 
 export const run = async () => {
   const date = new Date();
@@ -21,7 +22,9 @@ export const run = async () => {
     .filter(issue => issue.repository.owner.login === 'hmcts' && !issue.repository.archived && issue.pull_request?.url)
     .map(issue => addPrData(issue));
 
-  return Promise.all(prs);
+  const rows = await Promise.all(prs);
+
+  await store('github.pull-request', rows);
 };
 
 const addPrData = async (issue: Result) => {

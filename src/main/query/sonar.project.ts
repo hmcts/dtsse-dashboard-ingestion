@@ -1,6 +1,7 @@
 import { config } from '../config';
 import { Axios } from 'axios';
 import { getTeamName } from '../sonar/team';
+import { store } from '../db/store';
 
 const token = Buffer.from(config.sonarToken + ':').toString('base64');
 
@@ -36,8 +37,9 @@ const metrics = [
 
 export const run = async () => {
   const projects = await getProjects();
+  const rows = await Promise.all(projects.map(getMetrics));
 
-  return Promise.all(projects.map(getMetrics));
+  await store('sonar.project', rows);
 };
 
 const getProjects = async (page = 1, pageSize = 100): Promise<Project[]> => {

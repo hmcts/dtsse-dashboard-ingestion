@@ -1,26 +1,21 @@
-import { shutdown, store } from './db/store';
+import { shutdown } from './db/store';
 import { migrate } from './db/migrate';
 
-const runQueryAndStore = async (file: string) => {
-  console.log(`Running query: ${file}`);
+const runFile = async (file: string) => {
+  console.log(`Running: ${file}`);
   const startTime = Date.now();
-  const results = await require(__dirname + '/query/' + file).run();
-  const queryName = file.replace('.ts', '');
 
-  if (results.length > 0) {
-    await store(queryName, results);
-  }
+  await require(__dirname + '/query/' + file).run();
 
-  console.log(`Finished query: ${file} in ${Date.now() - startTime}ms`);
+  console.log(`Finished: ${file} in ${Date.now() - startTime}ms`);
 };
 
-export const runFiles = async (files: Array<string>) => {
+export const runFiles = async (queries: string[], views: string[]) => {
   await migrate();
 
-  const queries = files.map(file => runQueryAndStore(file));
-
   try {
-    await Promise.all(queries);
+    await Promise.all(queries.map(runFile));
+    await Promise.all(views.map(runFile));
   } finally {
     await shutdown();
   }
