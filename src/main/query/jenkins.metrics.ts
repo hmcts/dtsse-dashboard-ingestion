@@ -36,6 +36,31 @@ const processCosmosResults = async (json: string) => {
     [json]
   );
 
+  // precompute the time taken by each build step
+  await pool.query(`
+    update jenkins.build_steps steps
+    set duration = s.duration
+    from (
+      select
+        id,
+        correlation_id,
+        coalesce(
+          stage_timestamp - lag(stage_timestamp) OVER (
+            PARTITION BY correlation_id ORDER BY
+              stage_timestamp ASC,
+              -- Fail and success can be emitted in the same timestamp as the stage they relate to.
+              -- This ensures we correctly attribute the time taken by the build stage and gives the 'success/fail' metric a 0 duration.
+              case
+                when current_step_name in ('Pipeline Failed', 'Pipeline Succeeded') then 1 else 2
+              end desc
+          ),
+          interval '0 seconds'
+        ) AS duration
+      from jenkins.build_steps
+    ) s
+    where steps.id = s.id and steps.duration is null
+   `);
+
   const client = await pool.connect();
   try {
     await client.query(`
