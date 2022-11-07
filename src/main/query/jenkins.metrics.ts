@@ -32,6 +32,7 @@ const processCosmosResults = async (json: string) => {
   )
   insert into jenkins.build_steps
   select * from jsonb_populate_recordset(null::jenkins.build_steps, $1::jsonb)
+  order by stage_timestamp asc
   on conflict do nothing`,
     [json]
   );
