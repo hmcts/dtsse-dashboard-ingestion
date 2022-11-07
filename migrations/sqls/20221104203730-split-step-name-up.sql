@@ -64,3 +64,11 @@ create or replace view jenkins.terminal_build_steps as
         when 'Pipeline Failed' then 3
         else 2
      end asc;
+
+-- Separate our implementation details from our public api.
+create schema jenkins_impl;
+alter table jenkins.builds set schema jenkins_impl;
+alter table jenkins.step_names set schema jenkins_impl;
+alter table jenkins.steps set schema jenkins_impl;
+alter table jenkins.terminal_build_steps_materialized set schema jenkins_impl;
+alter view jenkins.terminal_build_steps set schema jenkins_impl;

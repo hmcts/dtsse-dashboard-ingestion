@@ -11,7 +11,7 @@ const processCosmosResults = async (json: string) => {
   await pool.query(
     `
   with builds as (
-    insert into jenkins.builds
+    insert into jenkins_impl.builds
     select
       correlation_id,
       product,
@@ -24,7 +24,7 @@ const processCosmosResults = async (json: string) => {
       build_url like '%Nightly%' is_nightly,
       t.id
     from
-      jsonb_populate_recordset(null::jenkins.builds, $1::jsonb) r
+      jsonb_populate_recordset(null::jenkins_impl.builds, $1::jsonb) r
       left join team_with_alias t on
                   t.alias = split_part(split_part(r.git_url, '/', 5), '-', 1)
                   or t.alias = r.product
@@ -41,12 +41,12 @@ const processCosmosResults = async (json: string) => {
   ),
   -- insert any new step names
   new_names as (
-   insert into jenkins.step_names(name)
+   insert into jenkins_impl.step_names(name)
    select distinct(current_step_name) from steps
    on conflict do nothing
    returning *
   )
-  insert into jenkins.steps
+  insert into jenkins_impl.steps
   select
     id,
     correlation_id,
@@ -56,7 +56,7 @@ const processCosmosResults = async (json: string) => {
     names.step_id
   from steps join (
     -- Cannot see the names we just inserted into jenkins.step_names so must union here.
-    select * from jenkins.step_names union select * from new_names
+    select * from jenkins_impl.step_names union select * from new_names
   ) names on current_step_name = name
   order by stage_timestamp asc
   on conflict do nothing`,
@@ -65,7 +65,7 @@ const processCosmosResults = async (json: string) => {
 
   // precompute the time taken by each build step
   await pool.query(`
-    update jenkins.steps steps
+    update jenkins_impl.steps steps
     set duration = s.duration
     from (
       select
@@ -92,12 +92,12 @@ const processCosmosResults = async (json: string) => {
   try {
     await client.query(`
       begin;
-      truncate table jenkins.terminal_build_steps_materialized;
-      insert into jenkins.terminal_build_steps_materialized
+      truncate table jenkins_impl.terminal_build_steps_materialized;
+      insert into jenkins_impl.terminal_build_steps_materialized
         select
          steps.*,
          steps.stage_timestamp - first_step.stage_timestamp as duration
-        from jenkins.terminal_build_steps steps
+        from jenkins_impl.terminal_build_steps steps
         join (
           select min(stage_timestamp) as stage_timestamp, correlation_id from jenkins.build_steps group by correlation_id
         ) first_step using (correlation_id);

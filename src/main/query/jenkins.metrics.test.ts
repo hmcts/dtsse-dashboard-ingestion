@@ -25,7 +25,7 @@ describe('metrics', () => {
   });
 
   test('metrics', async () => {
-    const builds = await pool.query('select count(*) from jenkins.builds');
+    const builds = await pool.query('select count(*) from jenkins_impl.builds');
     // Total unique builds in our test data
     expect(builds.rows[0].count).toBe('10');
 
@@ -35,14 +35,14 @@ describe('metrics', () => {
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
-    const tribs = await pool.query("select * from jenkins.builds where correlation_id = 'b35f8f48-589b-48ff-8aae-98a6dcdd33b2'");
+    const tribs = await pool.query("select * from jenkins_impl.builds where correlation_id = 'b35f8f48-589b-48ff-8aae-98a6dcdd33b2'");
     expect(tribs.rows[0].git_url).toBe('https://github.com/HMCTS/sscs-tribunals-case-api.git');
     expect(tribs.rows[0].is_nightly).toBe(false);
 
-    const nightly = await pool.query("select * from jenkins.builds where correlation_id = 'cc5c9e84-5773-49f6-a65d-1be006ba4c1c'");
+    const nightly = await pool.query("select * from jenkins_impl.builds where correlation_id = 'cc5c9e84-5773-49f6-a65d-1be006ba4c1c'");
     expect(nightly.rows[0].is_nightly).toBe(true);
 
-    const rowsWithHash = await pool.query('select * from jenkins.builds where git_commit IS NOT NULL');
+    const rowsWithHash = await pool.query('select * from jenkins_impl.builds where git_commit IS NOT NULL');
     expect(rowsWithHash.rows[0].git_commit).toBe('b35f8f48589b48ff8aae98a6dcdd33b2');
 
     // Should be the timestamp of our imported test data.
