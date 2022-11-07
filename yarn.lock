@@ -1085,10 +1085,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jira-client@7.1.4":
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/@types/jira-client/-/jira-client-7.1.4.tgz#052eb67e7932aa75c9cc6cd9fbfd83c8b71c8f6e"
-  integrity sha512-ICnrqjMWK2hvwvlpCMma+9vdxulgC1M+ppnO2kpLbkhfITEv6BrA3+eaVPiBknln5jTdIv1dVwiDPV/e1H2Aug==
+"@types/jira-client@7.1.5":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@types/jira-client/-/jira-client-7.1.5.tgz#7dc36a74ca2da115cc08f3b16e11393787a42888"
+  integrity sha512-cp1YhJnanCsBWrLHHExLXofveD88+w6/L+QRh6/59qNM6ayQ4/veGZ5hXJScMFFP+UnyAjw8xcS0DwK6vi7T0w==
   dependencies:
     "@types/node" "*"
     "@types/request" "*"

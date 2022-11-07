@@ -25,7 +25,7 @@
     "@hmcts/properties-volume": "0.0.14",
     "@octokit/graphql": "5.0.4",
     "@octokit/rest": "19.0.5",
-    "@types/jira-client": "7.1.4",
+    "@types/jira-client": "7.1.5",
     "@types/node": "18.11.9",
     "@types/pg": "8.6.5",
     "@types/pg-format": "1.0.2",
