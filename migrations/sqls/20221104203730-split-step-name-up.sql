@@ -35,40 +35,9 @@ create index build_step_time on jenkins.steps (stage_timestamp);
 cluster jenkins.steps using build_step_time;
 analyze;
 
--- Recreate dropped view.
--- The last build steps of interest for each build.
--- Either the first failing step for unsuccessful builds or the last step for successful builds.
-create or replace view jenkins.terminal_build_steps as
-  select distinct on(correlation_id)
-    id,
-    correlation_id,
-    current_step_name,
-    current_build_current_result,
-    stage_timestamp
-  from jenkins.build_steps
-  order by
-     correlation_id,
-     case
-        -- Looking for the first unsuccessful step if present
-        when current_build_current_result != 'SUCCESS' then 2147483647 -- Postgres integer max value
-        -- Otherwise we take the last step
-        else extract(epoch from stage_timestamp)::integer
-     end desc,
-     -- Tie breaker for unsuccessful steps so we get the first one that went wrong
-     stage_timestamp asc,
-     -- Tie breaker for steps with the same timestamp
-     case current_step_name
-        -- Ensure we get Pipeline Succeeded as the last step of successful builds
-        when 'Pipeline Succeeded' then 1
-        -- Ensure we do not get 'pipeline failed' as the last step of failed builds, but the step that actually went wrong.
-        when 'Pipeline Failed' then 3
-        else 2
-     end asc;
-
 -- Separate our implementation details from our public api.
 create schema jenkins_impl;
 alter table jenkins.builds set schema jenkins_impl;
 alter table jenkins.step_names set schema jenkins_impl;
 alter table jenkins.steps set schema jenkins_impl;
 alter table jenkins.terminal_build_steps_materialized set schema jenkins_impl;
-alter view jenkins.terminal_build_steps set schema jenkins_impl;
