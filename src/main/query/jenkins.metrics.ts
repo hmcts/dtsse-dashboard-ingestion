@@ -98,32 +98,31 @@ const processCosmosResults = async (json: string) => {
          steps.*,
          steps.stage_timestamp - first_step.stage_timestamp as duration
         from (
-
-      select distinct on(correlation_id)
-        id,
-        correlation_id,
-        current_step_name,
-        current_build_current_result,
-        stage_timestamp
-      from jenkins.build_steps
-      order by
-         correlation_id,
-         case
-            -- Looking for the first unsuccessful step if present
-            when current_build_current_result != 'SUCCESS' then 2147483647 -- Postgres integer max value
-            -- Otherwise we take the last step
-            else extract(epoch from stage_timestamp)::integer
-         end desc,
-         -- Tie breaker for unsuccessful steps so we get the first one that went wrong
-         stage_timestamp asc,
-         -- Tie breaker for steps with the same timestamp
-         case current_step_name
-            -- Ensure we get Pipeline Succeeded as the last step of successful builds
-            when 'Pipeline Succeeded' then 1
-            -- Ensure we do not get 'pipeline failed' as the last step of failed builds, but the step that actually went wrong.
-            when 'Pipeline Failed' then 3
-            else 2
-         end asc
+          select distinct on(correlation_id)
+            id,
+            correlation_id,
+            current_step_name,
+            current_build_current_result,
+            stage_timestamp
+          from jenkins.build_steps
+          order by
+             correlation_id,
+             case
+                -- Looking for the first unsuccessful step if present
+                when current_build_current_result != 'SUCCESS' then 2147483647 -- Postgres integer max value
+                -- Otherwise we take the last step
+                else extract(epoch from stage_timestamp)::integer
+             end desc,
+             -- Tie breaker for unsuccessful steps so we get the first one that went wrong
+             stage_timestamp asc,
+             -- Tie breaker for steps with the same timestamp
+             case current_step_name
+                -- Ensure we get Pipeline Succeeded as the last step of successful builds
+                when 'Pipeline Succeeded' then 1
+                -- Ensure we do not get 'pipeline failed' as the last step of failed builds, but the step that actually went wrong.
+                when 'Pipeline Failed' then 3
+                else 2
+             end asc
         ) steps
         join (
           select min(stage_timestamp) as stage_timestamp, correlation_id from jenkins.build_steps group by correlation_id
