@@ -1,6 +1,5 @@
 import JiraApi from 'jira-client';
 import { config } from '../config';
-import { pool } from '../db/store';
 
 // Initialize
 const jira = new JiraApi({
