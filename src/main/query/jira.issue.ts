@@ -21,9 +21,9 @@ export const run = async () => {
   return Object.values(uniqueIssues).map(issue => ({
     id: issue.key,
     project_id: issue.fields.project.key,
-    title: issue.fields.summary,
+    title: issue.fields.project.key !== 'SNI' ? issue.fields.summary : '',
     type: issue.fields.issuetype.name,
-    description: issue.fields.description,
+    description: issue.fields.project.key !== 'SNI' ? issue.fields.description : '',
     labels: issue.fields.labels.map((l: string) => l.toLowerCase()).join(','),
     status: issue.fields.status.name,
     status_category: issue.fields.status.statusCategory.name,
@@ -32,6 +32,9 @@ export const run = async () => {
     created_at: issue.fields.created,
     updated_at: issue.fields.updated,
     resolved_at: issue.fields.resolutiondate,
+    priority: issue.fields.priority.name,
+    incident_programme: issue.fields.customfield_21610?.value,
+    incident_project: issue.fields.customfield_21610?.child?.value,
   }));
 };
 
