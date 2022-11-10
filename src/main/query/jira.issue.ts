@@ -1,5 +1,6 @@
 import JiraApi from 'jira-client';
 import { config } from '../config';
+import { pool } from '../db/store';
 
 // Initialize
 const jira = new JiraApi({
@@ -32,6 +33,9 @@ export const run = async () => {
     created_at: issue.fields.created,
     updated_at: issue.fields.updated,
     resolved_at: issue.fields.resolutiondate,
+    priority: issue.fields.priority.name,
+    incident_programme: issue.fields.customfield_21610?.value,
+    incident_project: issue.fields.customfield_21610?.child?.value,
   }));
 };
 

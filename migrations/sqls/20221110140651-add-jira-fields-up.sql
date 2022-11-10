@@ -1,0 +1,4 @@
+
+ALTER TABLE jira.issue ADD COLUMN "priority" VARCHAR(255) DEFAULT NULL;
+ALTER TABLE jira.issue ADD COLUMN "incident_programme" VARCHAR(255) DEFAULT NULL;
+ALTER TABLE jira.issue ADD COLUMN "incident_project" VARCHAR(255) DEFAULT NULL;
