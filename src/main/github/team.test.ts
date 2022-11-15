@@ -9,4 +9,8 @@ describe('getTeamName', () => {
   test('lower cases the name', () => {
     expect(getTeamName('TeAM-repo')).toBe('team');
   });
+
+  test('handles special cases', () => {
+    expect(getTeamName('template-expressjs')).toBe('platform');
+  });
 });
