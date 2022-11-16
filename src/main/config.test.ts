@@ -4,7 +4,7 @@ process.env.DATABASE_URL = 'postgresql://notreal@notreal:%1*!1$aa)0AaAA<A@not-re
 
 describe('config', () => {
   const addTo = jest.fn(
-    conf =>
+    (conf: any) =>
       (conf.secrets = {
         dtsse: {
           AppInsightsConnectionString: 'test2',
