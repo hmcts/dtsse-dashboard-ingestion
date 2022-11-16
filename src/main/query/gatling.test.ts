@@ -23,12 +23,21 @@ describe('gatling', () => {
     expect(runs.rowCount).toBe(1);
     expect(runs.rows[0].project).toBe('sscs-performance-tests');
 
-    const sum = await pool.query('select sum(ok_number_of_requests) from gatling.transactions');
+    const sum = await pool.query('select sum(pass) from gatling.transactions');
     expect(sum.rows[0].sum).toBe('1350');
 
     const sscs = (await pool.query("select * from gatling.transactions where name = 'TX05_SSCS_Entry'")).rows[0];
-    expect(sscs.ok_number_of_requests).toBe(10);
-    expect(sscs.ok_max_response_time).toBe(105);
+    expect(sscs.pass).toBe(10);
+    expect(sscs.fail).toBe(0);
+    expect(sscs.min).toBe(31);
+    expect(sscs.max).toBe(105);
+    expect(sscs.mean).toBe(72);
+    expect(sscs.stddev).toBe(22);
+    expect(sscs.percentile50).toBe(78);
+    expect(sscs.percentile75).toBe(86);
+    expect(sscs.percentile95).toBe(99);
+    expect(sscs.percentile99).toBe(104);
+
     await pool.end();
   });
 });
