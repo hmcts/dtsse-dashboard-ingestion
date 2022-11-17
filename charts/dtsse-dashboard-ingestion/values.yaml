@@ -11,6 +11,8 @@ job:
         - jira-token
         - db-url
         - cosmos-key
+        - snow-username
+        - snow-password
   schedule: "0/10 * * * *"
 global:
   jobKind: CronJob
