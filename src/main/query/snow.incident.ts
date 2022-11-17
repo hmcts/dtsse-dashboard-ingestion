@@ -1,10 +1,5 @@
-import { promisify } from 'util';
 import axios, { AxiosRequestConfig } from 'axios';
 import { config } from '../config';
-
-const sn = require('servicenow-rest-api');
-const ServiceNow = new sn('mojcppprod', process.env.SNOW_USERNAME, process.env.SNOW_PASSWORD);
-const getIncidents = promisify(ServiceNow.getTableData.bind(ServiceNow));
 
 const teams: Record<string, string | null> = {
   'DTS IT ServiceDesk': null,
