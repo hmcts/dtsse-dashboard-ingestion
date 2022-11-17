@@ -1,16 +1,12 @@
 import { promisify } from 'util';
+import axios, { AxiosRequestConfig } from 'axios';
+import { config } from '../config';
 
 const sn = require('servicenow-rest-api');
 const ServiceNow = new sn('mojcppprod', process.env.SNOW_USERNAME, process.env.SNOW_PASSWORD);
 const getIncidents = promisify(ServiceNow.getTableData.bind(ServiceNow));
-const fields = ['number', 'short_description', 'assignment_group', 'assigned_to', 'impact', 'urgency', 'priority'];
-const filters = [
-  // 'priority=1',
-  // 'state=In Progress',
-  'opened_atONLast 6 months@javascript:gs.beginningOfLast6Months()@javascript:gs.endOfLast6Months()', //Opened on last 6 months
-];
 
-const teams = {
+const teams: Record<string, string | null> = {
   'DTS IT ServiceDesk': null,
   'CP AMS': null,
   'DTS Platform Operations Team': 'platform',
@@ -39,8 +35,8 @@ const teams = {
   'ServiceNow Support': null,
   'CFT RPA Delivery Team': 'em',
   'Damages PET Team': 'civil',
-  SopraSteria: '',
-  'CE-File 1st Line Business Support': '',
+  SopraSteria: null,
+  'CE-File 1st Line Business Support': null,
   'DTS Family Public Law Support Team': 'fprl',
   'CFT MOJ Legacy apps support team': null,
   'Atlassian Support': null,
@@ -75,9 +71,47 @@ const teams = {
   'CFT ET PET Team': 'et',
 };
 
-export const run = async () => {
-  const results = await getIncidents(fields, filters, 'incident');
-  console.log(results);
+const fields = [
+  'number',
+  'short_description',
+  'assignment_group',
+  'assigned_to',
+  'impact',
+  'urgency',
+  'priority',
+  'sys_created_on',
+  'sys_updated_on',
+  'state',
+].join(',');
+// const filters = ['GOTOsys_updated_on>=javascript:gs.beginningOfLast30Days()'].join('^');
+const filters = ['sys_updated_onONToday@javascript:gs.beginningOfToday()@javascript:gs.endOfToday()'].join('^');
+const url = `https://mojcppprod.service-now.com/api/now/v2/table/incident?sysparm_display_value=true&sysparm_fields=${fields}&sysparm_query=${filters}`;
 
-  return [];
+export const run = async () => {
+  const response = await axios({
+    url: url,
+    method: 'get',
+    auth: {
+      username: config.snowUsername,
+      password: config.snowPassword,
+    },
+  } as AxiosRequestConfig);
+
+  return response.data.result.map((incident: any) => ({
+    id: incident.number,
+    title: incident.short_description,
+    team: teams[incident.assignment_group.display_value],
+    assignee: incident.assigned_to.display_value,
+    impact: incident.impact,
+    urgency: incident.urgency,
+    priority: incident.priority,
+    state: incident.state,
+    created: formatDate(incident.sys_created_on),
+    updated: formatDate(incident.sys_updated_on),
+  }));
+};
+
+const formatDate = (date: string) => {
+  const [day, month, year] = date.split(' ')[0].split('-');
+  return `${year}-${month}-${day} ${date.split(' ')[1]}`;
 };

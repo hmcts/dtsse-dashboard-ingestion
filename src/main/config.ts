@@ -23,5 +23,7 @@ export const config = {
   githubToken: process.env.GITHUB_TOKEN || vault['secrets']?.['dtsse']?.['github-token'],
   sonarToken: process.env.SONAR_TOKEN || vault['secrets']?.['dtsse']?.['sonar-token'],
   cosmosKey: process.env.COSMOS_KEY || vault['secrets']?.['dtsse']?.['cosmos-key'],
+  snowUsername: process.env.SNOW_USERNAME || vault['secrets']?.['dtsse']?.['snow-username'],
+  snowPassword: process.env.SNOW_PASSWORD || vault['secrets']?.['dtsse']?.['snow-password'],
   dbUrl: encodedDbUrl,
 };

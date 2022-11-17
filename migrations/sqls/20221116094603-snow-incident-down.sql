@@ -1,1 +1,3 @@
-/* Replace with your SQL commands */
+
+DROP TABLE IF EXISTS snow.incident;
+DROP SCHEMA IF EXISTS snow;
