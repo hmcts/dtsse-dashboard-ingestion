@@ -76,6 +76,7 @@ const fields = [
   'priority',
   'sys_created_on',
   'sys_updated_on',
+  'closed_at',
   'state',
 ].join(',');
 // const filters = ['GOTOsys_updated_on>=javascript:gs.beginningOfLast30Days()'].join('^');
@@ -103,6 +104,7 @@ export const run = async () => {
     state: incident.state,
     created: formatDate(incident.sys_created_on),
     updated: formatDate(incident.sys_updated_on),
+    closed: incident.closed_at ? formatDate(incident.closed_at) : null,
   }));
 };
 
