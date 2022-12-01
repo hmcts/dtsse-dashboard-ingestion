@@ -93,7 +93,7 @@ export const run = async () => {
     },
   } as AxiosRequestConfig);
 
-  return response.data.result.map((incident: any) => ({
+  return response.data?.result?.map((incident: any) => ({
     id: incident.number,
     title: incident.short_description,
     team: teams[incident.assignment_group.display_value],
