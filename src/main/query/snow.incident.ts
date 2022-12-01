@@ -92,7 +92,7 @@ export const run = async () => {
       password: config.snowPassword,
     },
     headers: {
-      Accept: 'application/json',
+      Accept: 'application/json; charset=utf-8',
       'Content-Type': 'application/json',
     },
   } as AxiosRequestConfig);
