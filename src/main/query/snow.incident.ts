@@ -93,6 +93,11 @@ export const run = async () => {
     },
   } as AxiosRequestConfig);
 
+  if (!response.data?.result) {
+    console.log('No incidents found');
+    console.log(response.data);
+  }
+
   return response.data?.result?.map((incident: any) => ({
     id: incident.number,
     title: incident.short_description,
