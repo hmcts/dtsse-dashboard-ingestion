@@ -94,7 +94,7 @@ export const run = async () => {
     headers: {
       Accept: 'application/json; charset=utf-8',
       'Content-Type': 'application/json',
-      'accept-encoding': 'identity',
+      'accept-encoding': 'deflate',
     },
   } as AxiosRequestConfig);
 
