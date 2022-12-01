@@ -8,6 +8,8 @@ const http = new Axios({
   baseURL: 'https://sonarcloud.io/api',
   headers: {
     Authorization: `Basic ${token}`,
+    Accept: 'application/json',
+    'Accept-Encoding': 'identity',
   },
 });
 
