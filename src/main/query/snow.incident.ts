@@ -98,19 +98,21 @@ export const run = async () => {
     console.log(response.data);
   }
 
-  return response.data?.result?.map((incident: any) => ({
-    id: incident.number,
-    title: incident.short_description,
-    team: teams[incident.assignment_group.display_value],
-    assignee: incident.assigned_to.display_value,
-    impact: incident.impact,
-    urgency: incident.urgency,
-    priority: incident.priority,
-    state: incident.state,
-    created: formatDate(incident.sys_created_on),
-    updated: formatDate(incident.sys_updated_on),
-    closed: incident.closed_at ? formatDate(incident.closed_at) : null,
-  }));
+  return (
+    response.data?.result?.map((incident: any) => ({
+      id: incident.number,
+      title: incident.short_description,
+      team: teams[incident.assignment_group.display_value],
+      assignee: incident.assigned_to.display_value,
+      impact: incident.impact,
+      urgency: incident.urgency,
+      priority: incident.priority,
+      state: incident.state,
+      created: formatDate(incident.sys_created_on),
+      updated: formatDate(incident.sys_updated_on),
+      closed: incident.closed_at ? formatDate(incident.closed_at) : null,
+    })) || []
+  );
 };
 
 const formatDate = (date: string) => {
