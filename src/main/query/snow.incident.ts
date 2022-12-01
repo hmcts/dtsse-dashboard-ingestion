@@ -91,6 +91,10 @@ export const run = async () => {
       username: config.snowUsername,
       password: config.snowPassword,
     },
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
   } as AxiosRequestConfig);
 
   if (!response.data?.result) {
