@@ -128,6 +128,8 @@ const processCosmosResults = async (json: string) => {
           select min(stage_timestamp) as stage_timestamp, correlation_id from jenkins.build_steps group by correlation_id
         ) first_step using (correlation_id);
       commit;
+      -- Reset the sequence to the next free value to avoid exhausting it, since it gets incremented even when no rows are added.
+      select setval('jenkins_impl.step_names_step_id_seq', (select max(step_id)+1 from jenkins_impl.step_names))
       `);
   } finally {
     client.release();
