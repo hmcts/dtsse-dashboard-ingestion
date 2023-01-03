@@ -27,25 +27,24 @@
     "@octokit/rest": "19.0.5",
     "@types/jira-client": "7.1.5",
     "@types/node": "18.11.18",
-    "@types/pg": "8.6.5",
+    "@types/pg": "8.6.6",
     "@types/pg-format": "1.0.2",
     "applicationinsights": "2.3.6",
-    "axios": "1.2.1",
+    "axios": "1.2.2",
     "db-migrate": "0.11.13",
     "db-migrate-pg": "1.2.2",
     "jira-client": "8.2.2",
     "pg": "8.8.0",
     "pg-format": "1.0.4",
     "ts-node": "10.9.1",
-    "tsconfig-paths": "4.1.2",
     "typescript": "4.9.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.46.0",
     "dotenv": "16.0.3",
-    "eslint": "8.29.0",
-    "eslint-config-prettier": "8.5.0",
+    "eslint": "8.31.0",
+    "eslint-config-prettier": "8.6.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jest": "27.2.0",
     "husky": "8.0.3",
@@ -58,5 +57,6 @@
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",
     "*.{js,ts,css,md,html,json}": "prettier --write"
-  }
+  },
+  "packageManager": "yarn@3.3.0"
 }
