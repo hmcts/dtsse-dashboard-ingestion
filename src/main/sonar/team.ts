@@ -5,8 +5,14 @@ export const getTeamName = (repo: string): string => {
   const firstWordWithoutNamespace = firstWord.includes(':') ? firstWord.substring(firstWord.indexOf(':') + 1) : firstWord;
   // split firstWord on - or _
   const [name] = firstWordWithoutNamespace.split(/[-_]/);
-  // hardcoded checks for BAR and SSCS
-  const teamName = repo.startsWith('BAR') ? 'bar' : repo.startsWith('SSCS') ? 'sscs' : repo.includes('civil-sdt') ? 'sdt' : name;
 
-  return teamName.toLowerCase();
+  if (repo.startsWith('BAR')) {
+    return 'bar';
+  } else if (repo.startsWith('SSCS')) {
+    return 'sscs';
+  } else if (repo.includes('civil-sdt')) {
+    return 'sdt';
+  } else {
+    return name.toLowerCase();
+  }
 };
