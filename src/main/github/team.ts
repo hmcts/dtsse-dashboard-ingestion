@@ -30,6 +30,13 @@ const specialCases: Record<string, string> = {
   'golden-path-java': 'platform',
   'golden-path-nodejs': 'platform',
   'old-employment-tribunals-shared-infrastructure': 'et',
+  'civil-performance': 'performance',
+  'civil-sdt-refresh': 'sdt',
+  'civil-enforcement-prototype': 'enforcement',
+  'civil-sdt': 'sdt',
+  'civil-sdt-refresh-3rd-party': 'sdt',
+  'civil-breathing-space-proto': 'n/a',
+  'civil-sdt-gateway': 'sdt',
 };
 
 export const getTeamName = (repository: string) => {
