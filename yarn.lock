@@ -1805,9 +1805,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"applicationinsights@npm:2.4.0":
-  version: 2.4.0
-  resolution: "applicationinsights@npm:2.4.0"
+"applicationinsights@npm:2.4.1":
+  version: 2.4.1
+  resolution: "applicationinsights@npm:2.4.1"
   dependencies:
     "@azure/core-auth": ^1.4.0
     "@azure/core-rest-pipeline": ^1.10.0
@@ -1825,7 +1825,7 @@ __metadata:
   peerDependenciesMeta:
     applicationinsights-native-metrics:
       optional: true
-  checksum: 3871b5c72ac227d372c2e9bc635811c1b7f8910b1364897a26ba836a9843812e5b7ac338807c7ac82f7e9078934e186d717faf04c322ff7f849ed16b99d2edb5
+  checksum: c238c26dd32ebba0fe5ffcbee8826e634687a206e22b86d87e2a5bcebcbef9563420a1d5b41ea4e3860eb02bc5e157888966c5f3a329c6b8bc0bf491e6d21a5f
   languageName: node
   linkType: hard
 
@@ -2980,7 +2980,7 @@ __metadata:
     "@types/pg-format": 1.0.2
     "@typescript-eslint/eslint-plugin": 5.48.2
     "@typescript-eslint/parser": 5.48.2
-    applicationinsights: 2.4.0
+    applicationinsights: 2.4.1
     axios: 1.2.2
     db-migrate: 0.11.13
     db-migrate-pg: 1.2.2
