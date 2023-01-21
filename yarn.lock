@@ -1016,7 +1016,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/graphql@npm:5.0.4, @octokit/graphql@npm:^5.0.0":
+"@octokit/graphql@npm:5.0.5":
+  version: 5.0.5
+  resolution: "@octokit/graphql@npm:5.0.5"
+  dependencies:
+    "@octokit/request": ^6.0.0
+    "@octokit/types": ^9.0.0
+    universal-user-agent: ^6.0.0
+  checksum: eb2d1a6305a3d1f55ff0ce92fb88b677f0bb789757152d58a79ef61171fb65ecf6fe18d6c27e236c0cee6a0c2600c2cb8370f5ac7184f8e9361c085aa4555bb1
+  languageName: node
+  linkType: hard
+
+"@octokit/graphql@npm:^5.0.0":
   version: 5.0.4
   resolution: "@octokit/graphql@npm:5.0.4"
   dependencies:
@@ -2988,7 +2999,7 @@ __metadata:
   dependencies:
     "@azure/cosmos": 3.17.2
     "@hmcts/properties-volume": 0.0.14
-    "@octokit/graphql": 5.0.4
+    "@octokit/graphql": 5.0.5
     "@octokit/rest": 19.0.7
     "@types/jira-client": 7.1.6
     "@types/node": 18.11.18
