@@ -8,6 +8,7 @@ describe('getTeamNAme', () => {
     ['AdoptionCcdDefinitions', 'adoption'],
     ['am-db', 'am'],
     ['BAR-WEB', 'bar'],
+    ['FPL:service', 'fpl'],
     ['Caveat', 'caveat'],
     ['com.github.hmcts:idam-testing-support-api', 'idam'],
     ['uk.gov.hmcts.reform:wa-task-configuration-template', 'wa'],

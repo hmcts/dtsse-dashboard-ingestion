@@ -10,6 +10,8 @@ export const getTeamName = (repo: string): string => {
     return 'bar';
   } else if (repo.startsWith('SSCS')) {
     return 'sscs';
+  } else if (repo.startsWith('FPL')) {
+    return 'fpl';
   } else if (repo.includes('civil-sdt')) {
     return 'sdt';
   } else {
