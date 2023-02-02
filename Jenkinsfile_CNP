@@ -11,7 +11,7 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 withPipeline(type, product, component) {
   nonServiceApp()
 
-  after('build') {
+  afterAlways('build') {
     yarnBuilder.yarn('build')
   }
 
