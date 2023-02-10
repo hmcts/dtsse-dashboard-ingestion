@@ -13,9 +13,6 @@ variable "managed_identity_object_id" {
 
 variable "env" {}
 variable "tenant_id" {}
-
-variable "ilbIp" { }
-
 variable "subscription" {}
 
 // CNP settings
