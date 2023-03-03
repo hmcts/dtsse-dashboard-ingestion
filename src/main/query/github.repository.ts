@@ -1,5 +1,6 @@
 import { getTeamName } from '../github/team';
 import { octokit } from '../github/rest';
+import { getJenkinsName } from '../github/repository';
 
 export const run = async () => {
   const results = await octokit.paginate(octokit.rest.repos.listForOrg, { org: 'hmcts' });
@@ -10,5 +11,6 @@ export const run = async () => {
     web_url: repo.html_url,
     short_name: repo.name,
     team_alias: getTeamName(repo.name),
+    jenkins_name: getJenkinsName(repo.html_url),
   }));
 };
