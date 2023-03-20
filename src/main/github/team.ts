@@ -35,6 +35,7 @@ const specialCases: Record<string, string> = {
   'civil-enforcement-prototype': 'enforcement',
   'civil-sdt': 'sdt',
   'civil-sdt-refresh-3rd-party': 'sdt',
+  'civil-sdt-commissioning': 'sdt',
   'civil-breathing-space-proto': 'n/a',
   'civil-sdt-gateway': 'sdt',
 };
