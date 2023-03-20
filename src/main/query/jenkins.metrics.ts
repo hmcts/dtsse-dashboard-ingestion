@@ -12,7 +12,7 @@ const processCosmosResults = async (json: string) => {
     `
   with builds as (
     insert into jenkins_impl.builds
-    select
+    select distinct on (correlation_id)
       correlation_id,
       product,
       branch_name,
@@ -26,8 +26,11 @@ const processCosmosResults = async (json: string) => {
     from
       jsonb_populate_recordset(null::jenkins_impl.builds, $1::jsonb) r
       left join team_with_alias t on
-                  t.alias = split_part(split_part(r.git_url, '/', 5), '-', 1)
+                  -- join against all aliases
+                  split_part(r.git_url, '/', 5) like (t.alias || '%')
                   or t.alias = r.product
+    -- Pick the most specific team alias, ie. the longest.
+    order by correlation_id, t.alias desc
     on conflict do nothing
   ),
   steps as (
