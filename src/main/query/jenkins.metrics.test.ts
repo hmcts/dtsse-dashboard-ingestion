@@ -27,11 +27,11 @@ describe('metrics', () => {
   test('metrics', async () => {
     const builds = await pool.query('select count(*) from jenkins_impl.builds');
     // Total unique builds in our test data
-    expect(builds.rows[0].count).toBe('10');
+    expect(builds.rows[0].count).toBe('12');
 
     const steps = await pool.query('select count(*) from jenkins.build_steps');
     // All build steps should be there
-    expect(steps.rows[0].count).toBe('29');
+    expect(steps.rows[0].count).toBe('31');
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
@@ -42,13 +42,13 @@ describe('metrics', () => {
     const nightly = await pool.query("select * from jenkins_impl.builds where correlation_id = 'cc5c9e84-5773-49f6-a65d-1be006ba4c1c'");
     expect(nightly.rows[0].is_nightly).toBe(true);
 
-    const rowsWithHash = await pool.query('select * from jenkins_impl.builds where git_commit IS NOT NULL');
+    const rowsWithHash = await pool.query("select * from jenkins_impl.builds where correlation_id = 'b35f8f48-589b-48ff-8aae-98a6dcdd33b2'");
     expect(rowsWithHash.rows[0].git_commit).toBe('b35f8f48589b48ff8aae98a6dcdd33b2');
 
     // Should be the timestamp of our imported test data.
     const { getUnixTimeToQueryFrom } = require('./jenkins.metrics');
     const time = await getUnixTimeToQueryFrom(pool);
-    expect(new Date(time * 1000).getFullYear()).toBe(2022);
+    expect(new Date(time * 1000).getFullYear()).toBe(2023);
 
     // Step duration should be filled in
     // 2021-12-25T22:46:14Z -> 2021-12-25T22:47:57Z
@@ -63,7 +63,7 @@ describe('metrics', () => {
     const summaries = await pool.query('select *, extract(epoch from duration) seconds from jenkins.build_summaries order by correlation_id');
     // We have four finished builds that should show up in the summary
     // In progress builds should not appear
-    expect(summaries.rowCount).toBe(5);
+    expect(summaries.rowCount).toBe(7);
 
     const map = new Map(
       summaries.rows.map(r => {
@@ -80,8 +80,12 @@ describe('metrics', () => {
     expect(map.get('116726ad-dd77-455e-b33e-5802a9503b59').result).toBe('FAILURE');
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').result).toBe('SUCCESS');
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').final_step_name).toBe('Pipeline Succeeded');
-    expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').team_id).toBe('ccd');
     // 2022-10-07T15:00:10Z -> 2022-10-07T15:05:57Z
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').seconds).toBe(347);
+
+    // Team aliases
+    expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').team_id).toBe('ccd');
+    expect(map.get('a707159f-c96e-4391-ba41-94350f6a5c93').team_id).toBe('civil');
+    expect(map.get('30102d95-aa57-480c-9f87-1693b316686c').team_id).toBe('civil-sdt');
   });
 });
