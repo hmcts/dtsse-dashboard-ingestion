@@ -15,9 +15,10 @@ export const store = async (name: string, values: InsertRow[]) => {
   const rows = values.map(values => Object.values(values));
   const keys = Object.keys(values[0]).join(', ');
   const excluded = Object.keys(values[0])
-    .map(key => `${key} = EXCLUDED.${key}`)
+    .map(key => `EXCLUDED.${key}`)
     .join(', ');
-  const sql = format(`INSERT INTO ${tableName} (${keys}) VALUES %L ON CONFLICT(id) DO UPDATE SET ${excluded}`, rows);
+
+  const sql = format(`INSERT INTO ${tableName} (${keys}) VALUES %L ON CONFLICT(id) DO UPDATE SET (${keys}) = (${excluded})`, rows);
 
   try {
     await client.query(sql, []);

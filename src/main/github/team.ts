@@ -31,13 +31,13 @@ const specialCases: Record<string, string> = {
   'golden-path-nodejs': 'platform',
   'old-employment-tribunals-shared-infrastructure': 'et',
   'civil-performance': 'performance',
-  'civil-sdt-refresh': 'sdt',
+  'civil-sdt-refresh': 'civil-sdt',
   'civil-enforcement-prototype': 'enforcement',
-  'civil-sdt': 'sdt',
-  'civil-sdt-refresh-3rd-party': 'sdt',
-  'civil-sdt-commissioning': 'sdt',
+  'civil-sdt': 'civil-sdt',
+  'civil-sdt-refresh-3rd-party': 'civil-sdt',
+  'civil-sdt-commissioning': 'civil-sdt',
   'civil-breathing-space-proto': 'n/a',
-  'civil-sdt-gateway': 'sdt',
+  'civil-sdt-gateway': 'civil-sdt',
 };
 
 export const getTeamName = (repository: string) => {
