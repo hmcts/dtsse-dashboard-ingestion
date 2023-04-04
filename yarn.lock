@@ -1434,13 +1434,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dockerode@npm:^3.3.15":
-  version: 3.3.15
-  resolution: "@types/dockerode@npm:3.3.15"
+"@types/dockerode@npm:^3.3.16":
+  version: 3.3.16
+  resolution: "@types/dockerode@npm:3.3.16"
   dependencies:
     "@types/docker-modem": "*"
     "@types/node": "*"
-  checksum: b8fa13f86c761175a5813eb41fbd1e46d0646f008e5c84738b51c1aa82ce4f3758502efe8c3c583463e7cb7dc77e2faadfff91f4e6274e844e68a0ebf9deeae5
+  checksum: ef316e330f8a1a137962d6000cac53bb25b5ba4300e38dd5842f32a6c58bec420278d61526c68865351c48c7e843c9aa45bcbca332737630a0c251e09390bf5b
   languageName: node
   linkType: hard
 
@@ -3156,7 +3156,7 @@ __metadata:
     pg: 8.10.0
     pg-format: 1.0.4
     prettier: 2.8.7
-    testcontainers: 9.3.0
+    testcontainers: 9.4.0
     ts-jest: 29.0.5
     ts-node: 10.9.1
     typescript: 5.0.3
@@ -7283,13 +7283,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:9.3.0":
-  version: 9.3.0
-  resolution: "testcontainers@npm:9.3.0"
+"testcontainers@npm:9.4.0":
+  version: 9.4.0
+  resolution: "testcontainers@npm:9.4.0"
   dependencies:
     "@balena/dockerignore": ^1.0.2
     "@types/archiver": ^5.3.2
-    "@types/dockerode": ^3.3.15
+    "@types/dockerode": ^3.3.16
     archiver: ^5.3.1
     async-lock: ^1.4.0
     byline: ^5.0.0
@@ -7301,7 +7301,7 @@ __metadata:
     properties-reader: ^2.2.0
     ssh-remote-port-forward: ^1.0.4
     tar-fs: ^2.1.1
-  checksum: cf38bd36221a27ea9b61003e02e190d9b165d7aebf91a0e21ba34a97379020d9a7cca494a7b907fd96a647068634540449a5f539693448ac9c897319f4a903d1
+  checksum: 2c14640ce54c9fdcb7fffb3cff7daf034ef3bdff8ef96cb7d2a67a7c08ad7ce7f8eb0d33d4c4d9d809ce99e7fe1b868384fecc25ec7c2331280b906841f01dda
   languageName: node
   linkType: hard
 
