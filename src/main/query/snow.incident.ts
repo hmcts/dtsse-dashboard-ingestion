@@ -116,6 +116,7 @@ export const run = async () => {
       created: formatDate(incident.sys_created_on),
       updated: formatDate(incident.sys_updated_on),
       closed: incident.closed_at ? formatDate(incident.closed_at) : null,
+      date_recorded: new Date(),
     })) || []
   );
 };

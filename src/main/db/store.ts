@@ -14,11 +14,12 @@ export const store = async (name: string, values: InsertRow[]) => {
   const tableName = name.replaceAll('-', '_');
   const rows = values.map(values => Object.values(values));
   const keys = Object.keys(values[0]).join(', ');
+  const primaryKey = keys.includes('date_recorded') ? 'id, date_recorded' : 'id';
   const excluded = Object.keys(values[0])
     .map(key => `EXCLUDED.${key}`)
     .join(', ');
 
-  const sql = format(`INSERT INTO ${tableName} (${keys}) VALUES %L ON CONFLICT(id) DO UPDATE SET (${keys}) = (${excluded})`, rows);
+  const sql = format(`INSERT INTO ${tableName} (${keys}) VALUES %L ON CONFLICT(${primaryKey}) DO UPDATE SET (${keys}) = (${excluded})`, rows);
 
   try {
     await client.query(sql, []);

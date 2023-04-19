@@ -88,6 +88,7 @@ export const run = async () => {
       result.renovatemain ||
       result.renovatemainroot
     ),
+    date_recorded: new Date(),
   }));
 };
 

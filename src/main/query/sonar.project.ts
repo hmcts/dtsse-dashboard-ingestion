@@ -68,6 +68,7 @@ const getMetrics = async (project: Project): Promise<Row> => {
   const data = JSON.parse(response.data);
   const row: Row = {
     id: project.key,
+    date_recorded: new Date(),
     last_analysis_date: new Date(project.lastAnalysisDate),
     team: getTeamName(project.key),
   };
