@@ -48,7 +48,6 @@ const addPrData = async (issue: Result) => {
     labels: issue.labels.map(label => label.name).join(','),
     jira_refs: jiraRef(issue.title + issue.body)?.join(',') || null,
     commit_hash: issue.state === 'closed' ? pull.data.merge_commit_sha : null,
-    date_recorded: new Date(),
   };
 };
 

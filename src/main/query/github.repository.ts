@@ -12,6 +12,5 @@ export const run = async () => {
     short_name: repo.name,
     team_alias: getTeamName(repo.name),
     jenkins_name: getJenkinsName(repo.html_url),
-    date_recorded: new Date(),
   }));
 };
