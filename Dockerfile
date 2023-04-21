@@ -6,12 +6,10 @@ RUN corepack enable
 USER hmcts
 
 COPY --chown=hmcts:hmcts . .
-RUN yarn install --production \
-  && yarn cache clean
+RUN yarn install
 
 # ---- Build image ----
 FROM base as build
-RUN yarn install
 
 # ---- Runtime image ----
 FROM base as runtime
