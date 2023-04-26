@@ -33,7 +33,7 @@ export const getTeamName = (repo: string): string => {
     return 'fpl';
   } else if (repo.includes('civil-sdt')) {
     return 'sdt';
-  } else if (etPetRepos.includes(repo.toLowerCase())) {
+  } else if (etPetRepos.some(etRepoName => repo.toLowerCase().includes(etRepoName))) {
     return 'et-pet';
   } else {
     return name.toLowerCase();
