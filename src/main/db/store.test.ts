@@ -30,7 +30,7 @@ describe('store', () => {
     await store('table', [{ col: 'data' }]);
 
     expect(mockedConnect).toHaveBeenCalled();
-    expect(mockedClient).toHaveBeenCalled();
+    expect(mockedClient).toHaveBeenCalledTimes(2);
     expect(mockedRelease).toHaveBeenCalled();
   });
 

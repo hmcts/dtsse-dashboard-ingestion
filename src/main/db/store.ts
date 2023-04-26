@@ -22,6 +22,7 @@ export const store = async (name: string, values: InsertRow[]) => {
 
   try {
     await client.query(sql, []);
+    await client.query(`VACUUM FULL ${tableName}`);
   } catch (err) {
     console.error(`Error executing: ${sql}`);
     console.error(err.stack);
