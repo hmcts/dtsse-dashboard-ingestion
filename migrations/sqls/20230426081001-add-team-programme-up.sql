@@ -23,5 +23,3 @@ INSERT INTO team_alias (id, alias) VALUES
   ('et-pet', 'et_full_system_gem'),
   ('et-pet', 'et_exporter_gem');
 
-DELETE FROM team_alias WHERE id = 'fprl';
-DELETE FROM team WHERE id = 'fprl';
