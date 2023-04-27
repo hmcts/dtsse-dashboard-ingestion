@@ -38,6 +38,22 @@ const specialCases: Record<string, string> = {
   'civil-sdt-commissioning': 'civil-sdt',
   'civil-breathing-space-proto': 'n/a',
   'civil-sdt-gateway': 'civil-sdt',
+  'et-full-system-servers': 'et-pet',
+  'et-fake-ccd': 'et-pet',
+  'et-data-model-test': 'et-pet',
+  'et-atos-file-transfer': 'et-pet',
+  'et-admin': 'et-pet',
+  'et-ccd-export': 'et-pet',
+  'et-ccd-client-ruby': 'et-pet',
+  'et-azure-insights': 'et-pet',
+  'et-full-system': 'et-pet',
+  'et-api': 'et-pet',
+  et1: 'et-pet',
+  et3: 'et-pet',
+  et_gds_design_system: 'et-pet',
+  et_test_helpers: 'et-pet',
+  et_full_system_gem: 'et-pet',
+  et_exporter_gem: 'et-pet',
 };
 
 export const getTeamName = (repository: string) => {

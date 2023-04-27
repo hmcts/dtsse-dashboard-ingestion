@@ -11,6 +11,7 @@ describe('getTeamNAme', () => {
     ['FPL:service', 'fpl'],
     ['Caveat', 'caveat'],
     ['com.github.hmcts:idam-testing-support-api', 'idam'],
+    ['com.github.hmcts:et-ccd-export', 'et-pet'],
     ['uk.gov.hmcts.reform:wa-task-configuration-template', 'wa'],
     ['SSCSCOR', 'sscs'],
     ['Verification:bulk-scan-processor', 'bulk'],
