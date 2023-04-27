@@ -13,5 +13,6 @@ export const run = async () => {
     team_alias: getTeamName(repo.name),
     jenkins_name: getJenkinsName(repo.html_url),
     is_archived: repo.archived,
+    language: repo.language,
   }));
 };
