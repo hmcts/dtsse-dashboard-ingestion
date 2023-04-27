@@ -1,0 +1,56 @@
+[
+    {
+        "id": "ce4170d2-ac0b-4835-bab0-c2b2ce2cedda",
+        "build": {
+            "branch_name": "master",
+            "build_display_name": "#332",
+            "build_tag": "jenkins-HMCTS_j_to_z_Nightly-lau-case-backend-master-332",
+            "git_url": "https://github.com/HMCTS/lau-case-backend.git",
+            "codebase_type": "java"
+        },
+        "report": {
+            "dependencies": [],
+            "projectInfo": {
+                "artifactID": "_Nightly_lau-case-backend_master",
+                "credits": {
+                    "CISA": "This report may contain data retrieved from the CISA Known Exploited Vulnerability Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+                    "NPM": "This report may contain data retrieved from the Github Advisory Database (via NPM Audit API): https://github.com/advisories/",
+                    "NVD": "This report contains data retrieved from the National Vulnerability Database: https://nvd.nist.gov",
+                    "OSSINDEX": "This report may contain data retrieved from the Sonatype OSS Index: https://ossindex.sonatype.org",
+                    "RETIREJS": "This report may contain data retrieved from the RetireJS community: https://retirejs.github.io/retire.js/"
+                },
+                "groupID": "uk.gov.hmcts.reform",
+                "name": "root project '_Nightly_lau-case-backend_master'",
+                "reportDate": "2023-04-18T15:33:15.019109455Z",
+                "version": "0.0.1"
+            },
+            "reportSchema": "1.1",
+            "scanInfo": {
+                "dataSource": [
+                    {
+                        "name": "NVD CVE Checked",
+                        "timestamp": "2023-04-17T15:01:58"
+                    },
+                    {
+                        "name": "NVD CVE Modified",
+                        "timestamp": "2023-04-17T14:00:01"
+                    },
+                    {
+                        "name": "VersionCheckOn",
+                        "timestamp": "2023-04-08T15:02:00"
+                    },
+                    {
+                        "name": "kev.checked",
+                        "timestamp": "1681776172"
+                    }
+                ],
+                "engineVersion": "8.2.1"
+            }
+        },
+        "_rid": "39IWAII4oFNQuA0AAAAAAA==",
+        "_self": "dbs/39IWAA==/colls/39IWAII4oFM=/docs/39IWAII4oFNQuA0AAAAAAA==/",
+        "_etag": "\"a002c5ea-0000-1100-0000-643eb83b0000\"",
+        "_attachments": "attachments/",
+        "_ts": 1681831995
+    }
+]
