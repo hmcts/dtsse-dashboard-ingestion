@@ -25,7 +25,17 @@ describe('cves', () => {
   });
 
   test('cves', async () => {
-    const cves = (await pool.query({ rowMode: 'array', text: 'select name, severity from security_impl.cves' })).rows;
-    expect(cves).toEqual([['CVE-1', 'low']]);
+    const cves = (
+      await pool.query({
+        rowMode: 'array',
+        text: 'select git_url, name, severity from security.current_cves',
+      })
+    ).rows;
+    expect(cves).toEqual([
+      ['https://github.com/HMCTS/fpl-ccd-configuration.git', 'CVE-2022-45688', 'high'],
+      ['https://github.com/HMCTS/ccd-data-store-api.git', 'CVE-2022-45688', 'medium'],
+      ['https://github.com/HMCTS/sscs-submit-your-appeal.git', 'CVE-2023-28155', 'medium'],
+      ['https://github.com/HMCTS/sscs-submit-your-appeal.git', 'CVE-2020-24025', 'medium'],
+    ]);
   });
 });
