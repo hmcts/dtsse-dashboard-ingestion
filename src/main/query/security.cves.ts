@@ -44,7 +44,8 @@ const processCosmosResults = async (json: string) => {
 ,cves as (
   insert into security.cves(name, severity)
   select distinct name, severity from details
-  where name not in (select name from security.cves)
+  where name not in (select name from security.cves) -- Avoid (eventually) wrapping around the serial id
+  on conflict do nothing
   returning *
 ), all_cves as (
   select * from cves union select * from security.cves
@@ -69,7 +70,7 @@ export const getUnixTimeToQueryFrom = async (pool: Pool) => {
   const res = await pool.query(`
     select coalesce(
       max(timestamp),
-      extract (epoch from (now() - interval '1 day'))
+      extract (epoch from (now() - interval '5 day'))
     )::bigint as max
     from security.cve_reports
   `);
