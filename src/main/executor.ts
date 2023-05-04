@@ -1,7 +1,7 @@
 import { shutdown, store } from './db/store';
 import { migrate } from './db/migrate';
 
-export const runQueryAndStore = async (file: string) => {
+const runQueryAndStore = async (file: string) => {
   console.log(`Running query: ${file}`);
   const startTime = Date.now();
   const results = await require(__dirname + '/query/' + file).run();
