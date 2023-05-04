@@ -40,7 +40,7 @@ describe('cves', () => {
     await stopPostgres();
   });
 
-  test('cves', async () => {
+  test('view of current cves affecting each app', async () => {
     const cves = (
       await pool.query({
         rowMode: 'array',

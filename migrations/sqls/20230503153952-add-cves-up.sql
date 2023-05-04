@@ -23,4 +23,5 @@ create view security.current_cves as (
   from security.cve_reports
     join security.cves c using(cve_id)
     join github.repository g using(repo_id)
+  where timestamp in (select max(timestamp) from security.cve_reports group by repo_id)
 );
