@@ -23,9 +23,9 @@ describe('cves', () => {
       await client.query(`
       insert into github.repository(id, short_name, git_url, web_url, team_alias)
         values
-            ('https://github.com/hmcts/fpl-ccd-configuration.git', '', '', '', ''),
-            ('https://github.com/hmcts/ccd-data-store-api.git', '', '', '', ''),
-            ('https://github.com/hmcts/sscs-submit-your-appeal.git', '', '', '', '')
+            ('https://github.com/hmcts/fpl-ccd-configuration', '', '', '', ''),
+            ('https://github.com/hmcts/ccd-data-store-api', '', '', '', ''),
+            ('https://github.com/hmcts/sscs-submit-your-appeal', '', '', '', '')
       `);
     } finally {
       client.release();
@@ -48,10 +48,11 @@ describe('cves', () => {
       })
     ).rows;
     expect(cves).toEqual([
-      ['https://github.com/hmcts/ccd-data-store-api.git', 'CVE-2022-8643', 'medium'],
-      ['https://github.com/hmcts/fpl-ccd-configuration.git', 'CVE-2022-45688', 'high'],
-      ['https://github.com/hmcts/sscs-submit-your-appeal.git', 'CVE-2020-24025', 'medium'],
-      ['https://github.com/hmcts/sscs-submit-your-appeal.git', 'CVE-2023-28155', 'medium'],
+      ['https://github.com/hmcts/ccd-data-store-api', '1091725', 'unknown'],
+      ['https://github.com/hmcts/ccd-data-store-api', 'CVE-2022-8643', 'medium'],
+      ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45688', 'high'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2020-24025', 'medium'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'medium'],
     ]);
   });
 });

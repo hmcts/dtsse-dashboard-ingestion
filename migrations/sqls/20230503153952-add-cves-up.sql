@@ -1,6 +1,6 @@
 create schema security;
 
-create type security.cve_severity as enum ('none', 'low', 'medium', 'high', 'critical');
+create type security.cve_severity as enum ('unknown', 'none', 'low', 'medium', 'high', 'critical');
 create table security.cves (
   cve_id serial primary key,
   severity security.cve_severity not null,

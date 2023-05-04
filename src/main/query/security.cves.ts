@@ -16,7 +16,7 @@ const processCosmosResults = async (json: string) => {
     e->>'_ts' as timestamp,
     e->'build'->>'git_url' git_url,
     vulns.name,
-    lower(vulns.severity)::security.cve_severity severity
+    lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e,
@@ -53,9 +53,11 @@ insert into security.cve_reports
   select timestamp::bigint, repo_id, cve_id
 from
   details d
-  join github.repository g on g.id = lower(d.git_url)
-  join all_cves c using (name)
-   `,
+  -- left join so these inserts will fail fast if the join fails
+  left join github.repository g on g.id = lower(replace(d.git_url, '.git', ''))
+  left join all_cves c using (name)
+on conflict do nothing
+  `,
     [json]
   );
 
@@ -65,11 +67,11 @@ from
 export const getUnixTimeToQueryFrom = async (pool: Pool) => {
   // Base off the last import time if available, otherwise the last 12 months
   const res = await pool.query(`
-    select extract(epoch from coalesce(
-      max(stage_timestamp),
-      now() - interval '12 month')
+    select coalesce(
+      max(timestamp),
+      extract (epoch from (now() - interval '1 day'))
     )::bigint as max
-    from jenkins.build_steps
+    from security.cve_reports
   `);
 
   return res.rows[0].max;
