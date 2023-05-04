@@ -18,18 +18,14 @@ describe('cves', () => {
     const { migrate } = require('../db/migrate');
     await migrate();
 
-    const client = await pool.connect();
-    try {
-      await client.query(`
-      insert into github.repository(id, short_name, git_url, web_url, team_alias)
-        values
-            ('https://github.com/hmcts/fpl-ccd-configuration', '', '', '', ''),
-            ('https://github.com/hmcts/ccd-data-store-api', '', '', '', ''),
-            ('https://github.com/hmcts/sscs-submit-your-appeal', '', '', '', '')
-      `);
-    } finally {
-      client.release();
-    }
+    // Populate the github.repositories table which we link to and is populated by another query.
+    await pool.query(`
+    insert into github.repository(id, short_name, git_url, web_url, team_alias)
+      values
+          ('https://github.com/hmcts/fpl-ccd-configuration', '', '', '', ''),
+          ('https://github.com/hmcts/ccd-data-store-api', '', '', '', ''),
+          ('https://github.com/hmcts/sscs-submit-your-appeal', '', '', '', '')
+    `);
 
     const { runFiles } = require('../executor');
     await runFiles(['security.cves']);
