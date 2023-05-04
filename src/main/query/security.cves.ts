@@ -31,7 +31,7 @@ const processCosmosResults = async (json: string) => {
         coalesce(s->'cvssv3'->>'baseSeverity', s->'cvssv2'->>'severity') severity
       from
         jsonb_array_elements(e->'report'->'dependencies') d,
-        jsonb_array_elements(d->'suppressedVulnerabilities') s
+        jsonb_array_elements(coalesce(d->'suppressedVulnerabilities', '[]'::jsonb) || coalesce(d->'vulnerabilities', '[]'::jsonb)) s
       union all
       /* Yarn audit reports */
       select
