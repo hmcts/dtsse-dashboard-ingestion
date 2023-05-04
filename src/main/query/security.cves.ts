@@ -39,7 +39,7 @@ const processCosmosResults = async (json: string) => {
         /* Yarn audit uses 'moderate' which we translate to the cvss scale */
         replace(v->>'severity', 'moderate', 'medium')
       from
-        jsonb_array_elements(e->'report'->'vulnerabilities') v,
+        jsonb_array_elements((e->'report'->'vulnerabilities') || (e->'report'->'suppressed')) v,
         jsonb_array_elements_text(v->'cves') cve
       where jsonb_typeof(v->'cves') = 'array'
     ) vulns
