@@ -2850,15 +2850,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"db-migrate-pg@npm:1.2.3":
-  version: 1.2.3
-  resolution: "db-migrate-pg@npm:1.2.3"
+"db-migrate-pg@npm:1.3.0":
+  version: 1.3.0
+  resolution: "db-migrate-pg@npm:1.3.0"
   dependencies:
     bluebird: ^3.1.1
     db-migrate-base: ^2.3.0
     pg: ^8.0.3
     semver: ^5.0.3
-  checksum: 4a05f239abe6425f7a56afb9b305336d5833ca26895abe4965c45689ffbcf4037751f6730d5490614dec24351bf2b657dc94d24763de35666580ebff8053aa27
+  checksum: 0757d438d40379961027f5de404d36b03e615371665478d47c6310a93ded9b96a382c076af0ed0f3efc3fd8dee916b9f60061c9f9a04bbc3700375a941ad4b91
   languageName: node
   linkType: hard
 
@@ -3126,7 +3126,7 @@ __metadata:
     applicationinsights: 2.6.0
     axios: 1.4.0
     db-migrate: 0.11.13
-    db-migrate-pg: 1.2.3
+    db-migrate-pg: 1.3.0
     dotenv: 16.0.3
     eslint: 8.39.0
     eslint-config-prettier: 8.8.0
