@@ -8,6 +8,9 @@ export const run = async () => {
   return [];
 };
 
+// CVE reports are stored into cosmos db by the CNP jenkins library.
+// Two different tools are used to generate the reports; yarn audit (js) and owasp dependency check (java)
+// Our cosmos query gives us these reports as an array of json objects
 const processCosmosResults = async (json: string) => {
   await pool.query(
     `
@@ -42,6 +45,7 @@ const processCosmosResults = async (json: string) => {
     ) vulns
 )
 ,cves as (
+  -- Insert any new CVEs
   insert into security.cves(name, severity)
   select distinct name, severity from details
   where name not in (select name from security.cves) -- Avoid (eventually) wrapping around the serial id
