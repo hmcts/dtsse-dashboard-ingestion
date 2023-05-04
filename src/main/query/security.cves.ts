@@ -35,12 +35,13 @@ const processCosmosResults = async (json: string) => {
       union all
       /* Yarn audit reports */
       select
-        cve,
+        coalesce(cve, v->>'url'),
         /* Yarn audit uses 'moderate' which we translate to the cvss scale */
         replace(v->>'severity', 'moderate', 'medium')
       from
-        jsonb_array_elements((e->'report'->'vulnerabilities') || (e->'report'->'suppressed')) v,
-        jsonb_array_elements_text(v->'cves') cve
+        jsonb_array_elements((e->'report'->'vulnerabilities') || (e->'report'->'suppressed')) v
+        -- Vulnerability may not have CVE identifiers but if not should have an advisory url
+        left join lateral jsonb_array_elements_text(v->'cves') cve on true
       where jsonb_typeof(v->'cves') = 'array'
     ) vulns
 )
