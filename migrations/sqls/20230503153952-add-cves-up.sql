@@ -10,7 +10,7 @@ create table security.cves (
 
 -- We track CVE reports over time, using the cosmos db timestamp.
 create table security.cve_reports(
-  timestamp bigint not null, -- From cosmosdb, seconds.
+  timestamp bigint not null, -- From cosmosdb, seconds since 1970.
   repo_id integer not null references github.repository(repo_id),
   cve_id integer not null references security.cves(cve_id),
   primary key (repo_id, timestamp, cve_id)
