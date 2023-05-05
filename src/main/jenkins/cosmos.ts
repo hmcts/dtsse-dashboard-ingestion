@@ -6,6 +6,7 @@ const client = new CosmosClient({ endpoint: 'https://pipeline-metrics.documents.
 
 const database = client.database('jenkins');
 const pipelineMetrics = database.container('pipeline-metrics');
+const cveReports = database.container('cve-reports');
 const perfReports = database.container('performance-metrics');
 
 export const getMetrics = async (fromUnixtime: bigint) => {
@@ -14,6 +15,14 @@ export const getMetrics = async (fromUnixtime: bigint) => {
   };
   const { resources: items } = await pipelineMetrics.items.query(querySpec).fetchAll();
   // TODO: find an api that gives us a raw json string
+  return JSON.stringify(items);
+};
+
+export const getCVEs = async (fromUnixtime: bigint) => {
+  const querySpec = {
+    query: `SELECT * from c where c._ts > ${fromUnixtime} and c.build.branch_name = "master"`,
+  };
+  const { resources: items } = await cveReports.items.query(querySpec).fetchAll();
   return JSON.stringify(items);
 };
 
