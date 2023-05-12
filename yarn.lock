@@ -3139,7 +3139,7 @@ __metadata:
     pg: 8.10.0
     pg-format: 1.0.4
     prettier: 2.8.8
-    testcontainers: 9.7.0
+    testcontainers: 9.8.0
     ts-jest: 29.1.0
     ts-node: 10.9.1
     typescript: 5.0.4
@@ -7266,9 +7266,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:9.7.0":
-  version: 9.7.0
-  resolution: "testcontainers@npm:9.7.0"
+"testcontainers@npm:9.8.0":
+  version: 9.8.0
+  resolution: "testcontainers@npm:9.8.0"
   dependencies:
     "@balena/dockerignore": ^1.0.2
     "@types/archiver": ^5.3.2
@@ -7284,7 +7284,7 @@ __metadata:
     properties-reader: ^2.2.0
     ssh-remote-port-forward: ^1.0.4
     tar-fs: ^2.1.1
-  checksum: 4601d48029d6b352ea710e43c5e288b40dbeb1ba7a21455c05bb36f2a8266a8e8a48c8912fff3176d37bee13ceb044be125c5cc6403cb77ee2515b2464ac19e3
+  checksum: 913e00c0e3dcef0b26ab83195f2cb9dcc1aa2d0fbd23557f4f49ce18f3498b4df7045dabbe0e339a07449ef4bbaf75c0899996aa7acf76a20953627132be3ce0
   languageName: node
   linkType: hard
 
