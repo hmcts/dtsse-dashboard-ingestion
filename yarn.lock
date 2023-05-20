@@ -1189,15 +1189,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/rest@npm:19.0.9":
-  version: 19.0.9
-  resolution: "@octokit/rest@npm:19.0.9"
+"@octokit/rest@npm:19.0.10":
+  version: 19.0.10
+  resolution: "@octokit/rest@npm:19.0.10"
   dependencies:
     "@octokit/core": ^4.1.0
     "@octokit/plugin-paginate-rest": ^6.1.0
     "@octokit/plugin-request-log": ^1.0.4
     "@octokit/plugin-rest-endpoint-methods": ^7.1.0
-  checksum: 15bcdcd16ff233d2a81e176d9327e8dd4cdb63afab91cbc2d6461cb0979f057e898bc878eae6bebe13e9007a38d9669ba006832c213245ea339865c052d726b8
+  checksum: 0eed8f3bf372fca93179bb672b1d5b38587a10092b14bea6c8b90e152a603725b5f0b8126fcaea0c19d44c503f998ae9151483ea4a0efcef23fcdb18c2bd6e06
   languageName: node
   linkType: hard
 
@@ -3132,7 +3132,7 @@ __metadata:
     "@azure/cosmos": 3.17.3
     "@hmcts/properties-volume": 0.0.14
     "@octokit/graphql": 5.0.5
-    "@octokit/rest": 19.0.9
+    "@octokit/rest": 19.0.10
     "@types/jira-client": 7.1.6
     "@types/node": 18.16.13
     "@types/pg": 8.6.6
