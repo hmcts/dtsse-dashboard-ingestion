@@ -12,13 +12,16 @@ export const run = async () => {
 // Two different tools are used to generate the reports; yarn audit (js) and owasp dependency check (java)
 // Our cosmos query gives us these reports as an array of json objects
 const processCosmosResults = async (json: string) => {
-  console.log(json)
-  await pool.query(`INSERT INTO helm.base_charts (namespace, deprecated_chart_count, team)
+  console.log(json);
+  await pool.query(
+    `INSERT INTO helm.base_charts (namespace, deprecated_chart_count, team)
   SELECT bc.namespace, bc.deprecated_chart_count, COALESCE(twa.id, bc.namespace) AS id
   FROM json_populate_recordset(NULL::helm.base_charts, $1::JSON) AS bc
   LEFT JOIN team_with_alias AS twa ON bc.namespace = twa.alias
   ON CONFLICT (namespace, date)
-  DO UPDATE SET deprecated_chart_count = EXCLUDED.deprecated_chart_count;`, [json]);
+  DO UPDATE SET deprecated_chart_count = EXCLUDED.deprecated_chart_count;`,
+    [json]
+  );
 
   return [];
 };
