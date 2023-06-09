@@ -1,0 +1,58 @@
+[
+  {
+    "namespace": "disposer",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "money-claims",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "wa",
+    "deprecated_chart_count": 2
+  },
+  {
+    "namespace": "probate",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "sptribs",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "nfdiv",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "hmc",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "fees-pay",
+    "deprecated_chart_count": 3
+  },
+  {
+    "namespace": "fis",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "et",
+    "deprecated_chart_count": 2
+  },
+  {
+    "namespace": "family-public-law",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "ccd",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "am",
+    "deprecated_chart_count": 1
+  },
+  {
+    "namespace": "adoption",
+    "deprecated_chart_count": 1
+  }
+]
