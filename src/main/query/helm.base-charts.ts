@@ -13,10 +13,9 @@ export const run = async () => {
 // Our cosmos query gives us these reports as an array of json objects
 const processCosmosResults = async (json: string) => {
   await pool.query(
-    `INSERT INTO helm.base_charts (namespace, deprecated_chart_count, team)
-  SELECT bc.namespace, bc.deprecated_chart_count, COALESCE(twa.id, bc.namespace) AS id
+    `INSERT INTO helm.base_charts (namespace, deprecated_chart_count)
+  SELECT bc.namespace, bc.deprecated_chart_count
   FROM json_populate_recordset(NULL::helm.base_charts, $1::JSON) AS bc
-  LEFT JOIN team_with_alias AS twa ON bc.namespace = twa.alias
   ON CONFLICT (namespace, date)
   DO UPDATE SET deprecated_chart_count = EXCLUDED.deprecated_chart_count;`,
     [json]

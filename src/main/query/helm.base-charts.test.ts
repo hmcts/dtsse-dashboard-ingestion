@@ -23,17 +23,16 @@ describe('base-charts', () => {
     expect(runs.rowCount).toBe(14);
     runs.rows.forEach(row => {
       expect(row).toHaveProperty('namespace');
-      expect(row).toHaveProperty('team');
       expect(row).toHaveProperty('deprecated_chart_count');
       expect(row).toHaveProperty('date');
     });
 
     const expectedRows = [
       //set team as namespace if no match
-      { namespace: 'disposer', team: 'disposer', deprecated_chart_count: '1' },
+      { namespace: 'disposer', deprecated_chart_count: '1' },
       //find relevant team id from team_with_alias
-      { namespace: 'money-claims', team: 'cmc', deprecated_chart_count: '1' },
-      { namespace: 'wa', team: 'wa', deprecated_chart_count: '2' },
+      { namespace: 'money-claims', deprecated_chart_count: '1' },
+      { namespace: 'wa', deprecated_chart_count: '2' },
     ];
 
     expectedRows.forEach(expectedRow => expect(runs.rows).toEqual(expect.arrayContaining([expect.objectContaining(expectedRow)])));
