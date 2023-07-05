@@ -52,7 +52,7 @@
     "lint-staged": "13.2.3",
     "prettier": "2.8.8",
     "testcontainers": "9.9.1",
-    "ts-jest": "29.1.0"
+    "ts-jest": "29.1.1"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",
