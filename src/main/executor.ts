@@ -20,7 +20,8 @@ export const runFiles = async (files: Array<string>) => {
   const queries = files.map(file => runQueryAndStore(file));
 
   try {
-    await Promise.all(queries);
+    // Wait for all tasks to complete, successful or not.
+    await Promise.allSettled(queries);
   } finally {
     await shutdown();
   }
