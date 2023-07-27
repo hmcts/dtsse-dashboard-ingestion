@@ -3356,7 +3356,7 @@ __metadata:
     pg: 8.11.1
     pg-format: 1.0.4
     prettier: 2.8.8
-    testcontainers: 9.9.1
+    testcontainers: 9.12.0
     ts-jest: 29.1.1
     ts-node: 10.9.1
     typescript: 5.1.6
@@ -4285,6 +4285,13 @@ __metadata:
   version: 4.2.10
   resolution: "graceful-fs@npm:4.2.10"
   checksum: 3f109d70ae123951905d85032ebeae3c2a5a7a997430df00ea30df0e3a6c60cf6689b109654d6fdacd28810a053348c4d14642da1d075049e6be1ba5216218da
+  languageName: node
+  linkType: hard
+
+"graceful-fs@npm:^4.2.4":
+  version: 4.2.11
+  resolution: "graceful-fs@npm:4.2.11"
+  checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
   languageName: node
   linkType: hard
 
@@ -6017,9 +6024,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.11":
-  version: 2.6.11
-  resolution: "node-fetch@npm:2.6.11"
+"node-fetch@npm:^2.6.12":
+  version: 2.6.12
+  resolution: "node-fetch@npm:2.6.12"
   dependencies:
     whatwg-url: ^5.0.0
   peerDependencies:
@@ -6027,7 +6034,7 @@ __metadata:
   peerDependenciesMeta:
     encoding:
       optional: true
-  checksum: 249d0666a9497553384d46b5ab296ba223521ac88fed4d8a17d6ee6c2efb0fc890f3e8091cafe7f9fba8151a5b8d925db2671543b3409a56c3cd522b468b47b3
+  checksum: 3bc1655203d47ee8e313c0d96664b9673a3d4dd8002740318e9d27d14ef306693a4b2ef8d6525775056fd912a19e23f3ac0d7111ad8925877b7567b29a625592
   languageName: node
   linkType: hard
 
@@ -6768,6 +6775,17 @@ __metadata:
     kleur: ^3.0.3
     sisteransi: ^1.0.5
   checksum: d8fd1fe63820be2412c13bfc5d0a01909acc1f0367e32396962e737cb2fc52d004f3302475d5ce7d18a1e8a79985f93ff04ee03007d091029c3f9104bffc007d
+  languageName: node
+  linkType: hard
+
+"proper-lockfile@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "proper-lockfile@npm:4.1.2"
+  dependencies:
+    graceful-fs: ^4.2.4
+    retry: ^0.12.0
+    signal-exit: ^3.0.2
+  checksum: 00078ee6a61c216a56a6140c7d2a98c6c733b3678503002dc073ab8beca5d50ca271de4c85fca13b9b8ee2ff546c36674d1850509b84a04a5d0363bcb8638939
   languageName: node
   linkType: hard
 
@@ -7661,9 +7679,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:9.9.1":
-  version: 9.9.1
-  resolution: "testcontainers@npm:9.9.1"
+"testcontainers@npm:9.12.0":
+  version: 9.12.0
+  resolution: "testcontainers@npm:9.12.0"
   dependencies:
     "@balena/dockerignore": ^1.0.2
     "@types/archiver": ^5.3.2
@@ -7675,12 +7693,13 @@ __metadata:
     docker-compose: ^0.24.1
     dockerode: ^3.3.5
     get-port: ^5.1.1
-    node-fetch: ^2.6.11
+    node-fetch: ^2.6.12
+    proper-lockfile: ^4.1.2
     properties-reader: ^2.2.0
     ssh-remote-port-forward: ^1.0.4
     tar-fs: ^2.1.1
     tmp: ^0.2.1
-  checksum: 3285fa7ddd1868d39a4ea63e156d57685aca030bca68940cf6cacf6e8df20c56fe7b796e661f567200b24415591b40ffd50adc3d7926af8d27a39101ba85777c
+  checksum: 54d4a2a91116880978b39a2e0542840c05053334156082f0ea5e871e647812971099f0a2d199757de657be4cb80241ffe9fab2bccf93f71c2f11b06ecf78a13d
   languageName: node
   linkType: hard
 
