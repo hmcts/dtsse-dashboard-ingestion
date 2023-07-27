@@ -28,7 +28,6 @@ const processCosmosResults = async (json: string) => {
       left join team_with_alias t on
                   -- join against all aliases
                   split_part(r.git_url, '/', 5) like (t.alias || '%')
-                  or t.alias = r.product
     -- Pick the most specific team alias, ie. the longest.
     order by correlation_id, t.alias desc
     on conflict do nothing

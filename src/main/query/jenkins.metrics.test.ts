@@ -27,11 +27,11 @@ describe('metrics', () => {
   test('metrics', async () => {
     const builds = await pool.query('select count(*) from jenkins_impl.builds');
     // Total unique builds in our test data
-    expect(builds.rows[0].count).toBe('12');
+    expect(builds.rows[0].count).toBe('14');
 
     const steps = await pool.query('select count(*) from jenkins.build_steps');
     // All build steps should be there
-    expect(steps.rows[0].count).toBe('31');
+    expect(steps.rows[0].count).toBe('33');
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
@@ -61,9 +61,8 @@ describe('metrics', () => {
 
   test('build summaries', async () => {
     const summaries = await pool.query('select *, extract(epoch from duration) seconds from jenkins.build_summaries order by correlation_id');
-    // We have four finished builds that should show up in the summary
     // In progress builds should not appear
-    expect(summaries.rowCount).toBe(7);
+    expect(summaries.rowCount).toBe(9);
 
     const map = new Map(
       summaries.rows.map(r => {
@@ -87,5 +86,7 @@ describe('metrics', () => {
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').team_id).toBe('ccd');
     expect(map.get('a707159f-c96e-4391-ba41-94350f6a5c93').team_id).toBe('civil');
     expect(map.get('30102d95-aa57-480c-9f87-1693b316686c').team_id).toBe('civil-sdt');
+    expect(map.get('a0b34ebb-76eb-463e-b52e-dfd1fa5714a3').team_id).toBe('dtsse');
+    expect(map.get('a8802399-6752-4a1b-90e7-e5328fa7869c').team_id).toBe('lau');
   });
 });
