@@ -93,8 +93,6 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
   const client = await pool.connect();
   try {
     await client.query(`
-      begin;
-      truncate table jenkins_impl.terminal_build_steps_materialized;
       insert into jenkins_impl.terminal_build_steps_materialized
         select
          steps.*,
@@ -128,8 +126,8 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
         ) steps
         join (
           select min(stage_timestamp) as stage_timestamp, correlation_id from jenkins.build_steps group by correlation_id
-        ) first_step using (correlation_id);
-      commit;
+        ) first_step using (correlation_id)
+        on conflict do nothing;
       -- Reset the sequence to the next free value to avoid exhausting it, since it gets incremented even when no rows are added.
       select setval('jenkins_impl.step_names_step_id_seq', (select max(step_id)+1 from jenkins_impl.step_names))
       `);
