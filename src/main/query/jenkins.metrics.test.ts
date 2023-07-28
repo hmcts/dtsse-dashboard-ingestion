@@ -3,6 +3,7 @@ import { Pool } from 'pg';
 import { startPostgres, stopPostgres } from '../../test/support/docker';
 import * as fs from 'fs';
 import { silenceMigrations } from '../../test/support/migrate';
+import { getMetrics } from '../jenkins/cosmos';
 
 jest.setTimeout(180_000);
 jest.mock('../jenkins/cosmos', () => ({ getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8') }));
@@ -17,6 +18,9 @@ describe('metrics', () => {
 
     const { config } = require('../config');
     pool = new Pool({ connectionString: config.dbUrl });
+    // Run the processing a second time, should be idempotent
+    const { processCosmosResults } = require('./jenkins.metrics');
+    await processCosmosResults(pool, await getMetrics(BigInt(0)));
   });
 
   afterAll(async () => {
