@@ -4,10 +4,10 @@ import { pool } from '../db/store';
 
 export const run = async () => {
   const items = await getMetrics(await getUnixTimeToQueryFrom(pool));
-  return processCosmosResults(items);
+  return processCosmosResults(pool, items);
 };
 
-const processCosmosResults = async (json: string) => {
+export const processCosmosResults = async (pool: Pool, json: string) => {
   await pool.query(
     `
   with builds as (
