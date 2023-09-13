@@ -32,7 +32,7 @@
     "applicationinsights": "2.7.3",
     "axios": "1.5.0",
     "db-migrate": "0.11.14",
-    "db-migrate-pg": "1.5.1",
+    "db-migrate-pg": "1.5.2",
     "jira-client": "8.2.2",
     "pg": "8.11.3",
     "pg-format": "1.0.4",
