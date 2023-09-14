@@ -127,7 +127,12 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
         join (
           select min(stage_timestamp) as stage_timestamp, correlation_id from jenkins.build_steps group by correlation_id
         ) first_step using (correlation_id)
-        on conflict do nothing;
+        on conflict(correlation_id) do update set
+            current_step_name = excluded.current_step_name,
+            current_build_current_result = excluded.current_build_current_result,
+            stage_timestamp = excluded.stage_timestamp
+            -- Only do the update where we need to to avoid bloating the table.
+           where jenkins_impl.terminal_build_steps_materialized.current_step_name <> excluded.current_step_name;
       -- Reset the sequence to the next free value to avoid exhausting it, since it gets incremented even when no rows are added.
       select setval('jenkins_impl.step_names_step_id_seq', (select max(step_id)+1 from jenkins_impl.step_names))
       `);

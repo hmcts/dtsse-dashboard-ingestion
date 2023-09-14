@@ -3,7 +3,6 @@ import { Pool } from 'pg';
 import { startPostgres, stopPostgres } from '../../test/support/docker';
 import * as fs from 'fs';
 import { silenceMigrations } from '../../test/support/migrate';
-import { getMetrics } from '../jenkins/cosmos';
 
 jest.setTimeout(180_000);
 jest.mock('../jenkins/cosmos', () => ({ getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8') }));
@@ -18,9 +17,10 @@ describe('metrics', () => {
 
     const { config } = require('../config');
     pool = new Pool({ connectionString: config.dbUrl });
-    // Run the processing a second time, should be idempotent
+    // Run the processing a second time, with next set of build steps - one in-progress build should be marked complete.
+    const file2 = fs.readFileSync('src/test/data/jenkins-metrics-2.json', 'utf-8');
     const { processCosmosResults } = require('./jenkins.metrics');
-    await processCosmosResults(pool, await getMetrics(BigInt(0)));
+    await processCosmosResults(pool, file2);
   });
 
   afterAll(async () => {
@@ -31,11 +31,11 @@ describe('metrics', () => {
   test('metrics', async () => {
     const builds = await pool.query('select count(*) from jenkins_impl.builds');
     // Total unique builds in our test data
-    expect(builds.rows[0].count).toBe('14');
+    expect(builds.rows[0].count).toBe('15');
 
     const steps = await pool.query('select count(*) from jenkins.build_steps');
     // All build steps should be there
-    expect(steps.rows[0].count).toBe('33');
+    expect(steps.rows[0].count).toBe('35');
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
@@ -66,7 +66,7 @@ describe('metrics', () => {
   test('build summaries', async () => {
     const summaries = await pool.query('select *, extract(epoch from duration) seconds from jenkins.build_summaries order by correlation_id');
     // In progress builds should not appear
-    expect(summaries.rowCount).toBe(9);
+    expect(summaries.rowCount).toBe(10);
 
     const map = new Map(
       summaries.rows.map(r => {
@@ -92,5 +92,8 @@ describe('metrics', () => {
     expect(map.get('30102d95-aa57-480c-9f87-1693b316686c').team_id).toBe('civil-sdt');
     expect(map.get('a0b34ebb-76eb-463e-b52e-dfd1fa5714a3').team_id).toBe('dtsse');
     expect(map.get('a8802399-6752-4a1b-90e7-e5328fa7869c').team_id).toBe('lau');
+
+    const civil = map.get('aac8907e-d110-441c-8b47-b110252d75a0');
+    expect(civil.result).toBe('SUCCESS');
   });
 });
