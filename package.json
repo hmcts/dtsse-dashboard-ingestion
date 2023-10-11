@@ -27,7 +27,7 @@
     "@octokit/rest": "19.0.13",
     "@types/jira-client": "7.1.7",
     "@types/node": "18.18.4",
-    "@types/pg": "8.10.4",
+    "@types/pg": "8.10.5",
     "@types/pg-format": "1.0.3",
     "applicationinsights": "2.9.0",
     "axios": "1.5.1",
