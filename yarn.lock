@@ -1677,13 +1677,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jira-client@npm:7.1.7":
-  version: 7.1.7
-  resolution: "@types/jira-client@npm:7.1.7"
+"@types/jira-client@npm:7.1.8":
+  version: 7.1.8
+  resolution: "@types/jira-client@npm:7.1.8"
   dependencies:
     "@types/node": "*"
     "@types/request": "*"
-  checksum: f7bf5a224fbc715a77b75101c608d17311695fc181fadd29fe5823fc0071d3472d16e1c1447029addbdadb4d8fc16b74a7d6b8a35343e34278690cab2b8628a8
+  checksum: 085583f10cc2caead5b995a1a177a353a9b8206ad56163541eb1bd41dcd326620d5bc6c818c475ba84d4b88fb99d78b07d9e748e8153cabc855a884b61ffd8a8
   languageName: node
   linkType: hard
 
@@ -3387,7 +3387,7 @@ __metadata:
     "@hmcts/properties-volume": 1.0.0
     "@octokit/graphql": 5.0.6
     "@octokit/rest": 19.0.13
-    "@types/jira-client": 7.1.7
+    "@types/jira-client": 7.1.8
     "@types/node": 18.18.5
     "@types/pg": 8.10.5
     "@types/pg-format": 1.0.3
