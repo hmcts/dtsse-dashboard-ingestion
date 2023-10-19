@@ -1715,10 +1715,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg-format@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@types/pg-format@npm:1.0.3"
-  checksum: 6311e3b4f33f33e164f3350c3b3f88d42f44ccf7c60061cba91784b8f22b1db1b0b7995b1db84aedfe972ece223ae698078d12a74a755dc1df443a246de339b9
+"@types/pg-format@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@types/pg-format@npm:1.0.4"
+  checksum: f896e4091b90b8dc7c176654ef8ef6dd8b23a3bf231905f62ea6a35059e78055430349c76c1ff557e559a37a7f128f923f48877ed77216165fadd8a8c6822151
   languageName: node
   linkType: hard
 
@@ -3390,7 +3390,7 @@ __metadata:
     "@types/jira-client": 7.1.8
     "@types/node": 18.18.6
     "@types/pg": 8.10.5
-    "@types/pg-format": 1.0.3
+    "@types/pg-format": 1.0.4
     "@typescript-eslint/eslint-plugin": 5.62.0
     "@typescript-eslint/parser": 5.62.0
     applicationinsights: 2.9.0
