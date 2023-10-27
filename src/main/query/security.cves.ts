@@ -60,7 +60,7 @@ insert into security.cve_reports
 from
   details d
   -- left join so these inserts will fail fast if the join fails
-  left join github.repository g on g.id = lower(replace(d.git_url, '.git', ''))
+  left join github.repository g on lower(g.id) = lower(replace(d.git_url, '.git', ''))
   left join all_cves c using (name)
 on conflict do nothing
   `,
