@@ -25,7 +25,7 @@ describe('cves', () => {
           ('https://github.com/hmcts/fpl-ccd-configuration', '', '', '', ''),
           ('https://github.com/hmcts/ccd-data-store-api', '', '', '', ''),
           ('https://github.com/hmcts/prl-ccd-definitions', '', '', '', ''),
-          ('https://github.com/hmcts/sscs-submit-your-appeal', '', '', '', '')
+          ('https://github.com/hmcts/Sscs-submit-your-appeal', '', '', '', '')
     `);
 
     const { runFiles } = require('../executor');
@@ -52,8 +52,8 @@ describe('cves', () => {
       ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-9999', 'critical'],
       ['https://github.com/hmcts/prl-ccd-definitions', 'CVE-2023-28155', 'medium'],
       ['https://github.com/hmcts/prl-ccd-definitions', 'https://github.com/advisories/GHSA-56x4-j7p9-fcf9', 'low'],
-      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2020-24025', 'medium'],
-      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'medium'],
+      ['https://github.com/hmcts/Sscs-submit-your-appeal', 'CVE-2020-24025', 'medium'],
+      ['https://github.com/hmcts/Sscs-submit-your-appeal', 'CVE-2023-28155', 'medium'],
     ]);
   });
 });
