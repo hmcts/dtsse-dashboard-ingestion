@@ -22,7 +22,7 @@ export const getMetrics = async (fromUnixtime: bigint) => {
 
 export const getCVEs = async (fromUnixtime: bigint) => {
   const querySpec = {
-    query: `SELECT * from c where c._ts > ${fromUnixtime} and c.build.branch_name = "master"`,
+    query: `SELECT * from c where c._ts > ${fromUnixtime} and c.build.branch_name = "master" order by c._ts asc offset 0 limit 200`,
   };
   const { resources: items } = await cveReports.items.query(querySpec).fetchAll();
   return JSON.stringify(items);
