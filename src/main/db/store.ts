@@ -31,7 +31,7 @@ export const store = async (name: string, values: InsertRow[]) => {
   }
 };
 
-export const shutdown = async () => {
+export const shutdownConnectionPool = async () => {
   await pool.end();
 };
 
