@@ -17,5 +17,5 @@ if (process.argv[2] === 'create') {
 } else if (process.argv[2] === 'up') {
   migrate().catch(console.error);
 } else {
-  run().catch(console.error);
+  run();
 }

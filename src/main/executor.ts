@@ -1,4 +1,4 @@
-import { shutdown, store } from './db/store';
+import { shutdownConnectionPool, store } from './db/store';
 import { migrate } from './db/migrate';
 
 const runQueryAndStore = async (file: string) => {
@@ -21,8 +21,11 @@ export const runFiles = async (files: Array<string>) => {
 
   try {
     // Wait for all tasks to complete, successful or not.
-    await Promise.allSettled(queries);
+    const rejected = (await Promise.allSettled(queries)).filter(result => result.status === 'rejected').map(result => result as PromiseRejectedResult);
+    if (rejected.length > 0) {
+      throw rejected;
+    }
   } finally {
-    await shutdown();
+    await shutdownConnectionPool();
   }
 };

@@ -17,7 +17,7 @@ jest.mock('pg', () => ({
   })),
 }));
 
-import { shutdown, store } from './store';
+import { shutdownConnectionPool, store } from './store';
 
 describe('store', () => {
   const consoleMock = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -46,7 +46,7 @@ describe('store', () => {
 
 describe('shutdown', () => {
   test('calls end', async () => {
-    await shutdown();
+    await shutdownConnectionPool();
 
     expect(mockedEnd).toHaveBeenCalled();
   });
