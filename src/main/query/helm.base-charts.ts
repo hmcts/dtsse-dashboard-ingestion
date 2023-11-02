@@ -28,10 +28,10 @@ export const getUnixTimeToQueryFrom = async (pool: Pool) => {
   // Base off the last import time if available, otherwise the last 5 days
   const res = await pool.query(`
     select coalesce(
-      max(timestamp),
+      extract (epoch from max(timestamp)),
       extract (epoch from (now() - interval '2 day'))
     )::bigint as max
-    from security.cve_reports
+    from security.cve_report
   `);
 
   return res.rows[0].max;

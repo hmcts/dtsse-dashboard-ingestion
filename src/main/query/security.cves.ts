@@ -16,14 +16,15 @@ const processCosmosResults = async (json: string) => {
     `
  with details as (
   select
-    e->>'_ts' as timestamp,
-    e->'build'->>'git_url' git_url,
+    to_timestamp((e->>'_ts')::bigint) as timestamp,
+    g.repo_id,
     vulns.name,
     lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity
   from
     /* Go through each CVE report */
-    jsonb_array_elements($1::jsonb) e,
-    /* Pull out the CVE details for both Java and Node reports */
+    jsonb_array_elements($1::jsonb) e
+    left join github.repository g on lower(g.id) = lower(replace(e->'build'->>'git_url', '.git', '')),
+   /* Pull out the CVE details for both Java and Node reports */
     lateral (
       /* Java OWASP dependency check reports */
       select
@@ -54,14 +55,20 @@ const processCosmosResults = async (json: string) => {
   returning *
 ), all_cves as (
   select * from cves union select * from security.cves
-)
-insert into security.cve_reports
-  select timestamp::bigint, repo_id, cve_id
+), reports as (
+  -- Insert new reports
+ insert into security.cve_report(timestamp, repo_id)
+ select timestamp, repo_id from details d
+   group by 1, 2
+   returning *
+ )
+-- Insert new report to CVE mappings
+insert into security.cve_report_to_cves
+  select cve_id, cve_report_id
 from
   details d
-  -- left join so these inserts will fail fast if the join fails
-  left join github.repository g on lower(g.id) = lower(replace(d.git_url, '.git', ''))
   left join all_cves c using (name)
+  left join reports using (timestamp, repo_id)
 on conflict do nothing
   `,
     [json]
@@ -74,10 +81,10 @@ export const getUnixTimeToQueryFrom = async (pool: Pool) => {
   // Base off the last import time if available, otherwise the last 12 months
   const res = await pool.query(`
     select coalesce(
-      max(timestamp),
+      extract (epoch from max(timestamp)),
       extract (epoch from (now() - interval '5 day'))
     )::bigint as max
-    from security.cve_reports
+    from security.cve_report
   `);
 
   return res.rows[0].max;
