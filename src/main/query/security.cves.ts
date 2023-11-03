@@ -23,9 +23,9 @@ const processCosmosResults = async (json: string) => {
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
-    left join github.repository g on lower(g.id) = lower(replace(e->'build'->>'git_url', '.git', '')),
+    left join github.repository g on lower(g.id) = lower(replace(e->'build'->>'git_url', '.git', ''))
    /* Pull out the CVE details for both Java and Node reports */
-    lateral (
+    left join lateral (
       /* Java OWASP dependency check reports */
       select
         s->>'name' as name,
@@ -44,13 +44,16 @@ const processCosmosResults = async (json: string) => {
         -- Vulnerability may not have CVE identifiers but if not should have an advisory url
         left join lateral jsonb_array_elements_text(v->'cves') cve on true
       where jsonb_typeof(v->'cves') = 'array'
-    ) vulns
+    ) vulns on true -- record the report even if no CVEs found
 )
 ,cves as (
   -- Insert any new CVEs
   insert into security.cves(name, severity)
   select distinct name, severity from details
-  where name not in (select name from security.cves) -- Avoid (eventually) wrapping around the serial id
+  where
+      name is not null
+      and name not in (select name from security.cves) -- Avoid (eventually) wrapping around the serial id
+
   on conflict do nothing
   returning *
 ), all_cves as (
@@ -69,6 +72,7 @@ from
   details d
   left join all_cves c using (name)
   left join reports using (timestamp, repo_id)
+  where cve_id is not null
 on conflict do nothing
   `,
     [json]
