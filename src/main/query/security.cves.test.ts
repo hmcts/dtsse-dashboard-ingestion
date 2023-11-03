@@ -29,6 +29,11 @@ describe('cves', () => {
           ('https://github.com/hmcts/lau-frontend', '', '', '', '')
     `);
 
+    // Run the import process twice to ensure idempotency.
+    const { run } = require('../query/security.cves');
+    await run();
+
+    // Second invocation through main executor
     const { runFiles } = require('../executor');
     await runFiles(['security.cves']);
   });

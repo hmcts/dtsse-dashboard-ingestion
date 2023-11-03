@@ -61,8 +61,9 @@ const processCosmosResults = async (json: string) => {
 ), reports as (
   -- Insert new reports
  insert into security.cve_report(timestamp, repo_id)
- select timestamp, repo_id from details d
-   group by 1, 2
+   select timestamp, repo_id from details d
+     group by 1, 2
+   on conflict do nothing
    returning *
  )
 -- Insert new report to CVE mappings
@@ -72,7 +73,7 @@ from
   details d
   left join all_cves c using (name)
   left join reports using (timestamp, repo_id)
-  where cve_id is not null
+  where cve_id is not null and cve_report_id is not null
 on conflict do nothing
   `,
     [json]
