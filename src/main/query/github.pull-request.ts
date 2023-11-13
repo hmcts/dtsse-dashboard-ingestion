@@ -1,14 +1,21 @@
 import { getTeamName } from '../github/team';
 import { octokit } from '../github/rest';
 
-export const run = async () => {
-  const date = new Date();
-  date.setHours(date.getHours() - 1);
+import { Pool } from 'pg';
+import { pool } from '../db/store';
 
+export const run = async () => {
+  const date = await getTimeToQueryFrom(pool);
+
+  // Take up to 100 results to avoid triggering the Github rate limit.
+  // https://docs.github.com/en/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28
   const results = (await octokit.paginate(octokit.rest.issues.list, {
     filter: 'all',
     state: 'all',
     pulls: true,
+    sort: 'updated',
+    direction: 'asc',
+    limit: '100',
     since: date.toISOString(),
   })) as Result[];
 
@@ -39,6 +46,7 @@ const addPrData = async (issue: Result) => {
     title: issue.title,
     created_at: issue.created_at.replace('T', ' ').replace('Z', ''),
     closed_at: issue.closed_at?.replace('T', ' ').replace('Z', '') || null,
+    updated_at: issue.updated_at.replace('T', ' ').replace('Z', ''),
     changed_files: pull.data.changed_files,
     additions: pull.data.additions,
     deletions: pull.data.deletions,
@@ -80,6 +88,7 @@ interface Result {
     };
   };
   created_at: string;
+  updated_at: string;
   closed_at: string | null;
   url: string;
   user: {
@@ -90,3 +99,13 @@ interface Result {
     name: string;
   }[];
 }
+
+const getTimeToQueryFrom = async (pool: Pool) => {
+  // Base off the last import time if available
+  const res = await pool.query(`
+    select coalesce(max(updated_at), now() - interval '1 hour') as max
+    from github.pull_request
+  `);
+
+  return res.rows[0].max;
+};
