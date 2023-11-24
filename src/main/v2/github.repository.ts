@@ -22,6 +22,8 @@ export const run = async (pool: Pool) => {
       split_part(j->>'html_url', '/', 5) like (t.alias || '%')
   -- Pick the most specific team alias, ie. the longest.
   order by j->>'html_url', t.alias desc
+  on conflict (id) do update
+  set team_id = excluded.team_id, is_archived = excluded.is_archived, language = excluded.language
   `;
   const r = await pool.query({ text: sql, values: [results], rowMode: 'array' });
   return 5;

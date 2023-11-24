@@ -20,6 +20,8 @@ describe('integration tests', () => {
     const { migrate } = require('../db/migrate');
     await migrate();
     await runRelated(pool);
+    // Run the import process twice to ensure idempotency.
+    await runRelated(pool);
 
     // Run the jenkins processing a second time, with next set of build steps - one in-progress build should be marked complete.
     const file2 = fs.readFileSync('src/test/data/jenkins-metrics-2.json', 'utf-8');
