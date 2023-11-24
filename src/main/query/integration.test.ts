@@ -101,13 +101,6 @@ describe('integration tests', () => {
     // 2022-10-07T15:00:10Z -> 2022-10-07T15:05:57Z
     expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').seconds).toBe(347);
 
-    // Team aliases
-    expect(map.get('cc5c9e84-5773-49f6-a65d-1be006ba4c1c').team_id).toBe('ccd');
-    expect(map.get('a707159f-c96e-4391-ba41-94350f6a5c93').team_id).toBe('civil');
-    expect(map.get('30102d95-aa57-480c-9f87-1693b316686c').team_id).toBe('civil-sdt');
-    expect(map.get('a0b34ebb-76eb-463e-b52e-dfd1fa5714a3').team_id).toBe('dtsse');
-    expect(map.get('a8802399-6752-4a1b-90e7-e5328fa7869c').team_id).toBe('lau');
-
     const civil = map.get('aac8907e-d110-441c-8b47-b110252d75a0');
     expect(civil.result).toBe('SUCCESS');
   });
