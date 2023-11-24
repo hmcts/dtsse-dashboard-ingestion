@@ -1,8 +1,7 @@
 import { Pool } from 'pg';
 import { getMetrics } from '../jenkins/cosmos';
-import { pool } from '../db/store';
 
-export const run = async () => {
+export const run = async (pool: Pool) => {
   const items = await getMetrics(await getUnixTimeToQueryFrom(pool));
   return processCosmosResults(pool, items);
 };
