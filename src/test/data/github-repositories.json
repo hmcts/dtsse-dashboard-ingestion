@@ -96,5 +96,12 @@
     "name": "wa-task-management-api",
     "archived": false,
     "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/sscs-tribunals-case-api",
+    "git_url": "git@github.com:HMCTS/sscs-tribunals-case-api.git",
+    "name": "sscs-tribunals-case-api",
+    "archived": false,
+    "language": null
   }
 ]

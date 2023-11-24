@@ -56,10 +56,9 @@ describe('integration tests', () => {
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
     const tribs = await pool.query("select * from jenkins_impl.builds where correlation_id = 'b35f8f48-589b-48ff-8aae-98a6dcdd33b2'");
-    expect(tribs.rows[0].git_url).toBe('https://github.com/HMCTS/sscs-tribunals-case-api.git');
-    expect(tribs.rows[0].is_nightly).toBe(false);
+    expect(tribs.rows[0].build_url).toBe('https://build.platform.hmcts.net/job/HMCTS_j_to_z/job/sscs-tribunals-case-api/job/PR-2973/8/');
 
-    const nightly = await pool.query("select * from jenkins_impl.builds where correlation_id = 'cc5c9e84-5773-49f6-a65d-1be006ba4c1c'");
+    const nightly = await pool.query("select * from jenkins.build_summaries where correlation_id = 'cc5c9e84-5773-49f6-a65d-1be006ba4c1c'");
     expect(nightly.rows[0].is_nightly).toBe(true);
 
     const rowsWithHash = await pool.query("select * from jenkins_impl.builds where correlation_id = 'b35f8f48-589b-48ff-8aae-98a6dcdd33b2'");
