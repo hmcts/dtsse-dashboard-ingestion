@@ -1,9 +1,100 @@
 [
   {
-    "html_url": "https://github.com/hmcts/fpl-ccd-configuration",
+    "html_url": "https://github.com/hmcts/ccd-data-store-api",
     "git_url": "git@github.com:hmcts/ccd-data-store-api.git",
     "name": "ccd-data-store-api",
     "archived": false,
     "language": "Java"
+  },
+  {
+    "html_url": "https://github.com/HMCTS/ccd-cache-warm-performance",
+    "git_url": "git@github.com:HMCTS/ccd-cache-warm-performance.git",
+    "name": "ccd-cache-warm-performance",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/ccfr-fees-register-app",
+    "git_url": "git@github.com:HMCTS/ccfr-fees-register-app.git",
+    "name": "ccfr-fees-register-app",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/ccpay-refunds-app",
+    "git_url": "git@github.com:HMCTS/ccpay-refunds-app.git",
+    "name": "ccpay-refunds-app",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/civil-sdt",
+    "git_url": "git@github.com:HMCTS/civil-sdt.git",
+    "name": "civil-sdt",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/civil-service",
+    "git_url": "git@github.com:HMCTS/civil-service.git",
+    "name": "civil-service",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/cmc-ccd-e2e-tests",
+    "git_url": "git@github.com:HMCTS/cmc-ccd-e2e-tests.git",
+    "name": "cmc-ccd-e2e-tests",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/em-native-pdf-annotator-app",
+    "git_url": "git@github.com:HMCTS/em-native-pdf-annotator-app.git",
+    "name": "em-native-pdf-annotator-app",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/ethos-repl-docmosis-service",
+    "git_url": "git@github.com:HMCTS/ethos-repl-docmosis-service.git",
+    "name": "ethos-repl-docmosis-service",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/idam-java-client",
+    "git_url": "git@github.com:HMCTS/idam-java-client.git",
+    "name": "idam-java-client",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/idam-user-disposer",
+    "git_url": "git@github.com:HMCTS/idam-user-disposer.git",
+    "name": "idam-user-disposer",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/prl-citizen-frontend",
+    "git_url": "git@github.com:HMCTS/prl-citizen-frontend.git",
+    "name": "prl-citizen-frontend",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/sptribs-dss-backend",
+    "git_url": "git@github.com:HMCTS/sptribs-dss-backend.git",
+    "name": "sptribs-dss-backend",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/wa-task-management-api",
+    "git_url": "git@github.com:HMCTS/wa-task-management-api.git",
+    "name": "wa-task-management-api",
+    "archived": false,
+    "language": null
   }
 ]

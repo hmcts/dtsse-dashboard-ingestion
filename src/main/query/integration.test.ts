@@ -28,9 +28,14 @@ describe('integration tests', () => {
     await stopPostgres();
   });
 
-  test('repositories', async () => {
+  test('repositories are correctly attributed', async () => {
     await insertRepos(client);
-    const repos = await pool.query('select count(*) from github.repository');
-    expect(repos.rows[0].count).toBe('35');
+    const repos = await pool.query('select team_id, array_agg(short_name order by short_name) repos from github.repository group by 1');
+
+    const r = repos.rows.map(obj => [obj.team_id as string, obj.repos as string[]] as const);
+    const indexedRepos = Object.fromEntries(r);
+
+    expect(indexedRepos['dtsse']).toStrictEqual(['idam-java-client']);
+    expect(indexedRepos['lau']).toStrictEqual(['idam-user-disposer']);
   });
 });

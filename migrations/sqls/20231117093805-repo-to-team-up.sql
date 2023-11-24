@@ -1,1 +1,1 @@
--- alter table github.repository add column team_id text not null references team(id);
+alter table github.repository add column team_id text not null references team(id);
