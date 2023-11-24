@@ -6,5 +6,5 @@ export const octokit = new Octokit({
 });
 
 export const listRepos = async () => {
-  return await octokit.paginate(octokit.rest.repos.listForOrg, { org: 'hmcts' });
+  return JSON.stringify(await octokit.paginate(octokit.rest.repos.listForOrg, { org: 'hmcts' }));
 };

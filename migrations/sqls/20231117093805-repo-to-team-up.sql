@@ -1,21 +1,40 @@
-alter table github.repository add column team_id text not null references team(id);
+-- Repositories belong to teams and builds belong to repositories
+-- We cannot always identify these so nulls are allowed
+alter table github.repository add column team_id text references team(id);
 alter table jenkins_impl.builds add column repo_id integer references github.repository(repo_id);
 
+-- Backfill repo ownership
+update github.repository
+set team_id = team
+from (
+    select distinct on (r.id)
+    r.id, t.id as team
+    from github.repository r
+    left join team_with_alias t  on
+    --    r.id = '5'
+        split_part(r.id, '/', 5) like (t.alias || '%')
+    -- Pick the most specific team alias, ie. the longest.
+    order by r.id, t.alias desc
+) c
+where github.repository.id = c.id;
+
+-- Backfill build ownership
 update jenkins_impl.builds 
 set repo_id = repo.repo_id
 from github.repository repo
 where lower(repo.web_url) = replace(lower(jenkins_impl.builds.git_url), '.git', '');
 
+-- Have to drop and recreate this view to amend builds.
 drop view jenkins.build_summaries;
+
 alter table jenkins_impl.builds 
-  alter column repo_id set not null,
   alter column build_number type integer using build_number::integer,
   --   Redundant information stored on github repository relation
   drop column git_url,
   drop column product,
   drop column component,
-   drop column team_id,
-   drop column is_nightly;
+  drop column team_id,
+  drop column is_nightly;
 create index on jenkins_impl.builds(repo_id);
 
 create view jenkins.build_summaries as

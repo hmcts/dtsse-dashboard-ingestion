@@ -50,11 +50,11 @@ describe('integration tests', () => {
   test('jenkins metrics', async () => {
     const builds = await pool.query('select count(*) from jenkins_impl.builds');
     // Total unique builds in our test data
-    expect(builds.rows[0].count).toBe('15');
+    expect(builds.rows[0].count).toBe('16');
 
     const steps = await pool.query('select count(*) from jenkins.build_steps');
     // All build steps should be there
-    expect(steps.rows[0].count).toBe('35');
+    expect(steps.rows[0].count).toBe('36');
 
     // git_url is null in our test data for this row as is occasionally observed in cosmos.
     // The import should reconstruct this url from the build url.
