@@ -7,7 +7,7 @@ export const run = async (pool: Pool) => {
   const sql = `
   insert into github.repository(id, team_id, git_url, web_url, short_name, team_alias, jenkins_name, is_archived, language)
   select distinct on (j->>'html_url')
-    j->>'html_url',
+    lower(j->>'html_url'),
     t.id,
     j->>'git_url',
     j->>'html_url',

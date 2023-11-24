@@ -103,5 +103,33 @@
     "name": "sscs-tribunals-case-api",
     "archived": false,
     "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/fpl-ccd-configuration",
+    "git_url": "git@github.com:HMCTS/fpl-ccd-configuration.git",
+    "name": "fpl-ccd-configuration",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/lau-frontend",
+    "git_url": "git@github.com:HMCTS/lau-frontend.git",
+    "name": "lau-frontend",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/prl-ccd-definitions",
+    "git_url": "git@github.com:HMCTS/prl-ccd-definitions.git",
+    "name": "prl-ccd-definitions",
+    "archived": false,
+    "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/sscs-submit-your-appeal",
+    "git_url": "git@github.com:HMCTS/sscs-submit-your-appeal.git",
+    "name": "sscs-submit-your-appeal",
+    "archived": false,
+    "language": null
   }
 ]

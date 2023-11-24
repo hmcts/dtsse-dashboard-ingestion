@@ -1,14 +1,16 @@
 import { afterAll, beforeAll, describe, expect, jest, test } from '@jest/globals';
-import { Pool, PoolClient } from 'pg';
+import { Pool } from 'pg';
 import { startPostgres, stopPostgres } from '../../test/support/docker';
 import * as fs from 'fs';
 import { silenceMigrations } from '../../test/support/migrate';
-import { runRelated } from './related';
 
 jest.setTimeout(180_000);
 jest.mock('../db/migrate', () => silenceMigrations(() => jest.requireActual('../db/migrate')));
 jest.mock('../github/rest', () => ({ listRepos: () => fs.readFileSync('src/test/data/github-repositories.json', 'utf-8') }));
-jest.mock('../jenkins/cosmos', () => ({ getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8') }));
+jest.mock('../jenkins/cosmos', () => ({
+  getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8'),
+  getCVEs: () => fs.readFileSync('src/test/data/cve-reports.json', 'utf-8'),
+}));
 
 describe('integration tests', () => {
   let pool: Pool;
@@ -18,10 +20,11 @@ describe('integration tests', () => {
     const { config } = require('../config');
     pool = new Pool({ connectionString: config.dbUrl });
     const { migrate } = require('../db/migrate');
+    const { runInterdependent } = require('./interdependent');
     await migrate();
-    await runRelated(pool);
+    await runInterdependent(pool);
     // Run the import process twice to ensure idempotency.
-    await runRelated(pool);
+    await runInterdependent(pool);
 
     // Run the jenkins processing a second time, with next set of build steps - one in-progress build should be marked complete.
     const file2 = fs.readFileSync('src/test/data/jenkins-metrics-2.json', 'utf-8');
@@ -41,7 +44,7 @@ describe('integration tests', () => {
     const indexedRepos = Object.fromEntries(r);
 
     expect(indexedRepos['dtsse']).toStrictEqual(['idam-java-client']);
-    expect(indexedRepos['lau']).toStrictEqual(['idam-user-disposer']);
+    expect(indexedRepos['lau']).toStrictEqual(['idam-user-disposer', 'lau-frontend']);
   });
 
   test('jenkins metrics', async () => {
@@ -103,5 +106,26 @@ describe('integration tests', () => {
 
     const civil = map.get('aac8907e-d110-441c-8b47-b110252d75a0');
     expect(civil.result).toBe('SUCCESS');
+  });
+
+  test('view of current cves affecting each app', async () => {
+    const cves = (
+      await pool.query({
+        rowMode: 'array',
+        text: 'select git_url, name, severity from security.current_cves order by 1, 2',
+      })
+    ).rows;
+    expect(cves).toEqual([
+      ['https://github.com/hmcts/ccd-data-store-api', '1091725', 'unknown'],
+      ['https://github.com/hmcts/ccd-data-store-api', 'CVE-2022-8643', 'medium'],
+      ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45688', 'high'],
+      ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45689', 'high'],
+      ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-9999', 'critical'],
+      ['https://github.com/hmcts/prl-ccd-definitions', 'CVE-2023-28155', 'medium'],
+      ['https://github.com/hmcts/prl-ccd-definitions', 'https://github.com/advisories/GHSA-56x4-j7p9-fcf9', 'low'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2020-24025', 'medium'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'medium'],
+      // lau-frontend had CVEs on a prior report but not latest, so should not show up.
+    ]);
   });
 });

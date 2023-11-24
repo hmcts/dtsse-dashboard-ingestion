@@ -1,17 +1,16 @@
 import { Pool } from 'pg';
 import { getCVEs } from '../jenkins/cosmos';
-import { pool } from '../db/store';
 
-export const run = async () => {
+export const run = async (pool: Pool) => {
   const items = await getCVEs(await getUnixTimeToQueryFrom(pool));
-  await processCosmosResults(items);
+  await processCosmosResults(pool, items);
   return [];
 };
 
 // CVE reports are stored into cosmos db by the CNP jenkins library.
 // Two different tools are used to generate the reports; yarn audit (js) and owasp dependency check (java)
 // Our cosmos query gives us these reports as an array of json objects
-const processCosmosResults = async (json: string) => {
+const processCosmosResults = async (pool: Pool, json: string) => {
   await pool.query(
     `
  with details as (
