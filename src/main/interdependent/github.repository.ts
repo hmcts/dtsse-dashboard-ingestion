@@ -12,8 +12,9 @@ export const run = async (pool: Pool) => {
     j->>'git_url',
     j->>'html_url',
     j->>'name',
+    -- TODO: remove alias and jenkins name once queries are updated
     'alias',
-    'jenkins',
+    replace(j->>'html_url', 'hmcts', 'HMCTS') || '.git',
     (j->'archived')::bool,
     j->>'language'
   from jsonb_array_elements($1::jsonb) as json(j)
