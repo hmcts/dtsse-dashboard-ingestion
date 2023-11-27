@@ -1,5 +1,4 @@
-import { getTeamName } from '../github/team';
-import { listPR, listRepos, listUpTo100PRsSince } from '../github/rest';
+import { listPR, listUpTo100PRsSince } from '../github/rest';
 
 import { Pool } from 'pg';
 

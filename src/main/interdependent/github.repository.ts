@@ -1,5 +1,5 @@
-import { listRepos, octokit } from '../github/rest';
-import { Pool, PoolClient } from 'pg';
+import { listRepos } from '../github/rest';
+import { Pool } from 'pg';
 
 export const run = async (pool: Pool) => {
   const results = await listRepos();
