@@ -28,7 +28,7 @@ describe('integration tests', () => {
 
     // Run the jenkins processing a second time, with next set of build steps - one in-progress build should be marked complete.
     const file2 = fs.readFileSync('src/test/data/jenkins-metrics-2.json', 'utf-8');
-    const { processCosmosResults } = require('../v2/jenkins.metrics');
+    const { processCosmosResults } = require('../interdependent/jenkins.metrics');
     await processCosmosResults(pool, file2);
   });
 
@@ -68,7 +68,7 @@ describe('integration tests', () => {
     expect(rowsWithHash.rows[0].git_commit).toBe('b35f8f48589b48ff8aae98a6dcdd33b2');
 
     // Should be the timestamp of our imported test data.
-    const { getUnixTimeToQueryFrom } = require('../v2/jenkins.metrics');
+    const { getUnixTimeToQueryFrom } = require('../interdependent/jenkins.metrics');
     const time = await getUnixTimeToQueryFrom(pool);
     expect(new Date(time * 1000).getFullYear()).toBe(2023);
 
