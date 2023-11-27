@@ -4,6 +4,14 @@ alter table github.repository add column team_id text references team(id);
 alter table jenkins_impl.builds add column repo_id integer references github.repository(repo_id);
 alter table github.pull_request add column repo_id integer references github.repository(repo_id);
 
+-- Backfill pull request ownership
+update github.pull_request
+set repo_id = repo.repo_id
+from github.repository repo
+where repo.short_name = repository;
+
+alter table github.pull_request drop column team, drop column repository;
+
 -- Backfill repo ownership
 update github.repository
 set team_id = team

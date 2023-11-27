@@ -6,7 +6,11 @@ import { silenceMigrations } from '../../test/support/migrate';
 
 jest.setTimeout(180_000);
 jest.mock('../db/migrate', () => silenceMigrations(() => jest.requireActual('../db/migrate')));
-jest.mock('../github/rest', () => ({ listRepos: () => fs.readFileSync('src/test/data/github-repositories.json', 'utf-8') }));
+jest.mock('../github/rest', () => ({
+  listRepos: () => fs.readFileSync('src/test/data/github-repositories.json', 'utf-8'),
+  listUpTo100PRsSince: () => JSON.parse(fs.readFileSync('src/test/data/github.pull-request.json', 'utf-8')),
+  listPR: () => JSON.parse(fs.readFileSync('src/test/data/github.pr-1260.json', 'utf-8')),
+}));
 jest.mock('../jenkins/cosmos', () => ({
   getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8'),
   getCVEs: () => fs.readFileSync('src/test/data/cve-reports.json', 'utf-8'),
@@ -127,5 +131,11 @@ describe('integration tests', () => {
       ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'medium'],
       // lau-frontend had CVEs on a prior report but not latest, so should not show up.
     ]);
+  });
+
+  test('view of pull requests', async () => {
+    const pr = (await pool.query('select pr.* from github.pull_request pr join github.repository repo using(repo_id)')).rows[0];
+    expect(pr.id).toEqual('https://api.github.com/repos/hmcts/ccd-data-store-api/issues/1260');
+    expect(pr.state).toEqual('open');
   });
 });

@@ -26,6 +26,5 @@ export const run = async (pool: Pool) => {
   on conflict (id) do update
   set team_id = excluded.team_id, is_archived = excluded.is_archived, language = excluded.language
   `;
-  const r = await pool.query({ text: sql, values: [results], rowMode: 'array' });
-  return 5;
+  await pool.query(sql, [results]);
 };
