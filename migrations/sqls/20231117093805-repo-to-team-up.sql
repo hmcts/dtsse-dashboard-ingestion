@@ -2,6 +2,7 @@
 -- We cannot always identify these so nulls are allowed
 alter table github.repository add column team_id text references team(id);
 alter table jenkins_impl.builds add column repo_id integer references github.repository(repo_id);
+alter table github.pull_request add column repo_id integer references github.repository(repo_id);
 
 -- Backfill repo ownership
 update github.repository
