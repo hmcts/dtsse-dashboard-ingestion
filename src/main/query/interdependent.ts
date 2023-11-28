@@ -12,4 +12,5 @@ export const runInterdependent = async (pool: Pool) => {
   await require('../interdependent/jenkins.metrics').run(pool);
   await require('../interdependent/security.cves').run(pool);
   await require('../interdependent/github.pull-request').run(pool);
+  await require('../interdependent/github.dependabot').run(pool);
 };

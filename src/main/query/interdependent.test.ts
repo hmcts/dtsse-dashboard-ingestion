@@ -11,6 +11,9 @@ jest.mock('../github/rest', () => ({
   listUpTo100PRsSince: () => JSON.parse(fs.readFileSync('src/test/data/github.pull-request.json', 'utf-8')),
   listPR: () => JSON.parse(fs.readFileSync('src/test/data/github.pr-1260.json', 'utf-8')),
 }));
+jest.mock('../github/graphql', () => ({
+  getDependabotConfig: () => JSON.parse(fs.readFileSync('src/test/data/github.dependabot.json', 'utf-8')),
+}));
 jest.mock('../jenkins/cosmos', () => ({
   getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8'),
   getCVEs: () => fs.readFileSync('src/test/data/cve-reports.json', 'utf-8'),
@@ -137,5 +140,13 @@ describe('integration tests', () => {
     const pr = (await pool.query('select pr.* from github.pull_request pr join github.repository repo using(repo_id)')).rows[0];
     expect(pr.id).toEqual('https://api.github.com/repos/hmcts/ccd-data-store-api/issues/1260');
     expect(pr.state).toEqual('open');
+  });
+
+  test('dependabot and renovate', async () => {
+    const rows = (
+      await pool.query(`select * from github.repository where short_name in ('ccd-data-store-api', 'ccd-cache-warm-performance') order by short_name`)
+    ).rows;
+    expect(rows[0].hasdependabotorrenovate).toEqual(false);
+    expect(rows[1].hasdependabotorrenovate).toEqual(true);
   });
 });

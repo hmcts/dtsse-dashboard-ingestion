@@ -1,0 +1,28 @@
+[
+  {
+    "url": "https://github.com/hmcts/ccd-data-store-api",
+    "name": "ccd-data-store-api",
+    "dependabotv1": null,
+    "dependabotv2": null,
+    "renovate": {
+      "abbreviatedOid": "c176b83"
+    },
+    "renovateroot": null,
+    "dependabotv1main": null,
+    "dependabotv2main": null,
+    "renovatemain": null,
+    "renovatemainroot": null
+  },
+  {
+    "url": "https://github.com/hmcts/ccd-cache-warm-performance",
+    "name": "ccd-cache-warm-performance",
+    "dependabotv1": null,
+    "dependabotv2": null,
+    "renovate": null,
+    "renovateroot": null,
+    "dependabotv1main": null,
+    "dependabotv2main": null,
+    "renovatemain": null,
+    "renovatemainroot": null
+  }
+]

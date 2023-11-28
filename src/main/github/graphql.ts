@@ -62,3 +62,77 @@ type QueryResult<T> =
     };
 
 export type Values = Record<string, string> | undefined;
+
+export interface Result {
+  url: string;
+  name: string;
+  dependabotv1: { abbreviatedOid: string } | null;
+  dependabotv2: { abbreviatedOid: string } | null;
+  renovate: { abbreviatedOid: string } | null;
+  renovateroot: { abbreviatedOid: string } | null;
+  dependabotv1main: { abbreviatedOid: string } | null;
+  dependabotv2main: { abbreviatedOid: string } | null;
+  renovatemain: { abbreviatedOid: string } | null;
+  renovatemainroot: { abbreviatedOid: string } | null;
+}
+export const getDependabotConfig = async (): Promise<Result[]> => {
+  const q = `
+{
+    search(query: "org:hmcts archived:false", type: REPOSITORY, first: 50%after) {
+        pageInfo {
+            startCursor
+            hasNextPage
+            endCursor
+        }
+        edges {
+            node {
+                ... on Repository {
+                    url
+                    name
+                    dependabotv1: object(expression: "master:.dependabot/config.yml") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    dependabotv2: object(expression: "master:.github/dependabot.yml") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    renovate: object(expression: "master:.github/renovate.json") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    renovateroot: object(expression: "master:renovate.json") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    dependabotv1main: object(expression: "main:.dependabot/config.yml") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    dependabotv2main: object(expression: "main:.github/dependabot.yml") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    renovatemain: object(expression: "main:.github/renovate.json") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                    renovatemainroot: object(expression: "main:renovate.json") {
+                        ... on Blob {
+                            abbreviatedOid
+                        }
+                    }
+                }
+            }
+        }
+    }
+}`;
+  return await query(q);
+};
