@@ -1,24 +1,13 @@
-import { getTeamName } from '../github/team';
-import { octokit } from '../github/rest';
+import { listPR, listUpTo100PRsSince } from '../github/rest';
 
 import { Pool } from 'pg';
-import { pool } from '../db/store';
 
-export const run = async () => {
+export const run = async (pool: Pool) => {
   const date = await getTimeToQueryFrom(pool);
 
-  // Take up to 100 results to avoid triggering the Github rate limit.
-  // https://docs.github.com/en/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28
-  const results = (await octokit.paginate(octokit.rest.issues.list, {
-    filter: 'all',
-    state: 'all',
-    pulls: true,
-    sort: 'updated',
-    direction: 'asc',
-    limit: '100',
-    since: date.toISOString(),
-  })) as Result[];
-
+  // // Take up to 100 results to avoid triggering the Github rate limit.
+  // // https://docs.github.com/en/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28
+  const results = (await listUpTo100PRsSince(date.toISOString())) as Result[];
   const uniqueResults = results.reduce((acc: Record<string, Result>, issue: Result) => {
     acc[issue.url] = issue;
     return acc;
@@ -28,35 +17,39 @@ export const run = async () => {
     .filter(issue => issue.repository.owner.login === 'hmcts' && !issue.repository.archived && issue.pull_request?.url)
     .map(issue => addPrData(issue));
 
-  return Promise.all(prs);
+  const withPrInfo = await Promise.all(prs);
+  await savePRs(pool, withPrInfo);
+  return [];
+};
+
+const savePRs = async (pool: Pool, prs: Result[]) => {
+  const sql = `
+  insert into github.pull_request
+  select 
+  r.*
+  from jsonb_array_elements($1::jsonb) e
+    left join github.repository repo on repo.short_name = e->>'repository',
+    -- Insert the repo_id we've looked up into the json before populating the record.
+    jsonb_populate_record(null::github.pull_request, e || jsonb_build_object('repo_id', repo.repo_id)) r
+  on conflict (id) do update
+  set (closed_at, updated_at, changed_files, additions, deletions, body_text, state, labels, jira_refs, commit_hash) =
+  (excluded.closed_at, excluded.updated_at, excluded.changed_files, excluded.additions, excluded.deletions, excluded.body_text, excluded.state, excluded.labels, excluded.jira_refs, excluded.commit_hash)
+  `;
+  await pool.query(sql, [JSON.stringify(prs)]);
 };
 
 const addPrData = async (issue: Result) => {
-  const pull = await octokit.rest.pulls.get({
-    owner: 'hmcts',
-    repo: issue.repository.name,
-    pull_number: issue.number,
-  });
+  const pull = (await listPR(issue.repository.name, issue.number)).data;
 
-  return {
+  return Object.assign(issue, pull, {
     id: issue.url,
-    url: issue.pull_request?.html_url,
     repository: issue.repository?.name,
-    team: getTeamName(issue.repository?.name),
-    title: issue.title,
-    created_at: issue.created_at.replace('T', ' ').replace('Z', ''),
-    closed_at: issue.closed_at?.replace('T', ' ').replace('Z', '') || null,
-    updated_at: issue.updated_at.replace('T', ' ').replace('Z', ''),
-    changed_files: pull.data.changed_files,
-    additions: pull.data.additions,
-    deletions: pull.data.deletions,
     author: issue.user.login,
     body_text: issue.body,
-    state: issue.state,
     labels: issue.labels.map(label => label.name).join(','),
     jira_refs: jiraRef(issue.title + issue.body)?.join(',') || null,
-    commit_hash: issue.state === 'closed' ? pull.data.merge_commit_sha : null,
-  };
+    commit_hash: issue.state === 'closed' ? pull.merge_commit_sha : null,
+  });
 };
 
 const jiraRef = (text: string) => {
