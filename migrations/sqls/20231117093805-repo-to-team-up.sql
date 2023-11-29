@@ -48,13 +48,13 @@ create index on jenkins_impl.builds(repo_id);
 
 create view jenkins.build_summaries as
 select builds.correlation_id,
+    repo_id,
+    repo.team_id,
     builds.branch_name,
     builds.build_number,
-    repo.git_url,
     builds.build_url,
     builds.git_commit,
     build_url like '%Nightly%' is_nightly,
-    repo.team_id,
     steps.current_step_name as final_step_name,
     steps.current_build_current_result as result,
     steps.stage_timestamp as "timestamp",
