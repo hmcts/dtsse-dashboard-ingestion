@@ -7,6 +7,13 @@
     "language": "Java"
   },
   {
+    "html_url": "https://github.com/HMCTS/ccd-data-store-api",
+    "git_url": "git@github.com:hmcts/ccd-data-store-api.git",
+    "name": "ccd-data-store-api",
+    "archived": false,
+    "language": "Java"
+  },
+  {
     "html_url": "https://github.com/HMCTS/ccd-cache-warm-performance",
     "git_url": "git@github.com:HMCTS/ccd-cache-warm-performance.git",
     "name": "ccd-cache-warm-performance",

@@ -1,0 +1,18 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 100,
+    "total": 1
+  },
+  "components": [
+    {
+      "organization": "hmcts",
+      "key": "ccd-data-store-api",
+      "name": "ccd-data-store-api",
+      "qualifier": "TRK",
+      "visibility": "public",
+      "lastAnalysisDate": "2023-11-29T12:18:08+0100",
+      "revision": "e5ce4776bd65ec49399548d8fee258ca5f9a47f8"
+    }
+  ]
+}

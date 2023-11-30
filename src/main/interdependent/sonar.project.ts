@@ -1,17 +1,5 @@
-import { config } from '../config';
-import { Axios } from 'axios';
-import { getTeamName } from '../sonar/team';
-
-const token = Buffer.from(config.sonarToken + ':').toString('base64');
-
-const http = new Axios({
-  baseURL: 'https://sonarcloud.io/api',
-  headers: {
-    Authorization: `Basic ${token}`,
-    Accept: 'application/json',
-    'Accept-Encoding': 'identity',
-  },
-});
+import { getSonarProject, getSonarProjects } from '../github/rest';
+import { Pool } from 'pg';
 
 const metrics = [
   'bugs',
@@ -36,15 +24,27 @@ const metrics = [
   'quality_gate_details',
 ];
 
-export const run = async () => {
+export const run = async (pool: Pool) => {
   const projects = await getProjects();
 
-  return Promise.all(projects.map(getMetrics));
+  const results = await Promise.all(projects.map(getMetrics));
+  const sql = `
+  insert into sonar.project
+  select r.* 
+  from jsonb_array_elements($1::jsonb) e
+    -- Find which repo this belongs to
+    left join github.repository repo on repo.short_name = e->>'id',
+    -- Insert the repo_id we've looked up into the json before populating the record.
+    jsonb_populate_record(null::sonar.project, e || jsonb_build_object('repo_id', repo.repo_id)) r
+  on conflict do nothing
+  `;
+  await pool.query(sql, [JSON.stringify(results)]);
+  return [];
 };
 
 const getProjects = async (page = 1, pageSize = 100): Promise<Project[]> => {
-  const response = await http.get(`/projects/search?organization=hmcts&p=${page}&ps=${pageSize}`);
-  const projects = JSON.parse(response.data);
+  const response = await getSonarProjects(page, pageSize);
+  const projects = JSON.parse(response);
   const filteredProjects = projects.components.filter(analysedRecently);
 
   if (projects.paging.total > page * pageSize) {
@@ -64,12 +64,11 @@ const analysedRecently = (project: Project): boolean => {
 };
 
 const getMetrics = async (project: Project): Promise<Row> => {
-  const response = await http.get(`measures/component?component=${project.key}&metricKeys=${metrics.join(',')}`);
-  const data = JSON.parse(response.data);
+  const response = await getSonarProject(project.key, metrics);
+  const data = JSON.parse(response);
   const row: Row = {
     id: project.key,
     last_analysis_date: new Date(project.lastAnalysisDate),
-    team: getTeamName(project.key),
   };
 
   for (const metric of metrics) {

@@ -26,6 +26,6 @@ export const run = async (pool: Pool) => {
     .map(result => result.url);
 
   // Either known to have it or not
-  await pool.query(`update github.repository set hasDependabotOrRenovate = (id = any($1))`, [res]);
+  await pool.query(`update github.repository set has_dependabot_or_renovate = (id = any($1))`, [res]);
   return [];
 };
