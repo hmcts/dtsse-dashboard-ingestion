@@ -10,6 +10,8 @@ jest.mock('../github/rest', () => ({
   listRepos: () => fs.readFileSync('src/test/data/github-repositories.json', 'utf-8'),
   listUpTo100PRsSince: () => JSON.parse(fs.readFileSync('src/test/data/github.pull-request.json', 'utf-8')),
   listPR: () => JSON.parse(fs.readFileSync('src/test/data/github.pr-1260.json', 'utf-8')),
+  getSonarProjects: () => fs.readFileSync('src/test/data/sonar.projects.json', 'utf-8'),
+  getSonarProject: () => fs.readFileSync('src/test/data/sonar.project.json', 'utf-8'),
 }));
 jest.mock('../github/graphql', () => ({
   getDependabotConfig: () => JSON.parse(fs.readFileSync('src/test/data/github.dependabot.json', 'utf-8')),
@@ -148,5 +150,13 @@ describe('integration tests', () => {
     ).rows;
     expect(rows[0].hasdependabotorrenovate).toEqual(false);
     expect(rows[1].hasdependabotorrenovate).toEqual(true);
+  });
+
+  test('sonarcloud', async () => {
+    const rows = (await pool.query(`select short_name, bugs, vulnerabilities, files from sonar.project join github.repository using(repo_id)`)).rows;
+    expect(rows[0].short_name).toEqual('ccd-data-store-api');
+    expect(rows[0].bugs).toEqual(3);
+    expect(rows[0].vulnerabilities).toEqual(3);
+    expect(rows[0].files).toEqual(676);
   });
 });

@@ -1,0 +1,104 @@
+{
+  "component": {
+    "id": "AWX796_NHR8j8dJrX-Im",
+    "key": "ccd-data-store-api",
+    "name": "ccd-data-store-api",
+    "qualifier": "TRK",
+    "measures": [
+      {
+        "metric": "coverage",
+        "value": "94.5",
+        "bestValue": false
+      },
+      {
+        "metric": "complexity",
+        "value": "5857"
+      },
+      {
+        "metric": "reliability_rating",
+        "value": "3.0",
+        "bestValue": false
+      },
+      {
+        "metric": "code_smells",
+        "value": "1052",
+        "bestValue": false
+      },
+      {
+        "metric": "duplicated_lines_density",
+        "value": "1.0",
+        "bestValue": false
+      },
+      {
+        "metric": "ncloc_language_distribution",
+        "value": "java=39876"
+      },
+      {
+        "metric": "duplicated_lines",
+        "value": "519",
+        "bestValue": false
+      },
+      {
+        "metric": "security_rating",
+        "value": "2.0",
+        "bestValue": false
+      },
+      {
+        "metric": "violations",
+        "value": "1058",
+        "bestValue": false
+      },
+      {
+        "metric": "quality_gate_details",
+        "value": "{\"level\":\"OK\",\"conditions\":[{\"metric\":\"new_reliability_rating\",\"op\":\"GT\",\"period\":1,\"error\":\"1\",\"actual\":\"1\",\"level\":\"OK\"},{\"metric\":\"new_security_rating\",\"op\":\"GT\",\"period\":1,\"error\":\"1\",\"actual\":\"1\",\"level\":\"OK\"},{\"metric\":\"new_maintainability_rating\",\"op\":\"GT\",\"period\":1,\"error\":\"1\",\"actual\":\"1\",\"level\":\"OK\"},{\"metric\":\"new_coverage\",\"op\":\"LT\",\"period\":1,\"error\":\"80\",\"actual\":\"97.34042553191489\",\"level\":\"OK\"},{\"metric\":\"new_duplicated_lines_density\",\"op\":\"GT\",\"period\":1,\"error\":\"3\",\"actual\":\"0.0\",\"level\":\"OK\"},{\"metric\":\"new_security_hotspots_reviewed\",\"op\":\"LT\",\"period\":1,\"error\":\"100\",\"actual\":\"100.0\",\"level\":\"OK\"}],\"ignoredConditions\":false}"
+      },
+      {
+        "metric": "sqale_index",
+        "value": "6503",
+        "bestValue": false
+      },
+      {
+        "metric": "critical_violations",
+        "value": "39",
+        "bestValue": false
+      },
+      {
+        "metric": "sqale_rating",
+        "value": "1.0",
+        "bestValue": true
+      },
+      {
+        "metric": "bugs",
+        "value": "3",
+        "bestValue": false
+      },
+      {
+        "metric": "cognitive_complexity",
+        "value": "2407",
+        "bestValue": false
+      },
+      {
+        "metric": "duplicated_blocks",
+        "value": "24",
+        "bestValue": false
+      },
+      {
+        "metric": "files",
+        "value": "676"
+      },
+      {
+        "metric": "vulnerabilities",
+        "value": "3",
+        "bestValue": false
+      },
+      {
+        "metric": "lines",
+        "value": "49660"
+      },
+      {
+        "metric": "last_commit_date",
+        "value": "1701252752000"
+      }
+    ]
+  }
+}
