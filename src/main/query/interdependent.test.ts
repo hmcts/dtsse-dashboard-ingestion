@@ -56,6 +56,12 @@ describe('integration tests', () => {
     expect(indexedRepos['lau']).toStrictEqual(['idam-user-disposer', 'lau-frontend']);
   });
 
+  test('active repositories only contains non archived repos', async () => {
+    const count = await pool.query('select count(*) from github.active_repository');
+
+    expect(count.rows[0].count).toBe('19');
+  });
+
   test('jenkins metrics', async () => {
     const builds = await pool.query('select count(*) from jenkins_impl.builds');
     // Total unique builds in our test data

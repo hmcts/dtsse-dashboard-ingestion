@@ -138,5 +138,12 @@
     "name": "sscs-submit-your-appeal",
     "archived": false,
     "language": null
+  },
+  {
+    "html_url": "https://github.com/HMCTS/archived",
+    "git_url": "git@github.com:HMCTS/archived",
+    "name": "archived",
+    "archived": true,
+    "language": null
   }
 ]
