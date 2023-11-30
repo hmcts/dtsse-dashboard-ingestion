@@ -6,6 +6,9 @@ drop column team,
 add constraint unique_report unique (repo_id, last_analysis_date);
 
 alter table github.repository
+rename column hasdependabotorrenovate to has_dependabot_or_renovate;
+
+alter table github.repository
 drop column jenkins_name,
 drop column team_alias;
 

@@ -148,8 +148,8 @@ describe('integration tests', () => {
     const rows = (
       await pool.query(`select * from github.repository where short_name in ('ccd-data-store-api', 'ccd-cache-warm-performance') order by short_name`)
     ).rows;
-    expect(rows[0].hasdependabotorrenovate).toEqual(false);
-    expect(rows[1].hasdependabotorrenovate).toEqual(true);
+    expect(rows[0].has_dependabot_or_renovate).toEqual(false);
+    expect(rows[1].has_dependabot_or_renovate).toEqual(true);
   });
 
   test('sonarcloud', async () => {
