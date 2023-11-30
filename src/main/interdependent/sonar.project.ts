@@ -1,4 +1,3 @@
-import { getTeamName } from '../sonar/team';
 import { getSonarProject, getSonarProjects } from '../github/rest';
 import { Pool } from 'pg';
 
@@ -70,7 +69,6 @@ const getMetrics = async (project: Project): Promise<Row> => {
   const row: Row = {
     id: project.key,
     last_analysis_date: new Date(project.lastAnalysisDate),
-    team: getTeamName(project.key),
   };
 
   for (const metric of metrics) {
