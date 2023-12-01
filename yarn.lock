@@ -1724,14 +1724,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg@npm:8.10.7":
-  version: 8.10.7
-  resolution: "@types/pg@npm:8.10.7"
+"@types/pg@npm:8.10.9":
+  version: 8.10.9
+  resolution: "@types/pg@npm:8.10.9"
   dependencies:
     "@types/node": "*"
     pg-protocol: "*"
     pg-types: ^4.0.1
-  checksum: 90a616360844b6f877be21a24839af2115f5eb9c8e3eeaf577fa0f036c6c56ad140113fdd8268e63cf215bd0953d89caa1af05191dd89cb2e6d96eb6db6074d2
+  checksum: c0c750af1f0945fe31c2793931da33bf596476ec8b52babfdb20f61006570c1c6c7f62f2dedd0cb9aefd2cddab238f2ed279337d3b2aa734ddd1ee8958e2355e
   languageName: node
   linkType: hard
 
@@ -3398,7 +3398,7 @@ __metadata:
     "@octokit/rest": 19.0.13
     "@types/jira-client": 7.1.9
     "@types/node": 20.10.1
-    "@types/pg": 8.10.7
+    "@types/pg": 8.10.9
     "@types/pg-format": 1.0.5
     "@typescript-eslint/eslint-plugin": 5.62.0
     "@typescript-eslint/parser": 5.62.0
