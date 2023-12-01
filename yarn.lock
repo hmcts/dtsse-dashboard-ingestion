@@ -1474,6 +1474,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testcontainers/postgresql@npm:^10.3.2":
+  version: 10.3.2
+  resolution: "@testcontainers/postgresql@npm:10.3.2"
+  dependencies:
+    testcontainers: ^10.3.2
+  checksum: 5182c6c58a0bfa2214c1bc337b8297d0ae7f4667644779ccd9d348457f4efaaaf06724a75994c1e0e191422abb4e4691423aabbec3cc7cd7dd2b683ddcc4f32f
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -3328,6 +3337,7 @@ __metadata:
     "@hmcts/properties-volume": 1.0.0
     "@octokit/graphql": 7.0.2
     "@octokit/rest": 20.0.2
+    "@testcontainers/postgresql": ^10.3.2
     "@types/jira-client": 7.1.9
     "@types/node": 20.10.1
     "@types/pg": 8.10.9
@@ -7677,7 +7687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.3.2":
+"testcontainers@npm:10.3.2, testcontainers@npm:^10.3.2":
   version: 10.3.2
   resolution: "testcontainers@npm:10.3.2"
   dependencies:
