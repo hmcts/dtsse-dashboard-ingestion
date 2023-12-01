@@ -1,4 +1,5 @@
-import { StartedTestContainer, PostgreSqlContainer } from 'testcontainers';
+import { StartedTestContainer } from 'testcontainers';
+const { PostgreSqlContainer } = require('@testcontainers/postgresql');
 
 let container: StartedTestContainer;
 
