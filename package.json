@@ -36,7 +36,7 @@
     "jira-client": "8.2.2",
     "pg": "8.11.3",
     "pg-format": "1.0.4",
-    "ts-node": "10.9.1",
+    "ts-node": "10.9.2",
     "typescript": "5.3.3"
   },
   "devDependencies": {
