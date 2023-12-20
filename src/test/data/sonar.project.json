@@ -1,7 +1,7 @@
 {
   "component": {
     "id": "AWX796_NHR8j8dJrX-Im",
-    "key": "ccd-data-store-api",
+    "key": "hmcts:ccd-data-store-api",
     "name": "ccd-data-store-api",
     "qualifier": "TRK",
     "measures": [
