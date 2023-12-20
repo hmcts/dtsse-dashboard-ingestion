@@ -33,7 +33,8 @@ export const run = async (pool: Pool) => {
   select r.* 
   from jsonb_array_elements($1::jsonb) e
     -- Find which repo this belongs to
-    left join github.repository repo on repo.short_name = e->>'id',
+    -- Sonar project keys may be prefixed with the organisation name, so we need to strip that off.
+    join github.repository repo on repo.short_name = coalesce(nullif(split_part(e->>'id', ':', 2), ''), e->>'id'),
     -- Insert the repo_id we've looked up into the json before populating the record.
     jsonb_populate_record(null::sonar.project, e || jsonb_build_object('repo_id', repo.repo_id)) r
   on conflict do nothing
