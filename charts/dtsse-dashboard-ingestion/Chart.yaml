@@ -3,8 +3,8 @@ appVersion: '1.0'
 description: A Helm chart for dtsse-dashboard-ingestion App
 name: dtsse-dashboard-ingestion
 home: https://github.com/hmcts/dtsse-dashboard-ingestion
-version: 0.0.12
+version: 0.0.13
 dependencies:
   - name: job
-    version: 2.1.0
+    version: 2.1.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
