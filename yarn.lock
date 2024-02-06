@@ -1620,11 +1620,11 @@ __metadata:
   linkType: hard
 
 "@testcontainers/postgresql@npm:^10.3.2":
-  version: 10.6.0
-  resolution: "@testcontainers/postgresql@npm:10.6.0"
+  version: 10.7.1
+  resolution: "@testcontainers/postgresql@npm:10.7.1"
   dependencies:
-    testcontainers: ^10.6.0
-  checksum: 432b0e93bfb89a634943c8ce536ec717f7894ce190c8c0564f287307a8194e4de506e176a52cbc9bbb33ebbc65779d4ebc03f22de3d65a5a8e00f57c845115aa
+    testcontainers: ^10.7.1
+  checksum: a57e73853ec1e2feb952d602abd30768ade7ea94ed72cf7e85282e20cdab3f8ee6c747eb116389c80e9a3370f83e321225b20d4bcbb5d92080edb43f0249d9e7
   languageName: node
   linkType: hard
 
@@ -3521,7 +3521,7 @@ __metadata:
     pg: 8.11.3
     pg-format: 1.0.4
     prettier: 2.8.8
-    testcontainers: 10.6.0
+    testcontainers: 10.7.1
     ts-jest: 29.1.2
     ts-node: 10.9.2
     typescript: 5.3.3
@@ -7876,9 +7876,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.6.0, testcontainers@npm:^10.6.0":
-  version: 10.6.0
-  resolution: "testcontainers@npm:10.6.0"
+"testcontainers@npm:10.7.1, testcontainers@npm:^10.7.1":
+  version: 10.7.1
+  resolution: "testcontainers@npm:10.7.1"
   dependencies:
     "@balena/dockerignore": ^1.0.2
     "@types/dockerode": ^3.3.21
@@ -7895,7 +7895,7 @@ __metadata:
     ssh-remote-port-forward: ^1.0.4
     tar-fs: ^3.0.4
     tmp: ^0.2.1
-  checksum: 262b5b2820638de2f3c654b949a25bed2e2cbf81d8fa77e3f48089630c4326f0145676e30a1abb837a69d3d9fc623836476ebc3c03f7a53b0f5f13edfdb3ceb4
+  checksum: 3ecb439914fab1147943d7d97e4021309fa69f3fcdbc153f4cf3fcf1feb03415da402fb914811189a3606409d58de1174910e144fb4c6c7e3510cc2cb59911b2
   languageName: node
   linkType: hard
 
