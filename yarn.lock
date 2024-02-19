@@ -1318,7 +1318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-web-snippet@npm:^1.0.1":
+"@microsoft/applicationinsights-web-snippet@npm:1.0.1":
   version: 1.0.1
   resolution: "@microsoft/applicationinsights-web-snippet@npm:1.0.1"
   checksum: e4e723031ce8fd9b21e0b52467ddc13f8f30e0ce3ec54b9f9f0946f9e2826050b97803f60322be3676218e77fff7234679cc488ee122e689f487bb2073cd95b4
@@ -2280,15 +2280,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"applicationinsights@npm:2.9.2":
-  version: 2.9.2
-  resolution: "applicationinsights@npm:2.9.2"
+"applicationinsights@npm:2.9.4":
+  version: 2.9.4
+  resolution: "applicationinsights@npm:2.9.4"
   dependencies:
     "@azure/core-auth": ^1.5.0
     "@azure/core-rest-pipeline": 1.10.1
     "@azure/core-util": 1.2.0
     "@azure/opentelemetry-instrumentation-azure-sdk": ^1.0.0-beta.5
-    "@microsoft/applicationinsights-web-snippet": ^1.0.1
+    "@microsoft/applicationinsights-web-snippet": 1.0.1
     "@opentelemetry/api": ^1.7.0
     "@opentelemetry/core": ^1.19.0
     "@opentelemetry/sdk-trace-base": ^1.19.0
@@ -2302,7 +2302,7 @@ __metadata:
   peerDependenciesMeta:
     applicationinsights-native-metrics:
       optional: true
-  checksum: d6e52080cb69d32bb8509bc04f774db94b0f25b34661c30d975e78639248fba684a615413bf2ad8ef34578947371660b3b3226effb656fc0d3e66fa8aa4fe38b
+  checksum: 1fa88afb0c803f6f5e9a0228c44047c52142617e8e87323957e8f858bb2c4c9382476b9d88439f2e94d7f19bed5428dbd4662e2fab5d4a0b6ca47c28e16102b2
   languageName: node
   linkType: hard
 
@@ -3505,7 +3505,7 @@ __metadata:
     "@types/pg-format": 1.0.5
     "@typescript-eslint/eslint-plugin": 6.21.0
     "@typescript-eslint/parser": 6.21.0
-    applicationinsights: 2.9.2
+    applicationinsights: 2.9.4
     axios: 1.6.7
     db-migrate: 0.11.14
     db-migrate-pg: 1.5.2
