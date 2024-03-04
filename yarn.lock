@@ -3242,6 +3242,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dom-walk@npm:^0.1.0":
+  version: 0.1.2
+  resolution: "dom-walk@npm:0.1.2"
+  checksum: 19eb0ce9c6de39d5e231530685248545d9cd2bd97b2cb3486e0bfc0f2a393a9addddfd5557463a932b52fdfcf68ad2a619020cd2c74a5fe46fbecaa8e80872f3
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:16.4.4":
   version: 16.4.4
   resolution: "dotenv@npm:16.4.4"
@@ -3280,6 +3287,7 @@ __metadata:
     eslint-config-prettier: 9.1.0
     eslint-plugin-import: 2.27.5
     eslint-plugin-jest: 27.9.0
+    global: ^4.4.0
     husky: 8.0.3
     jest: 29.7.0
     jira-client: 8.2.2
