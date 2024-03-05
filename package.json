@@ -33,7 +33,6 @@
     "axios": "1.6.7",
     "db-migrate": "0.11.14",
     "db-migrate-pg": "1.5.2",
-    "global": "^4.4.0",
     "jira-client": "8.2.2",
     "pg": "8.11.3",
     "pg-format": "1.0.4",
