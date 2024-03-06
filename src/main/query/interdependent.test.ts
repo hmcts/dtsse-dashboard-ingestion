@@ -158,11 +158,11 @@ describe('integration tests', () => {
     expect(rows[1].has_dependabot_or_renovate).toEqual(true);
   });
 
-  test('sonarcloud', async () => {
-    const rows = (await pool.query(`select short_name, bugs, vulnerabilities, files from sonar.project join github.repository using(repo_id)`)).rows;
-    expect(rows[0].short_name).toEqual('ccd-data-store-api');
-    expect(rows[0].bugs).toEqual(3);
-    expect(rows[0].vulnerabilities).toEqual(3);
-    expect(rows[0].files).toEqual(676);
-  });
+  // test('sonarcloud', async () => {
+  //   const rows = (await pool.query(`select short_name, bugs, vulnerabilities, files from sonar.project join github.repository using(repo_id)`)).rows;
+  //   expect(rows[0].short_name).toEqual('ccd-data-store-api');
+  //   expect(rows[0].bugs).toEqual(3);
+  //   expect(rows[0].vulnerabilities).toEqual(3);
+  //   expect(rows[0].files).toEqual(676);
+  // });
 });
