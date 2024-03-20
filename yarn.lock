@@ -1803,12 +1803,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.11.27":
-  version: 20.11.27
-  resolution: "@types/node@npm:20.11.27"
+"@types/node@npm:20.11.30":
+  version: 20.11.30
+  resolution: "@types/node@npm:20.11.30"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 24a134a3c18e7261b6d6385c2b7714b6cf93663f30d5df8ca95c649f9cef917a422d77bfd4a18b2c7d190d3a39f445b345ecd9ef6f994e61c7e92f400ecbe80f
+  checksum: 7597767aa3e44b0f1bf62efa522dd17741135f283c11de6a20ead8bb7016fb4999cc30adcd8f2bb29ebb216906c92894346ccd187de170927dc1e212d2c07c81
   languageName: node
   linkType: hard
 
@@ -3535,7 +3535,7 @@ __metadata:
     "@octokit/rest": 20.0.2
     "@testcontainers/postgresql": ^10.3.2
     "@types/jira-client": 7.1.9
-    "@types/node": 20.11.27
+    "@types/node": 20.11.30
     "@types/pg": 8.11.2
     "@types/pg-format": 1.0.5
     "@typescript-eslint/eslint-plugin": 6.21.0
