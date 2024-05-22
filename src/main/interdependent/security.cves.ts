@@ -62,6 +62,7 @@ const processCosmosResults = async (pool: Pool, json: string) => {
  insert into security.cve_report(timestamp, repo_id)
    select timestamp, repo_id from details d
      group by 1, 2
+     order by 1 asc
    on conflict do nothing
    returning *
  )
