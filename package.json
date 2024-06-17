@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=production timeout 300 ts-node src/main/run.ts",
-    "start:dev": "timeout 300 ts-node -r dotenv/config src/main/run.ts",
+    "start:dev": "timeout 10 ts-node -r dotenv/config src/main/run.ts",
     "lint": "eslint . --ext .js,.ts && prettier --check .",
     "lint:fix": "prettier --write . && eslint --fix .",
     "build": "exit 0",
@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@azure/cosmos": "4.0.0",
+    "@azure/identity": "^4.2.1",
+    "@azure/storage-blob": "^12.23.0",
     "@hmcts/properties-volume": "1.1.0",
     "@octokit/graphql": "7.1.0",
     "@octokit/rest": "20.1.1",
