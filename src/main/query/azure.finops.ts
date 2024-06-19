@@ -1,17 +1,11 @@
 import { BlobServiceClient } from '@azure/storage-blob';
-import { DefaultAzureCredential } from '@azure/identity';
+import { config } from '../config';
 
 export const run = async () => {
-  const account = 'finopsdataptlsa';
-  const defaultAzureCredential = new DefaultAzureCredential();
+  const blobServiceClient = BlobServiceClient.fromConnectionString(config.azureFinOpsConnectionString);
 
-  const blobServiceClient = new BlobServiceClient(`https://${account}.blob.core.windows.net`, defaultAzureCredential);
-
-  console.log(await blobServiceClient.getProperties());
-  const containers = blobServiceClient.listContainers();
-
-  for await (const container of containers) {
-    console.log(container);
+  for await (const container of blobServiceClient.listContainers()) {
+    console.log(`Container: ${container.name}`);
   }
 
   return [];
