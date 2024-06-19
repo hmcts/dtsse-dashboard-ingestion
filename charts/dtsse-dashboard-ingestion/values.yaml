@@ -6,6 +6,7 @@ job:
       secrets:
         - name: AppInsightsConnectionString
           alias: APPLICATIONINSIGHTS_CONNECTION_STRING
+        - azure-finops-connection-string
         - github-token
         - sonar-token
         - jira-token

@@ -19,6 +19,7 @@ const encodedDbUrl = (process.env.DATABASE_URL = getConnectionString(unencodedDb
 
 export const config = {
   appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets']?.['dtsse']?.['AppInsightsConnectionString'],
+  azureFinOpsConnectionString: process.env.AZURE_FINOPS_CONNECTION_STRING || vault['secrets']?.['dtsse']?.['azure-finops-connection-string'],
   jiraToken: process.env.JIRA_TOKEN || vault['secrets']?.['dtsse']?.['jira-token'],
   githubToken: process.env.GITHUB_TOKEN || vault['secrets']?.['dtsse']?.['github-token'],
   sonarToken: process.env.SONAR_TOKEN || vault['secrets']?.['dtsse']?.['sonar-token'],
