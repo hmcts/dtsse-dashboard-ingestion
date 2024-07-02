@@ -8,6 +8,10 @@ import { pipeline } from 'node:stream/promises';
 import { stringify } from 'csv-stringify/sync';
 
 export const run = async () => {
+  if (new Date().getHours() !== 7 && new Date().getMinutes() < 15) {
+    return [];
+  }
+
   const blobServiceClient = BlobServiceClient.fromConnectionString(config.azureFinOpsConnectionString);
   const containerClient = blobServiceClient.getContainerClient('cmexports');
   const root = 'dailyamortized/daily-amortized-export/';
