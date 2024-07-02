@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "AZURE_LOG_LEVEL=info NODE_ENV=production timeout 300 ts-node src/main/run.ts",
-    "start:dev": "timeout 10 ts-node -r dotenv/config src/main/run.ts",
+    "start:dev": "timeout 600 ts-node -r dotenv/config src/main/run.ts",
     "lint": "eslint . --ext .js,.ts && prettier --check .",
     "lint:fix": "prettier --write . && eslint --fix .",
     "build": "exit 0",
@@ -30,14 +30,18 @@
     "@types/jira-client": "7.1.9",
     "@types/node": "20.14.5",
     "@types/pg": "8.11.6",
+    "@types/pg-copy-streams": "^1.2.5",
     "@types/pg-format": "1.0.5",
     "applicationinsights": "3.1.0",
     "axios": "1.7.2",
+    "csv-parse": "^5.5.6",
+    "csv-stringify": "^6.5.0",
     "db-migrate": "0.11.14",
     "db-migrate-pg": "1.5.2",
     "ip": "^2.0.1",
     "jira-client": "8.2.2",
     "pg": "8.12.0",
+    "pg-copy-streams": "^6.0.6",
     "pg-format": "1.0.4",
     "tough-cookie": "^4.1.3",
     "ts-node": "10.9.2",
@@ -63,5 +67,5 @@
     "*.{js,ts}": "eslint --cache --fix",
     "*.{js,ts,css,md,html,json}": "prettier --write"
   },
-  "packageManager": "yarn@3.8.2"
+  "packageManager": "yarn@4.3.1"
 }
