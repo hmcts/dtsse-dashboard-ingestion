@@ -28,7 +28,7 @@
     "@octokit/graphql": "7.1.0",
     "@octokit/rest": "20.1.1",
     "@types/jira-client": "7.1.9",
-    "@types/node": "20.14.9",
+    "@types/node": "20.14.10",
     "@types/pg": "8.11.6",
     "@types/pg-copy-streams": "^1.2.5",
     "@types/pg-format": "1.0.5",
