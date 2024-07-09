@@ -2645,9 +2645,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"applicationinsights@npm:3.2.0":
-  version: 3.2.0
-  resolution: "applicationinsights@npm:3.2.0"
+"applicationinsights@npm:3.2.1":
+  version: 3.2.1
+  resolution: "applicationinsights@npm:3.2.1"
   dependencies:
     "@azure/core-auth": "npm:^1.3.0"
     "@azure/core-client": "npm:^1.0.0"
@@ -2671,7 +2671,7 @@ __metadata:
     "@opentelemetry/semantic-conventions": "npm:^1.24.0"
     diagnostic-channel: "npm:1.1.1"
     diagnostic-channel-publishers: "npm:1.0.8"
-  checksum: 10/2a9a74f615a0d99c03dee77c68a12c2aa9809dc4789c506ce203da9c40ad6804bdbc25c92987f276d9d51fcc46051dcffc1183502bd6d6b818f01f9ccb96f1cc
+  checksum: 10/be0d1e733269c6b024ca7a787bd7f562b5e0b836d3cefa8541e527e7c89572d7d309025661391ce374bc92133c0ad3f08e988483b743cd47fdf6887e68593295
   languageName: node
   linkType: hard
 
@@ -3936,7 +3936,7 @@ __metadata:
     "@types/pg-format": "npm:1.0.5"
     "@typescript-eslint/eslint-plugin": "npm:7.15.0"
     "@typescript-eslint/parser": "npm:7.15.0"
-    applicationinsights: "npm:3.2.0"
+    applicationinsights: "npm:3.2.1"
     axios: "npm:1.7.2"
     csv-parse: "npm:^5.5.6"
     csv-stringify: "npm:^6.5.0"
