@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure@yarn-v4-again")
+@Library("Infrastructure")
 
 def type = "nodejs"
 def product = "dtsse"
