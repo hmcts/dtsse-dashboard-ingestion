@@ -107,7 +107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-tracing@npm:^1.0.0, @azure/core-tracing@npm:^1.0.1":
+"@azure/core-tracing@npm:^1.0.0, @azure/core-tracing@npm:^1.0.1, @azure/core-tracing@npm:^1.1.2":
   version: 1.1.2
   resolution: "@azure/core-tracing@npm:1.1.2"
   dependencies:
@@ -325,8 +325,8 @@ __metadata:
   linkType: hard
 
 "@azure/storage-blob@npm:^12.23.0":
-  version: 12.23.0
-  resolution: "@azure/storage-blob@npm:12.23.0"
+  version: 12.24.0
+  resolution: "@azure/storage-blob@npm:12.24.0"
   dependencies:
     "@azure/abort-controller": "npm:^1.0.0"
     "@azure/core-auth": "npm:^1.4.0"
@@ -335,13 +335,13 @@ __metadata:
     "@azure/core-lro": "npm:^2.2.0"
     "@azure/core-paging": "npm:^1.1.1"
     "@azure/core-rest-pipeline": "npm:^1.10.1"
-    "@azure/core-tracing": "npm:^1.0.0"
+    "@azure/core-tracing": "npm:^1.1.2"
     "@azure/core-util": "npm:^1.6.1"
     "@azure/core-xml": "npm:^1.3.2"
     "@azure/logger": "npm:^1.0.0"
     events: "npm:^3.0.0"
     tslib: "npm:^2.2.0"
-  checksum: 10/f4bd70ea61fc7c05d06345ac51d03546a5e3a1802270b6068f9c19ec8fea4ac5ee7404b19a10a5580e188a07bc9a9b0b843ede0a27f128aaa21eb9e724a33636
+  checksum: 10/ee727e5fb740e3a495cc4b3b7345312a8c2baa7a410fb069107490f8addd9e65a741e8512e4404fb1aaf2fddf27f2bf8b9afe1147149344ba2d76ae348f03016
   languageName: node
   linkType: hard
 
