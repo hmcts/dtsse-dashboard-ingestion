@@ -1,1 +1,2 @@
-ALTER SEQUENCE "finops_id_seq" AS bigint MAXVALUE 9223372036854775807;
+alter sequence azure.finops_id_seq as bigint;
+alter table azure.finops alter id type bigint;
