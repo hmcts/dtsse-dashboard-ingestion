@@ -29,7 +29,7 @@
     "@octokit/rest": "20.1.1",
     "@types/jira-client": "7.1.9",
     "@types/node": "20.14.13",
-    "@types/pg": "8.11.6",
+    "@types/pg": "8.11.8",
     "@types/pg-copy-streams": "^1.2.5",
     "@types/pg-format": "1.0.5",
     "applicationinsights": "3.2.1",
