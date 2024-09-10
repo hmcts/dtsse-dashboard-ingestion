@@ -33,7 +33,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-auth@npm:^1.3.0, @azure/core-auth@npm:^1.4.0, @azure/core-auth@npm:^1.5.0":
+"@azure/core-auth@npm:^1.3.0, @azure/core-auth@npm:^1.4.0, @azure/core-auth@npm:^1.5.0, @azure/core-auth@npm:^1.7.1":
   version: 1.7.2
   resolution: "@azure/core-auth@npm:1.7.2"
   dependencies:
@@ -91,7 +91,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-rest-pipeline@npm:^1.1.0, @azure/core-rest-pipeline@npm:^1.10.1, @azure/core-rest-pipeline@npm:^1.2.0, @azure/core-rest-pipeline@npm:^1.3.0, @azure/core-rest-pipeline@npm:^1.8.0, @azure/core-rest-pipeline@npm:^1.9.1, @azure/core-rest-pipeline@npm:^1.9.2":
+"@azure/core-rest-pipeline@npm:^1.1.0, @azure/core-rest-pipeline@npm:^1.10.1, @azure/core-rest-pipeline@npm:^1.3.0, @azure/core-rest-pipeline@npm:^1.8.0, @azure/core-rest-pipeline@npm:^1.9.1, @azure/core-rest-pipeline@npm:^1.9.2":
   version: 1.16.1
   resolution: "@azure/core-rest-pipeline@npm:1.16.1"
   dependencies:
@@ -107,7 +107,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-tracing@npm:^1.0.0, @azure/core-tracing@npm:^1.0.1, @azure/core-tracing@npm:^1.1.2":
+"@azure/core-rest-pipeline@npm:^1.15.1":
+  version: 1.16.3
+  resolution: "@azure/core-rest-pipeline@npm:1.16.3"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.0.0"
+    "@azure/core-auth": "npm:^1.4.0"
+    "@azure/core-tracing": "npm:^1.0.1"
+    "@azure/core-util": "npm:^1.9.0"
+    "@azure/logger": "npm:^1.0.0"
+    http-proxy-agent: "npm:^7.0.0"
+    https-proxy-agent: "npm:^7.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10/c64e866fccd513a1779661c73b9dd83157ee386682228e5975f2f760ac3db68c2371ef7854d56bd40a9113eed24a8f8ec0c94fb3cc0a7876a20ad687f3e68ae1
+  languageName: node
+  linkType: hard
+
+"@azure/core-tracing@npm:^1.0.0, @azure/core-tracing@npm:^1.0.1, @azure/core-tracing@npm:^1.1.1, @azure/core-tracing@npm:^1.1.2":
   version: 1.1.2
   resolution: "@azure/core-tracing@npm:1.1.2"
   dependencies:
@@ -126,6 +142,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/core-util@npm:^1.8.1":
+  version: 1.9.2
+  resolution: "@azure/core-util@npm:1.9.2"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10/341d9ed642fc290569ba7a6d7f4d6d0c11678d96fc8cdf32b25bfe75d4bef3c57a1bebbf1d4cd0451d700c3821d86e288112d478c1f5874ce9e957841dc3cbf5
+  languageName: node
+  linkType: hard
+
 "@azure/core-xml@npm:^1.3.2":
   version: 1.4.2
   resolution: "@azure/core-xml@npm:1.4.2"
@@ -136,24 +162,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/cosmos@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@azure/cosmos@npm:4.0.0"
+"@azure/cosmos@npm:4.1.1":
+  version: 4.1.1
+  resolution: "@azure/cosmos@npm:4.1.1"
   dependencies:
-    "@azure/abort-controller": "npm:^1.0.0"
-    "@azure/core-auth": "npm:^1.3.0"
-    "@azure/core-rest-pipeline": "npm:^1.2.0"
-    "@azure/core-tracing": "npm:^1.0.0"
-    debug: "npm:^4.1.1"
+    "@azure/abort-controller": "npm:^2.0.0"
+    "@azure/core-auth": "npm:^1.7.1"
+    "@azure/core-rest-pipeline": "npm:^1.15.1"
+    "@azure/core-tracing": "npm:^1.1.1"
+    "@azure/core-util": "npm:^1.8.1"
     fast-json-stable-stringify: "npm:^2.1.0"
-    jsbi: "npm:^3.1.3"
-    node-abort-controller: "npm:^3.0.0"
-    priorityqueuejs: "npm:^1.0.0"
-    semaphore: "npm:^1.0.5"
-    tslib: "npm:^2.2.0"
-    universal-user-agent: "npm:^6.0.0"
-    uuid: "npm:^8.3.0"
-  checksum: 10/4d660902d3ec453ca5957096908f36ab54489dd92e4432da27a0244bf27ac58f93da994de1fc71d0324d10c289d80f9be46a94fe3151bba76b149d591d655ae1
+    jsbi: "npm:^4.3.0"
+    priorityqueuejs: "npm:^2.0.0"
+    semaphore: "npm:^1.1.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10/6e525ca6fabed5f66920a871f510783f3fdbbc6c263b5ec69c7b3ec2f00e1d1ba95ebb8a46a819c8ae0ee1951e52cdd78ccbc3eaa08bdfb0cd05a18d8fda2eed
   languageName: node
   linkType: hard
 
@@ -4028,7 +4051,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dtsse-dashboard-ingestion@workspace:."
   dependencies:
-    "@azure/cosmos": "npm:4.0.0"
+    "@azure/cosmos": "npm:4.1.1"
     "@azure/identity": "npm:^4.2.1"
     "@azure/storage-blob": "npm:^12.23.0"
     "@hmcts/properties-volume": "npm:1.2.0"
@@ -6284,10 +6307,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsbi@npm:^3.1.3":
-  version: 3.2.5
-  resolution: "jsbi@npm:3.2.5"
-  checksum: 10/2cceb3a06dcb16493e936aa22384d912dd5f0a1fd474b97b5c6705011bd0aac8214d9a392a730b3f3ffb61a8fbe910a34d0fe881329be6a02857520d7a61ace6
+"jsbi@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "jsbi@npm:4.3.0"
+  checksum: 10/c2195d79c1da263d4d00973c1d7c6676678eafd8cf2ef5fa4ffa684ae3e948a2267cb3de213744e767d22a10dcb6266c88320820ec19f11d282e99acb361e4c9
   languageName: node
   linkType: hard
 
@@ -7006,13 +7029,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-abort-controller@npm:^3.0.0":
-  version: 3.1.1
-  resolution: "node-abort-controller@npm:3.1.1"
-  checksum: 10/0a2cdb7ec0aeaf3cb31e1ca0e192f5add48f1c5c9c9ed822129f9dddbd9432f69b7425982f94ce803c56a2104884530aa67cd57696e5774b2e5b8ec2f58de042
-  languageName: node
-  linkType: hard
-
 "node-fs@npm:~0.1.5":
   version: 0.1.7
   resolution: "node-fs@npm:0.1.7"
@@ -7670,10 +7686,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"priorityqueuejs@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "priorityqueuejs@npm:1.0.0"
-  checksum: 10/5b341037ca1a148a00b10ea4edd56572445ad01555b9224ea39ca24ff2fb86683b5ec6d7bbed6ce3f4375614d9ed678d1d7c2c38f7ecd075bf6a35afa0306bf7
+"priorityqueuejs@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "priorityqueuejs@npm:2.0.0"
+  checksum: 10/94aeb915c75b1a95efec8db83fc1d535d9a2d501fcc4e5f374cf714d76231358064caad9a1f6bb99893f94fad4a411dc9b0a3bce04c7da159119bd7bd82f75d7
   languageName: node
   linkType: hard
 
@@ -8138,7 +8154,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semaphore@npm:^1.0.5":
+"semaphore@npm:^1.1.0":
   version: 1.1.0
   resolution: "semaphore@npm:1.1.0"
   checksum: 10/7a62e0486ab2e361aecf5d88ecb99f42236bb9fbe29e432644d8af371e78c559dc3f2fbef0f57f716491071c214bdf1a15f1f398445b20423278750e2290ea37
