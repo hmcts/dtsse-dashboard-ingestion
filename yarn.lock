@@ -2098,11 +2098,11 @@ __metadata:
   linkType: hard
 
 "@testcontainers/postgresql@npm:^10.3.2":
-  version: 10.13.0
-  resolution: "@testcontainers/postgresql@npm:10.13.0"
+  version: 10.13.1
+  resolution: "@testcontainers/postgresql@npm:10.13.1"
   dependencies:
-    testcontainers: "npm:^10.13.0"
-  checksum: 10/63eefafe2f360e7a4ee2118ac833ba26fcb1bbb5beea2040cc788eb3f0a28228bc7c656463bc4e1b58df35bf12eb700c86f2ef92bc696ff1f038a964133ed2e3
+    testcontainers: "npm:^10.13.1"
+  checksum: 10/22ccba19e1f4c9f76ee86f7a4f010185a80076c6530564f1ad674913e18796bc3d954db44ad3ff86a0212f8b8cc0b48d01f5144e15355ebdd6c8d6a58b18776d
   languageName: node
   linkType: hard
 
@@ -4106,7 +4106,7 @@ __metadata:
     pg-copy-streams: "npm:^6.0.6"
     pg-format: "npm:1.0.4"
     prettier: "npm:2.8.8"
-    testcontainers: "npm:10.13.0"
+    testcontainers: "npm:10.13.1"
     tough-cookie: "npm:^4.1.3"
     ts-jest: "npm:29.2.5"
     ts-node: "npm:10.9.2"
@@ -8842,9 +8842,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.13.0, testcontainers@npm:^10.13.0":
-  version: 10.13.0
-  resolution: "testcontainers@npm:10.13.0"
+"testcontainers@npm:10.13.1, testcontainers@npm:^10.13.1":
+  version: 10.13.1
+  resolution: "testcontainers@npm:10.13.1"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.29"
@@ -8861,7 +8861,7 @@ __metadata:
     tar-fs: "npm:^3.0.6"
     tmp: "npm:^0.2.3"
     undici: "npm:^5.28.4"
-  checksum: 10/a0b468bc76778211059c7f86fac0c8788a8614914d6c09cf4cbdeec61677fec1ca9aed815297d9e67b02b2d6aabd301648ec52e1e73bcb41be18c6096affef65
+  checksum: 10/a03aca03afe4755833493099a7b9323301a8b4febff7fd9d3bd4017d824a059676b2b9166df929e781233f68718463a2913fad43faa7d5aa0058849d97a97173
   languageName: node
   linkType: hard
 
