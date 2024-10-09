@@ -2096,11 +2096,11 @@ __metadata:
   linkType: hard
 
 "@testcontainers/postgresql@npm:^10.3.2":
-  version: 10.13.1
-  resolution: "@testcontainers/postgresql@npm:10.13.1"
+  version: 10.13.2
+  resolution: "@testcontainers/postgresql@npm:10.13.2"
   dependencies:
-    testcontainers: "npm:^10.13.1"
-  checksum: 10/22ccba19e1f4c9f76ee86f7a4f010185a80076c6530564f1ad674913e18796bc3d954db44ad3ff86a0212f8b8cc0b48d01f5144e15355ebdd6c8d6a58b18776d
+    testcontainers: "npm:^10.13.2"
+  checksum: 10/f748c4b4f4741fad94d1bbcee07f226f720650589a58649539a93f246094808cfcb84df11ca0437a5f1d690783c8b1bb05865fd509e07a6170def225c3a08048
   languageName: node
   linkType: hard
 
@@ -8909,7 +8909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.13.1, testcontainers@npm:^10.13.1":
+"testcontainers@npm:10.13.1":
   version: 10.13.1
   resolution: "testcontainers@npm:10.13.1"
   dependencies:
@@ -8929,6 +8929,29 @@ __metadata:
     tmp: "npm:^0.2.3"
     undici: "npm:^5.28.4"
   checksum: 10/a03aca03afe4755833493099a7b9323301a8b4febff7fd9d3bd4017d824a059676b2b9166df929e781233f68718463a2913fad43faa7d5aa0058849d97a97173
+  languageName: node
+  linkType: hard
+
+"testcontainers@npm:^10.13.2":
+  version: 10.13.2
+  resolution: "testcontainers@npm:10.13.2"
+  dependencies:
+    "@balena/dockerignore": "npm:^1.0.2"
+    "@types/dockerode": "npm:^3.3.29"
+    archiver: "npm:^7.0.1"
+    async-lock: "npm:^1.4.1"
+    byline: "npm:^5.0.0"
+    debug: "npm:^4.3.5"
+    docker-compose: "npm:^0.24.8"
+    dockerode: "npm:^3.3.5"
+    get-port: "npm:^5.1.1"
+    proper-lockfile: "npm:^4.1.2"
+    properties-reader: "npm:^2.3.0"
+    ssh-remote-port-forward: "npm:^1.0.4"
+    tar-fs: "npm:^3.0.6"
+    tmp: "npm:^0.2.3"
+    undici: "npm:^5.28.4"
+  checksum: 10/9d1c7028b494ef68a15138c1de3880f2629e46e80fec4c427c885589b26249be3294ee3824e3409a8a8db4420f16db84e8e5be06b69162e98ebdcde8ecd6c951
   languageName: node
   linkType: hard
 
