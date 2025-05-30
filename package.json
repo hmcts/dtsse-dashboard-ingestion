@@ -6,7 +6,7 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "start": "AZURE_LOG_LEVEL=info NODE_ENV=production timeout 300 ts-node src/main/run.ts",
+    "start": "AZURE_LOG_LEVEL=info NODE_ENV=production timeout 3600 ts-node src/main/run.ts",
     "start:dev": "timeout 600 ts-node -r dotenv/config src/main/run.ts",
     "lint": "eslint . --ext .js,.ts && prettier --check .",
     "lint:fix": "prettier --write . && eslint --fix .",
