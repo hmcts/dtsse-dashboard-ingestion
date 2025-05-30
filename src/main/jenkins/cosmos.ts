@@ -12,17 +12,21 @@ const platformDatabase = client.database('platform-metrics');
 const helmchartMetrics = platformDatabase.container('app-helm-chart-metrics');
 
 export const getMetrics = async (fromUnixtime: bigint) => {
+  // Fetch a chunk of Jenkins metrics from Cosmos DB.
+  // Repeated runs will bring the data up to date.
+  // Any duplicated data will be ignored with `on conflict do nothing`.
   const querySpec = {
-    query: `SELECT * from c where c._ts > ${fromUnixtime}`,
+    query: `SELECT * from c where c._ts >= ${fromUnixtime} order by c._ts asc offset 0 limit 25000`,
   };
   const { resources: items } = await pipelineMetrics.items.query(querySpec).fetchAll();
+  console.log(`Processing ${items.length} Jenkins metrics`);
   // TODO: find an api that gives us a raw json string
   return JSON.stringify(items);
 };
 
 export const getCVEs = async (fromUnixtime: bigint) => {
   const querySpec = {
-    query: `SELECT * from c where c._ts > ${fromUnixtime} and c.build.branch_name = "master" order by c._ts asc offset 0 limit 200`,
+    query: `SELECT * from c where c._ts >= ${fromUnixtime} and c.build.branch_name = "master" order by c._ts asc offset 0 limit 200`,
   };
   const { resources: items } = await cveReports.items.query(querySpec).fetchAll();
   return JSON.stringify(items);

@@ -2,7 +2,10 @@ import { Pool } from 'pg';
 import { getMetrics } from '../jenkins/cosmos';
 
 export const run = async (pool: Pool) => {
-  const items = await getMetrics(await getUnixTimeToQueryFrom(pool));
+  const time = await getUnixTimeToQueryFrom(pool);
+  console.log(`Querying Jenkins metrics from ${new Date(time * 1000).toISOString()}`);
+  const items = await getMetrics(time);
+  console.log(`Processing ${items.length} Jenkins metrics`);
   return processCosmosResults(pool, items);
 };
 
