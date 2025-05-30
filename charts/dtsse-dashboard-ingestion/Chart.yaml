@@ -7,4 +7,4 @@ version: 0.0.16
 dependencies:
   - name: job
     version: 2.2.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: oci://hmctspublic.azurecr.io/helm
