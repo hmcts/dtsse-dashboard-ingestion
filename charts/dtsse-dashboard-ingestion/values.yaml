@@ -12,6 +12,7 @@ job:
         - jira-token
         - db-url
         - cosmos-key
+        - cosmos-db-name
         - snow-username
         - snow-password
   schedule: "0/10 * * * *"
