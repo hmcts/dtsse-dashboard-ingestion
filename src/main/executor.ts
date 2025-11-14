@@ -1,3 +1,4 @@
+import './config'; // Load config first to set DATABASE_URL before db-migrate initializes
 import { shutdownConnectionPool, store } from './db/store';
 import { migrate } from './db/migrate';
 

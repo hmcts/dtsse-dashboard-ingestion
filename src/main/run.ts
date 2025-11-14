@@ -1,3 +1,4 @@
+import './config'; // Load config first to set DATABASE_URL before db-migrate initializes
 import { runFiles } from './executor';
 import { readdirSync } from 'fs';
 import { create, migrate, migrateDown } from './db/migrate';
