@@ -5,7 +5,7 @@ import { migrate } from './db/migrate';
 const runQueryAndStore = async (file: string) => {
   console.log(`Running query: ${file}`);
   const startTime = Date.now();
-  
+
   try {
     const results = await require(__dirname + '/query/' + file).run();
     const queryName = file.replace('.ts', '');
