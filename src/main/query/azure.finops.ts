@@ -11,6 +11,11 @@ export const run = async () => {
   if (new Date().getHours() !== 7 && new Date().getMinutes() < 15) {
     return [];
   }
+  
+  if (!config.azureFinOpsConnectionString) {
+    console.log('Azure Storage connection string not found, skipping FinOps query');
+    return []; // Return empty array to avoid breaking the pipeline
+  }
 
   const blobServiceClient = BlobServiceClient.fromConnectionString(config.azureFinOpsConnectionString);
   const containerClient = blobServiceClient.getContainerClient('cmexports');
