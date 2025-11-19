@@ -59,7 +59,6 @@ const processCosmosResults = async (pool: Pool, json: string) => {
 ), all_cves as (
   select * from cves union select * from security.cves
 ), reports as (
-reports as (
   -- Insert new reports
  insert into security.cve_report(timestamp, repo_id)
    select timestamp, repo_id from details d
@@ -68,7 +67,7 @@ reports as (
      order by 1 asc
    on conflict do nothing
    returning *
- )
+)
 -- Insert new report to CVE mappings
 insert into security.cve_report_to_cves
   select cve_id, cve_report_id
