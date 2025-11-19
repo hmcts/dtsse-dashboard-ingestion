@@ -44,6 +44,7 @@ const processCosmosResults = async (pool: Pool, json: string) => {
         left join lateral jsonb_array_elements_text(v->'cves') cve on true
       where jsonb_typeof(v->'cves') = 'array'
     ) vulns on true -- record the report even if no CVEs found
+  where g.repo_id is not null  -- Only process reports that have a valid repository match
 )
 ,cves as (
   -- Insert any new CVEs
@@ -58,9 +59,11 @@ const processCosmosResults = async (pool: Pool, json: string) => {
 ), all_cves as (
   select * from cves union select * from security.cves
 ), reports as (
+reports as (
   -- Insert new reports
  insert into security.cve_report(timestamp, repo_id)
    select timestamp, repo_id from details d
+   where repo_id is not null  -- Skip records with null repo_id
      group by 1, 2
      order by 1 asc
    on conflict do nothing

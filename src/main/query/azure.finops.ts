@@ -12,18 +12,24 @@ export const run = async () => {
     return [];
   }
 
-  if (!config.azureFinOpsConnectionString) {
-    console.log('Azure Storage connection string not found, skipping FinOps query');
-    return []; // Return empty array to avoid breaking the pipeline
+  const connectionString = config.azureFinOpsConnectionString;
+  if (!connectionString || typeof connectionString !== 'string' || connectionString.trim() === '') {
+    console.log('Azure Storage connection string not configured, skipping FinOps query');
+    return [];
   }
 
-  const blobServiceClient = BlobServiceClient.fromConnectionString(config.azureFinOpsConnectionString);
+  const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
   const containerClient = blobServiceClient.getContainerClient('cmexports');
   const root = 'dailyamortized/daily-amortized-export/';
   const folders = [] as string[];
 
   for await (const blob of containerClient.listBlobsByHierarchy('/', { prefix: root })) {
     folders.push(blob.name);
+  }
+
+  if (folders.length === 0) {
+    console.log('No folders found in Azure FinOps container');
+    return [];
   }
 
   const latest = folders.sort().pop();
@@ -33,18 +39,34 @@ export const run = async () => {
     files.push(blob);
   }
 
+  if (files.length === 0) {
+    console.log('No files found in latest Azure FinOps folder');
+    return [];
+  }
+
   files.sort((a, b) => b.properties.lastModified - a.properties.lastModified);
 
   const latestFile = files[0];
+  if (!latestFile || !latestFile.properties || !latestFile.properties.lastModified) {
+    console.log('Latest file missing metadata');
+    return [];
+  }
+
   const blobClient = containerClient.getBlobClient(latestFile.name);
   const downloadBlockBlobResponse = await blobClient.download();
+  
+  if (!downloadBlockBlobResponse.readableStreamBody) {
+    console.log('No readable stream body in blob response');
+    return [];
+  }
+
   const csv = parse({ columns: true });
   const client = await pool.connect();
 
   try {
     await deleteDataFromThisMonth(latestFile.properties.lastModified);
     await pipeline(
-      downloadBlockBlobResponse.readableStreamBody!,
+      downloadBlockBlobResponse.readableStreamBody,
       csv,
       transform,
       client.query(
