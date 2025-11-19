@@ -54,7 +54,7 @@ export const run = async () => {
 
   const blobClient = containerClient.getBlobClient(latestFile.name);
   const downloadBlockBlobResponse = await blobClient.download();
-  
+
   if (!downloadBlockBlobResponse.readableStreamBody) {
     console.log('No readable stream body in blob response');
     return [];
