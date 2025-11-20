@@ -1,4 +1,4 @@
-import { describe, expect, jest, test, afterAll } from '@jest/globals';
+import { describe, expect, jest, test, beforeEach, afterAll } from '@jest/globals';
 import { graphql } from '@octokit/graphql';
 import { MockedFunction } from 'jest-mock';
 
@@ -12,6 +12,10 @@ import { query } from './graphql';
 
 describe('github client', () => {
   const consoleMock = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   afterAll(() => {
     consoleMock.mockRestore();
@@ -68,5 +72,63 @@ describe('github client', () => {
 
     expect(mockGraphql).toHaveBeenCalledWith('query ');
     expect(mockGraphql).toHaveBeenCalledWith('query , after: "nextCursor"');
+  });
+
+  test('handles network errors gracefully', async () => {
+    mockGraphql.mockRejectedValue(new Error('Network error'));
+
+    await expect(query('query')).rejects.toThrow('Network error');
+  });
+
+  test('handles 502 Bad Gateway with retry', async () => {
+    mockGraphql
+      .mockRejectedValueOnce({ status: 502, message: 'Bad Gateway' })
+      .mockRejectedValueOnce({ status: 502, message: 'Bad Gateway' })
+      .mockResolvedValueOnce({
+        search: {
+          pageInfo: {
+            endCursor: 'cursor',
+            hasNextPage: false,
+          },
+          edges: [{ node: 'Value' }],
+        },
+      });
+
+    const result = await query('query');
+
+    expect(mockGraphql).toHaveBeenCalledTimes(3);
+    expect(result).toEqual(['Value']);
+  });
+
+  test('returns empty array when no edges', async () => {
+    mockGraphql.mockResolvedValue({
+      search: {
+        pageInfo: {
+          endCursor: null,
+          hasNextPage: false,
+        },
+        edges: [],
+      },
+    });
+
+    const result = await query('query');
+
+    expect(result).toEqual([]);
+  });
+
+  test('handles queries with single page of results', async () => {
+    mockGraphql.mockResolvedValue({
+      search: {
+        pageInfo: {
+          endCursor: null,
+          hasNextPage: false,
+        },
+        edges: [{ node: 'single' }, { node: 'page' }],
+      },
+    });
+
+    const result = await query('query');
+
+    expect(result).toEqual(['single', 'page']);
   });
 });
