@@ -8,9 +8,24 @@ const gql = graphql.defaults({
   },
 });
 
+// Retry wrapper for transient errors
+const requestWithRetry = async (fn: (...args: any[]) => Promise<any>, args: any[] = [], retries = 3, delayMs = 1000) => {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn(...args);
+    } catch (err: any) {
+      const status = err && (err.status || (err.response && err.response.status));
+      const isTransient = status >= 500 || status === 502 || (err && err.message && err.message.includes('Bad Gateway'));
+      if (attempt === retries || !isTransient) throw err;
+      console.warn(`Transient GitHub error, retry ${attempt + 1}/${retries}:`, err.message || status);
+      await new Promise(r => setTimeout(r, delayMs * Math.pow(2, attempt)));
+    }
+  }
+};
+
 export const query = async <T>(queryString: string, values: Values = undefined): Promise<T[]> => {
   const formattedQuery = formatQuery(queryString, values);
-  const response: QueryResult<T> = await gql(formattedQuery);
+  const response: QueryResult<T> = await requestWithRetry(() => gql(formattedQuery));
 
   if (isError(response)) {
     console.error(response);

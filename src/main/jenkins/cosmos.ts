@@ -2,8 +2,10 @@ import { config } from '../config';
 
 const CosmosClient = require('@azure/cosmos').CosmosClient;
 
-const client = new CosmosClient({ endpoint: 'https://pipeline-metrics.documents.azure.com:443/', key: config.cosmosKey });
-
+const client = new CosmosClient({
+  endpoint: `https://${config.cosmosDbName}.documents.azure.com:443/`,
+  key: config.cosmosKey,
+});
 const database = client.database('jenkins');
 const pipelineMetrics = database.container('pipeline-metrics');
 const cveReports = database.container('cve-reports');
