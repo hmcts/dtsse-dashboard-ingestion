@@ -30,7 +30,7 @@ export const getMetrics = async (fromUnixtime: bigint) => {
   // Repeated runs will bring the data up to date.
   // Any duplicated data will be ignored with `on conflict do nothing`.
   let allItems: any[] = [];
-  
+
   for (const connection of jenkinsConnections) {
     const querySpec = {
       query: `SELECT * from c where c._ts >= ${fromUnixtime} order by c._ts asc offset 0 limit 25000`,
@@ -39,14 +39,14 @@ export const getMetrics = async (fromUnixtime: bigint) => {
     console.log(`Processing ${items.length} Jenkins metrics from database: ${connection.name}`);
     allItems = allItems.concat(items);
   }
-  
+
   // TODO: find an api that gives us a raw json string
   return JSON.stringify(allItems);
 };
 
 export const getCVEs = async (fromUnixtime: bigint) => {
   let allItems: any[] = [];
-  
+
   for (const connection of jenkinsConnections) {
     const querySpec = {
       query: `SELECT * from c where c._ts >= ${fromUnixtime} and c.build.branch_name = "master" order by c._ts asc offset 0 limit 200`,
@@ -54,13 +54,13 @@ export const getCVEs = async (fromUnixtime: bigint) => {
     const { resources: items } = await connection.cveReports.items.query(querySpec).fetchAll();
     allItems = allItems.concat(items);
   }
-  
+
   return JSON.stringify(allItems);
 };
 
 export const getGatlingReports = async (fromUnixtime: bigint) => {
   let allItems: any[] = [];
-  
+
   for (const connection of jenkinsConnections) {
     const querySpec = {
       query: `SELECT * from c
@@ -71,7 +71,7 @@ export const getGatlingReports = async (fromUnixtime: bigint) => {
     const { resources: items } = await connection.perfReports.items.query(querySpec).fetchAll();
     allItems = allItems.concat(items);
   }
-  
+
   // TODO: find an api that gives us a raw json string
   return JSON.stringify(allItems);
 };
