@@ -25,7 +25,13 @@ export const config = {
   sonarToken: process.env.SONAR_TOKEN || vault['secrets']?.['dtsse']?.['sonar-token'],
   cosmosKey: process.env.COSMOS_KEY || vault['secrets']?.['dtsse']?.['cosmos-key'],
   cosmosDbName: process.env.COSMOS_DB_NAME || vault['secrets']?.['dtsse']?.['cosmos-db-name'],
+  jenkinsDatabases: process.env.JENKINS_DATABASES || vault['secrets']?.['dtsse']?.['jenkins-databases'] || 'jenkins,sds-jenkins',
   snowUsername: process.env.SNOW_USERNAME || vault['secrets']?.['dtsse']?.['snow-username'],
   snowPassword: process.env.SNOW_PASSWORD || vault['secrets']?.['dtsse']?.['snow-password'],
   dbUrl: encodedDbUrl,
+};
+
+// Helper to get jenkins database names as array
+export const getJenkinsDatabaseNames = (): string[] => {
+  return config.jenkinsDatabases.split(',').map(name => name.trim());
 };
