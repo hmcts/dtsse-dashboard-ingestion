@@ -13,6 +13,7 @@ job:
         - db-url
         - cosmos-key
         - cosmos-db-name
+        - jenkins-databases
         - snow-username
         - snow-password
   schedule: "0/10 * * * *"
