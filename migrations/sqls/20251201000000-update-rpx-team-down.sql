@@ -1,6 +1,4 @@
 -- Revert team_id changes for specified EM repositories
--- Note: This sets team_id back to NULL. If you need to preserve the original values,
--- you should record them before running the up migration.
 UPDATE github.repository
 SET team_id = 'em'
 WHERE id IN (
