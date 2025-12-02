@@ -25,12 +25,20 @@ const requestWithRetry = async (fn: (...args: any[]) => Promise<any>, args: any[
 
 export const query = async <T>(queryString: string, values: Values = undefined): Promise<T[]> => {
   const formattedQuery = formatQuery(queryString, values);
-  const response: QueryResult<T> = await requestWithRetry(() => gql(formattedQuery));
+  const response: QueryResult<T> | undefined = await requestWithRetry(() => gql(formattedQuery));
+
+  if (!response) {
+    // retries exhausted or unexpected undefined response
+    throw new Error('No response from GitHub GraphQL API after retries');
+  }
 
   if (isError(response)) {
     console.error(response);
+    throw new Error(response.errors?.[0]?.message ?? 'Unknown GraphQL error');
+  }
 
-    throw new Error(response.errors[0].message);
+  if (!('search' in response) || !response.search?.edges) {
+    throw new Error('Unexpected GraphQL response shape');
   }
 
   const results = response.search.edges.map(edge => edge.node);
@@ -56,8 +64,8 @@ const formatQuery = (queryString: string, values: Values): string => {
   return result;
 };
 
-const isError = (result: QueryResult<unknown>): result is QueryError => {
-  return (result as QueryError).errors !== undefined;
+const isError = (result: QueryResult<unknown> | null | undefined): result is QueryError => {
+  return !!result && (result as QueryError).errors !== undefined;
 };
 
 type QueryError = {

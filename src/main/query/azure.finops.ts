@@ -135,12 +135,15 @@ function rowToString(row: any) {
 
 async function deleteDataFromThisMonth(date: string) {
   const latestDate = new Date(date);
-  // delete rows where date is inside the same month as the latest file as each file contains the month to - today's date
-  await pool.query(
-    `DELETE FROM azure.finops WHERE date >= '${latestDate.getFullYear()}-${latestDate.getMonth() + 1}-01' AND date < '${latestDate.getFullYear()}-${
-      latestDate.getMonth() + 2
-    }-01'`
-  );
+
+  // Use Date constructor to handle month/year rollover automatically
+  const startOfMonth = new Date(latestDate.getFullYear(), latestDate.getMonth(), 1);
+  const startOfNextMonth = new Date(latestDate.getFullYear(), latestDate.getMonth() + 1, 1);
+
+  const startStr = `${startOfMonth.getFullYear()}-${String(startOfMonth.getMonth() + 1).padStart(2, '0')}-01`;
+  const endStr = `${startOfNextMonth.getFullYear()}-${String(startOfNextMonth.getMonth() + 1).padStart(2, '0')}-01`;
+
+  await pool.query(`DELETE FROM azure.finops WHERE date >= '${startStr}' AND date < '${endStr}'`);
 }
 
 function formatDate(date: string) {
