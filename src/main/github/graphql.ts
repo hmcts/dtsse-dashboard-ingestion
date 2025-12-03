@@ -23,7 +23,7 @@ const requestWithRetry = async (
     } catch (err: any) {
       const status = err && (err.status || (err.response && err.response.status));
       const isRateLimit = status === 403 || status === 429;
-      const isTransient = status >= 500 || status === 502 || isRateLimit || (err && err.message && err.message.includes('Bad Gateway'));
+      const isTransient = status >= 500 || isRateLimit || err?.message?.includes('Bad Gateway');
 
       // Extract rate limit headers if available
       const rateLimitRemaining = err.response?.headers?.['x-ratelimit-remaining'];
