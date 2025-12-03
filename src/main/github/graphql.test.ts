@@ -83,7 +83,7 @@ describe('github client', () => {
   test('handles 502 Bad Gateway with retry', async () => {
     // Mock console.warn to silence retry logs in tests
     const warnMock = jest.spyOn(console, 'warn').mockImplementation(() => {});
-    
+
     mockGraphql
       .mockRejectedValueOnce({ status: 502, message: 'Bad Gateway' })
       .mockRejectedValueOnce({ status: 502, message: 'Bad Gateway' })
@@ -101,7 +101,7 @@ describe('github client', () => {
 
     expect(mockGraphql).toHaveBeenCalledTimes(3);
     expect(result).toEqual(['Value']);
-    
+
     warnMock.mockRestore();
   }, 15000); // Increase timeout to 15 seconds
 
