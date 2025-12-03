@@ -4486,7 +4486,7 @@ __metadata:
     eslint: "npm:8.57.1"
     eslint-config-prettier: "npm:9.1.2"
     eslint-plugin-import: "npm:2.31.0"
-    eslint-plugin-jest: "npm:28.8.3"
+    eslint-plugin-jest: "npm:28.14.0"
     husky: "npm:9.1.7"
     jest: "npm:29.7.0"
     jira-client: "npm:8.2.2"
@@ -4870,9 +4870,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:28.8.3":
-  version: 28.8.3
-  resolution: "eslint-plugin-jest@npm:28.8.3"
+"eslint-plugin-jest@npm:28.14.0":
+  version: 28.14.0
+  resolution: "eslint-plugin-jest@npm:28.14.0"
   dependencies:
     "@typescript-eslint/utils": "npm:^6.0.0 || ^7.0.0 || ^8.0.0"
   peerDependencies:
@@ -4884,7 +4884,7 @@ __metadata:
       optional: true
     jest:
       optional: true
-  checksum: 10/3f1798c61e143981eefcfb2fbc4b2e5b329378ebaafdec6485f443c79ee0d3304e9409e8ea8ce089ac15abb4e700d8d838e0a1da29feb528d77a2b3cce6989ec
+  checksum: 10/6032497bd97d6dd010450d5fdf535b8613a2789f4f83764ae04361c48d06d92f3d9b2e4350914b8fd857b6e611ba2b5282a1133ab8ec51b3e7053f9d336058e6
   languageName: node
   linkType: hard
 
