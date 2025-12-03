@@ -138,4 +138,82 @@ describe('github client', () => {
 
     expect(result).toEqual(['single', 'page']);
   });
+
+  test('throws error when response is undefined after retries', async () => {
+    mockGraphql.mockResolvedValue(undefined);
+
+    await expect(query('query')).rejects.toThrow('No response from GitHub GraphQL API after retries');
+  });
+
+  test('throws error for unexpected response shape - missing search', async () => {
+    mockGraphql.mockResolvedValue({
+      data: 'unexpected',
+    });
+
+    await expect(query('query')).rejects.toThrow('Unexpected GraphQL response shape');
+  });
+
+  test('throws error for unexpected response shape - missing edges', async () => {
+    mockGraphql.mockResolvedValue({
+      search: {
+        pageInfo: { hasNextPage: false },
+        // Missing edges property
+      },
+    });
+
+    await expect(query('query')).rejects.toThrow('Unexpected GraphQL response shape');
+  });
+
+  test('handles rate limit with reset header', async () => {
+    const warnMock = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const futureTimestamp = Math.floor(Date.now() / 1000) + 1; // 1 second from now
+
+    mockGraphql
+      .mockRejectedValueOnce({
+        status: 429,
+        message: 'Rate limited',
+        response: {
+          headers: {
+            'x-ratelimit-remaining': '0',
+            'x-ratelimit-reset': futureTimestamp.toString(),
+          },
+        },
+      })
+      .mockResolvedValueOnce({
+        search: {
+          pageInfo: { hasNextPage: false },
+          edges: [{ node: 'Success after rate limit' }],
+        },
+      });
+
+    const result = await query('query');
+
+    expect(result).toEqual(['Success after rate limit']);
+    expect(warnMock).toHaveBeenCalledWith(expect.stringContaining('Rate limit hit, waiting'));
+
+    warnMock.mockRestore();
+  }, 10000);
+
+  test('handles GraphQL errors with missing message', async () => {
+    mockGraphql.mockResolvedValue({
+      errors: [{}], // Error without message property
+    });
+
+    await expect(query('query')).rejects.toThrow('Unknown GraphQL error');
+  });
+
+  test('handles non-transient errors without retry', async () => {
+    // Mock console.warn to track retry attempts
+    const warnMock = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    // Reject with a proper Error object
+    mockGraphql.mockRejectedValue(new Error('Not Found'));
+
+    await expect(query('query')).rejects.toThrow('Not Found');
+
+    // Should only be called once (no retries for non-transient errors like network errors)
+    expect(mockGraphql).toHaveBeenCalledTimes(1);
+
+    warnMock.mockRestore();
+  });
 });
