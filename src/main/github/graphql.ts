@@ -49,9 +49,7 @@ const requestWithRetry = async (
         console.warn(`Rate limit hit, waiting ${Math.round(delay / 1000)}s until reset`);
       }
 
-      // Add jitter to prevent thundering herd
-      const jitter = Math.random() * 1000;
-      await new Promise(r => setTimeout(r, delay + jitter));
+      await new Promise(r => setTimeout(r, delay));
     }
   }
 };
