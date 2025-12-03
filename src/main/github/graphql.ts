@@ -11,7 +11,7 @@ const gql = graphql.defaults({
 });
 
 // Retry wrapper for transient errors with intelligent rate limit handling
-const requestWithRetry = async (fn: (...args: any[]) => Promise<any>, args: any[] = [], retries = 5, baseDelayMs = 3000) => {
+const requestWithRetry = async (fn: (...args: any[]) => Promise<any>, args: any[] = [], retries = 5, baseDelayMs = process.env.NODE_ENV === 'test' ? 10 : 3000) => {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       return await fn(...args);
