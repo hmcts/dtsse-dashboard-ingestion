@@ -5,32 +5,68 @@ import { GraphQlQueryResponse } from '@octokit/graphql/dist-types/types';
 const gql = graphql.defaults({
   headers: {
     authorization: `token ${config.githubToken}`,
+    'User-Agent': 'dtsse-dashboard-ingestion/1.0',
+    Accept: 'application/vnd.github.v3+json',
   },
 });
 
-// Retry wrapper for transient errors
-const requestWithRetry = async (fn: (...args: any[]) => Promise<any>, args: any[] = [], retries = 3, delayMs = 1000) => {
+// Retry wrapper for transient errors with intelligent rate limit handling
+const requestWithRetry = async (fn: (...args: any[]) => Promise<any>, args: any[] = [], retries = 5, baseDelayMs = 3000) => {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       return await fn(...args);
     } catch (err: any) {
       const status = err && (err.status || (err.response && err.response.status));
-      const isTransient = status >= 500 || status === 502 || (err && err.message && err.message.includes('Bad Gateway'));
+      const isRateLimit = status === 403 || status === 429;
+      const isTransient = status >= 500 || status === 502 || isRateLimit || (err && err.message && err.message.includes('Bad Gateway'));
+
+      // Extract rate limit headers if available
+      const rateLimitRemaining = err.response?.headers?.['x-ratelimit-remaining'];
+      const rateLimitReset = err.response?.headers?.['x-ratelimit-reset'];
+
+      console.warn(`Transient GitHub error, retry ${attempt + 1}/${retries + 1}:`, {
+        status,
+        isRateLimit,
+        remaining: rateLimitRemaining,
+        message: err.message || status,
+      });
+
       if (attempt === retries || !isTransient) throw err;
-      console.warn(`Transient GitHub error, retry ${attempt + 1}/${retries}:`, err.message || status);
-      await new Promise(r => setTimeout(r, delayMs * Math.pow(2, attempt)));
+
+      // Calculate delay - longer for rate limits
+      let delay = baseDelayMs * Math.pow(1.5, attempt);
+
+      if (isRateLimit && rateLimitReset) {
+        // Wait until rate limit resets + small buffer
+        const resetTime = parseInt(rateLimitReset) * 1000;
+        const waitTime = Math.max(resetTime - Date.now() + 5000, delay);
+        delay = Math.min(waitTime, 300000); // Cap at 5 minutes max
+        console.warn(`Rate limit hit, waiting ${Math.round(delay / 1000)}s until reset`);
+      }
+
+      // Add jitter to prevent thundering herd
+      const jitter = Math.random() * 1000;
+      await new Promise(r => setTimeout(r, delay + jitter));
     }
   }
 };
 
 export const query = async <T>(queryString: string, values: Values = undefined): Promise<T[]> => {
   const formattedQuery = formatQuery(queryString, values);
-  const response: QueryResult<T> = await requestWithRetry(() => gql(formattedQuery));
+  const response: QueryResult<T> | undefined = await requestWithRetry(() => gql(formattedQuery));
+
+  if (!response) {
+    throw new Error('No response from GitHub GraphQL API after retries');
+  }
 
   if (isError(response)) {
     console.error(response);
+    throw new Error(response.errors?.[0]?.message ?? 'Unknown GraphQL error');
+  }
 
-    throw new Error(response.errors[0].message);
+  // Defensive check for expected response shape
+  if (!('search' in response) || !response.search?.edges) {
+    throw new Error('Unexpected GraphQL response shape');
   }
 
   const results = response.search.edges.map(edge => edge.node);
@@ -56,8 +92,8 @@ const formatQuery = (queryString: string, values: Values): string => {
   return result;
 };
 
-const isError = (result: QueryResult<unknown>): result is QueryError => {
-  return (result as QueryError).errors !== undefined;
+const isError = (result: QueryResult<unknown> | null | undefined): result is QueryError => {
+  return !!result && (result as QueryError).errors !== undefined;
 };
 
 type QueryError = {
