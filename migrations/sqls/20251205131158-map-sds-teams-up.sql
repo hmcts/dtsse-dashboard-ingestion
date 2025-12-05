@@ -67,6 +67,11 @@ UPDATE github.repository SET team_id = 'platform' WHERE short_name IN (
   'recipes-shared-infrastructure'
 );
 
+-- Ensure all SDS team IDs exist in the team table (in case they haven't been created by prior migrations)
+INSERT INTO public.team (id, description) VALUES
+  ('vh', 'Video Hearings')
+ON CONFLICT DO NOTHING;
+
 -- Add team aliases for future repository discovery via GitHub API pattern matching
 INSERT INTO public.team_alias (id, alias) VALUES
   ('fact', 'appreg'),

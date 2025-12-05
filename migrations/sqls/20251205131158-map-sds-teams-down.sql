@@ -15,6 +15,9 @@ WHERE (id, alias) IN (
   ('platform', 'recipes')
 );
 
+-- Rollback: Remove SDS team IDs that were inserted by the up migration
+DELETE FROM public.team WHERE id IN ('vh') AND description = 'Video Hearings';
+
 -- Rollback: Reset team_id to NULL for SDS repositories that were mapped
 UPDATE github.repository SET team_id = NULL WHERE short_name IN (
   -- Applications Register team
