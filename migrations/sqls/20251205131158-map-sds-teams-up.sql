@@ -30,7 +30,7 @@ UPDATE github.repository SET team_id = 'courtfines' WHERE short_name IN (
   'courtfines-app'
 );
 
--- DCS Automation → dcs-automation (Source: team-config.yml namespace: dcs-automation)
+-- DCS Automation → dcs-automation
 UPDATE github.repository SET team_id = 'dcs-automation' WHERE short_name IN (
   'dcs-e2e-tests',
   'dcs-test-shared-infrastructure'
