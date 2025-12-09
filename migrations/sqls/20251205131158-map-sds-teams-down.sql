@@ -1,22 +1,22 @@
 -- Rollback: Remove team aliases added for SDS team mapping
 DELETE FROM public.team_alias 
 WHERE (id, alias) IN (
-  ('fact', 'appreg'),
-  ('pcq', 'opal'),
-  ('ctsc', 'pdda'),
-  ('ctsc', 'pdm'),
-  ('ctsc', 'courtfines'),
-  ('ctsc', 'dcs'),
-  ('rpts', 'juror'),
-  ('rpts', 'mrd'),
-  ('vh', 'hmi'),
+  ('appreg', 'appreg'),
+  ('opal', 'opal'),
+  ('pdda', 'pdda'),
+  ('pdm', 'pdm'),
+  ('courtfines', 'courtfines'),
+  ('courtfines', 'dcs'),
+  ('juror', 'juror'),
+  ('mrd', 'mrd'),
+  ('hmi', 'hmi'),
   ('pre', 'sds-toffee'),
   ('platform', 'libragob'),
   ('platform', 'recipes')
 );
 
 -- Rollback: Remove SDS team IDs that were inserted by the up migration
-DELETE FROM public.team WHERE id IN ('vh') AND description = 'Video Hearings';
+DELETE FROM public.team WHERE id IN ('appreg', 'opal', 'pdda', 'pdm', 'courtfines', 'juror', 'mrd', 'hmi');
 
 -- Rollback: Reset team_id to NULL for SDS repositories that were mapped
 UPDATE github.repository SET team_id = NULL WHERE short_name IN (
