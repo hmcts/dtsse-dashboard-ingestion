@@ -1,6 +1,38 @@
 -- Map SDS repositories to their correct team IDs based on Helm values configuration
 -- This migration manually maps SDS repositories based on confirmed team ownership
 
+-- Ensure all SDS team IDs exist in the team table FIRST (before any UPDATEs)
+INSERT INTO public.team (id, description) VALUES
+  ('appreg', 'Applications Register'),
+  ('opal', 'Green on Black'),
+  ('pdda', 'PDDA'),
+  ('pdm', 'PDM'),
+  ('courtfines', 'Court Fines'),
+  ('dcs-automation', 'DCS Automation'),
+  ('juror', 'Juror'),
+  ('mrd', 'MRD'),
+  ('hmi', 'Hearing Management Information'),
+  ('platform', 'Platform Operations')
+ON CONFLICT DO NOTHING;
+
+-- Add team aliases for future repository discovery via GitHub API pattern matching
+INSERT INTO public.team_alias (id, alias) VALUES
+  ('appreg', 'appreg'),
+  ('opal', 'opal'),
+  ('pdda', 'pdda'),
+  ('pdm', 'pdm'),
+  ('courtfines', 'courtfines'),
+  ('dcs-automation', 'dcs-automation'),
+  ('juror', 'juror'),
+  ('mrd', 'mrd'),
+  ('hmi', 'hmi'),
+  ('platform', 'sds-toffee'),
+  ('platform', 'libragob'),
+  ('platform', 'recipes')
+ON CONFLICT DO NOTHING;
+
+-- NOW update repositories to their correct team IDs
+
 -- Applications Register team repos → appreg 
 UPDATE github.repository SET team_id = 'appreg' WHERE short_name IN (
   'appreg-frontend',
@@ -66,32 +98,3 @@ UPDATE github.repository SET team_id = 'platform' WHERE short_name IN (
   'sds-toffee-recipes-service',
   'sds-toffee-shared-infrastructure'
 );
-
--- Ensure all SDS team IDs exist in the team table
-INSERT INTO public.team (id, description) VALUES
-  ('appreg', 'Applications Register'),
-  ('opal', 'Green on Black'),
-  ('pdda', 'PDDA'),
-  ('pdm', 'PDM'),
-  ('courtfines', 'Court Fines'),
-  ('dcs-automation', 'DCS Automation'),
-  ('juror', 'Juror'),
-  ('mrd', 'MRD'),
-  ('hmi', 'Hearing Management Information')
-ON CONFLICT DO NOTHING;
-
--- Add team aliases for future repository discovery via GitHub API pattern matching
-INSERT INTO public.team_alias (id, alias) VALUES
-  ('appreg', 'appreg'),
-  ('opal', 'opal'),
-  ('pdda', 'pdda'),
-  ('pdm', 'pdm'),
-  ('courtfines', 'courtfines'),
-  ('dcs-automation', 'dcs-automation'),
-  ('juror', 'juror'),
-  ('mrd', 'mrd'),
-  ('hmi', 'hmi'),
-  ('platform', 'sds-toffee'),
-  ('platform', 'libragob'),
-  ('platform', 'recipes')
-ON CONFLICT DO NOTHING;
