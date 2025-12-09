@@ -6,17 +6,17 @@ WHERE (id, alias) IN (
   ('pdda', 'pdda'),
   ('pdm', 'pdm'),
   ('courtfines', 'courtfines'),
-  ('courtfines', 'dcs'),
+  ('dcs-automation', 'dcs-automation'),
   ('juror', 'juror'),
   ('mrd', 'mrd'),
   ('hmi', 'hmi'),
-  ('pre', 'sds-toffee'),
+  ('platform', 'sds-toffee'),
   ('platform', 'libragob'),
   ('platform', 'recipes')
 );
 
 -- Rollback: Remove SDS team IDs that were inserted by the up migration
-DELETE FROM public.team WHERE id IN ('appreg', 'opal', 'pdda', 'pdm', 'courtfines', 'juror', 'mrd', 'hmi');
+DELETE FROM public.team WHERE id IN ('appreg', 'opal', 'pdda', 'pdm', 'courtfines', 'dcs-automation', 'juror', 'mrd', 'hmi');
 
 -- Rollback: Reset team_id to NULL for SDS repositories that were mapped
 UPDATE github.repository SET team_id = NULL WHERE short_name IN (
@@ -34,6 +34,7 @@ UPDATE github.repository SET team_id = NULL WHERE short_name IN (
   'pdm-interfaces',
   -- Court Fines
   'courtfines-app',
+  -- DCS Automation
   'dcs-e2e-tests',
   'dcs-test-shared-infrastructure',
   -- Juror
@@ -44,17 +45,15 @@ UPDATE github.repository SET team_id = NULL WHERE short_name IN (
   'juror-shared-infrastructure',
   -- MRD
   'mrd-shared-infrastructure',
-  -- Platform Operations (Recipes)
-  'recipes-shared-infrastructure',
   -- HMI
   'hmi-apim-infrastructures',
   'hmi-shared-infrastructures',
   'hmi-shared-infrastructures-bootstrap',
   'list-assist-e2e-tests',
-  -- Pre-Recorded Evidence
+  -- Platform Operations 
   'sds-toffee-frontend',
   'sds-toffee-recipes-service',
   'sds-toffee-shared-infrastructure',
-  -- Libra GoB
+  'recipes-shared-infrastructure',
   'libragob-shared-infrastructure'
 );

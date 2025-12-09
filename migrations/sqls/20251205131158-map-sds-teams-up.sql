@@ -25,9 +25,13 @@ UPDATE github.repository SET team_id = 'pdm' WHERE short_name IN (
   'pdm-interfaces'
 );
 
--- Court Fines + DCS (Dispatch Case Services) → courtfines
+-- Court Fines → courtfines
 UPDATE github.repository SET team_id = 'courtfines' WHERE short_name IN (
-  'courtfines-app',
+  'courtfines-app'
+);
+
+-- DCS Automation → dcs-automation (Source: team-config.yml namespace: dcs-automation)
+UPDATE github.repository SET team_id = 'dcs-automation' WHERE short_name IN (
   'dcs-e2e-tests',
   'dcs-test-shared-infrastructure'
 );
@@ -54,17 +58,13 @@ UPDATE github.repository SET team_id = 'hmi' WHERE short_name IN (
   'list-assist-e2e-tests'
 );
 
--- Pre-Recorded Evidence (PRE/TOFFEE) → PRE
-UPDATE github.repository SET team_id = 'pre' WHERE short_name IN (
+-- Platform Operations repos → platform
+UPDATE github.repository SET team_id = 'platform' WHERE short_name IN (
+  'libragob-shared-infrastructure',
+  'recipes-shared-infrastructure',
   'sds-toffee-frontend',
   'sds-toffee-recipes-service',
   'sds-toffee-shared-infrastructure'
-);
-
--- Platform Operations repos → PLATFORM
-UPDATE github.repository SET team_id = 'platform' WHERE short_name IN (
-  'libragob-shared-infrastructure',
-  'recipes-shared-infrastructure'
 );
 
 -- Ensure all SDS team IDs exist in the team table
@@ -74,6 +74,7 @@ INSERT INTO public.team (id, description) VALUES
   ('pdda', 'PDDA'),
   ('pdm', 'PDM'),
   ('courtfines', 'Court Fines'),
+  ('dcs-automation', 'DCS Automation'),
   ('juror', 'Juror'),
   ('mrd', 'MRD'),
   ('hmi', 'Hearing Management Information')
@@ -86,11 +87,11 @@ INSERT INTO public.team_alias (id, alias) VALUES
   ('pdda', 'pdda'),
   ('pdm', 'pdm'),
   ('courtfines', 'courtfines'),
-  ('courtfines', 'dcs'),
+  ('dcs-automation', 'dcs-automation'),
   ('juror', 'juror'),
   ('mrd', 'mrd'),
   ('hmi', 'hmi'),
-  ('pre', 'sds-toffee'),
+  ('platform', 'sds-toffee'),
   ('platform', 'libragob'),
   ('platform', 'recipes')
 ON CONFLICT DO NOTHING;
