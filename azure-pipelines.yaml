@@ -1,0 +1,74 @@
+name: Update Team ID for GitHub Repository
+
+trigger: none
+pr: none
+
+# Manual-only pipeline to update github.repository.team_id
+
+parameters:
+  - name: repoUrl
+    displayName: 'GitHub repository URL e.g. https://github.com/org/repo'
+    type: string
+  - name: teamId
+    displayName: 'Target team_id e.g. platform'
+    type: string
+  - name: environment
+    displayName: 'Target environment (aat or prod)'
+    type: string
+    default: 'aat'
+    values:
+      - 'aat'
+      - 'prod'
+
+variables:
+  - ${{ if eq(parameters.environment, 'aat') }}:
+      - name: azureServiceConnection
+        value: 'DCD-CNP-DEV'
+      - name: kvName
+        value: 'dtsse-aat'
+  - ${{ if eq(parameters.environment, 'prod') }}:
+      - name: azureServiceConnection
+        value: 'DCD-CNP-PROD'
+      - name: kvName
+        value: 'dtsse-prod'
+
+stages:
+  - stage: UpdateTeamId
+    displayName: 'Update github.repository.team_id'
+    jobs:
+      - job: RunUpdate
+        displayName: 'Run update-team-id script'
+        pool:
+          vmImage: 'ubuntu-latest'
+
+        steps:
+          - task: AzureKeyVault@2
+            displayName: 'Fetch db-url from Key Vault'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              KeyVaultName: $(kvName)
+              SecretsFilter: 'db-url'
+              RunAsPreJob: false
+
+          - task: NodeTool@0
+            displayName: 'Use Node.js version from .nvmrc'
+            inputs:
+              versionSource: 'fromFile'
+              versionFilePath: '.nvmrc'
+
+          - script: |
+              corepack enable
+              corepack prepare yarn@stable --activate
+            displayName: 'Enable Yarn via Corepack'
+
+          - script: |
+              yarn install --immutable
+            displayName: 'Install dependencies'
+
+          - script: |
+              echo "Environment: ${{ parameters.environment }}"
+              echo "Updating team_id for repo: ${{ parameters.repoUrl }} to team: ${{ parameters.teamId }}"
+              yarn update-team-id --repo-url "${{ parameters.repoUrl }}" --team-id "${{ parameters.teamId }}"
+            displayName: 'Run update-team-id script'
+            env:
+              DATABASE_URL: $(db-url)
