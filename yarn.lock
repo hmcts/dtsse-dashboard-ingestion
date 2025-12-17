@@ -254,9 +254,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/cosmos@npm:4.8.0":
-  version: 4.8.0
-  resolution: "@azure/cosmos@npm:4.8.0"
+"@azure/cosmos@npm:4.9.0":
+  version: 4.9.0
+  resolution: "@azure/cosmos@npm:4.9.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -269,7 +269,7 @@ __metadata:
     priorityqueuejs: "npm:^2.0.0"
     semaphore: "npm:^1.1.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/f7c4bf658c835ffd24d7df816463b3ecba408a6127bc0180485af4cd3b46ab120e411b8cad6027c22a60cb785391e96e712bf0b87a4b3d51844fca9203f411b1
+  checksum: 10/b81514bddb28df6ebb9b4c4f22872653d97d53868cff49619e292860f8c7b73d35bc0149db1a7e04ae3571ead77a69eb431bc9d397473bda7e84471fd15677c5
   languageName: node
   linkType: hard
 
@@ -4605,7 +4605,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dtsse-dashboard-ingestion@workspace:."
   dependencies:
-    "@azure/cosmos": "npm:4.8.0"
+    "@azure/cosmos": "npm:4.9.0"
     "@azure/identity": "npm:^4.2.1"
     "@azure/storage-blob": "npm:^12.23.0"
     "@hmcts/properties-volume": "npm:^1.2.0"
