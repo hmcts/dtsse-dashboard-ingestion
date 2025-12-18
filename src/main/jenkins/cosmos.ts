@@ -30,6 +30,7 @@ export const getMetrics = async (fromUnixtime: bigint) => {
   // Repeated runs will bring the data up to date.
   // Any duplicated data will be ignored with `on conflict do nothing`.
   
+  
   // BACKFILL MODE: Query 7 days back to recover missing data from downtime (Dec 10-17)
   // After backfill is complete, set BACKFILL_ENABLED to false and redeploy
   const BACKFILL_ENABLED = true;
