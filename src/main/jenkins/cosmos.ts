@@ -32,7 +32,7 @@ export const getMetrics = async (fromUnixtime: bigint) => {
 
   // BACKFILL MODE: Query 7 days back to recover missing data from downtime (Dec 10-17)
   // After backfill is complete, set BACKFILL_ENABLED to false and redeploy
-  const BACKFILL_ENABLED = true;
+  const BACKFILL_ENABLED = false;
   const backfillFromUnixtime = BACKFILL_ENABLED ? BigInt(Math.floor(Date.now() / 1000)) - BigInt(7 * 24 * 60 * 60) : fromUnixtime;
 
   console.log(`[BACKFILL] Using timestamp: ${backfillFromUnixtime} (7 days ago: ${BACKFILL_ENABLED})`);
