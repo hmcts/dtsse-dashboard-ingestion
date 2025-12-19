@@ -21,9 +21,11 @@ const parseArgs = (): ParsedArgs => {
     const arg = args[i];
 
     if ((arg === '--repo' || arg === '--repo-id' || arg === '--repo-url') && i + 1 < args.length) {
-      repoId = args[++i];
+      i += 1;
+      repoId = args[i];
     } else if ((arg === '--team' || arg === '--team-id') && i + 1 < args.length) {
-      teamId = args[++i];
+      i += 1;
+      teamId = args[i];
     }
   }
 
@@ -61,7 +63,11 @@ const run = async () => {
   console.log(`Updated ${updateRes.rowCount} row(s).`);
 };
 
-run().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+(async () => {
+  try {
+    await run();
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+})();
