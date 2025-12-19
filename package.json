@@ -18,8 +18,7 @@
     "cichecks": "yarn lint && yarn test",
     "prepare": "husky install",
     "migration:create": "ts-node -r dotenv/config src/main/run.ts create --",
-    "migration:down": "yarn start:dev down",
-    "update-team-id": "ts-node src/main/admin/github.update-team-id.ts"
+    "migration:down": "yarn start:dev down"
   },
   "dependencies": {
     "@azure/cosmos": "4.8.0",
