@@ -50,25 +50,10 @@ stages:
               SecretsFilter: 'db-url'
               RunAsPreJob: false
 
-          - task: NodeTool@0
-            displayName: 'Use Node.js version from .nvmrc'
-            inputs:
-              versionSource: 'fromFile'
-              versionFilePath: '.nvmrc'
-
-          - script: |
-              corepack enable
-              corepack prepare yarn@stable --activate
-            displayName: 'Enable Yarn via Corepack'
-
-          - script: |
-              yarn install --immutable
-            displayName: 'Install dependencies'
-
           - script: |
               echo "Environment: ${{ parameters.environment }}"
               echo "Updating team_id for repo: ${{ parameters.repoUrl }} to team: ${{ parameters.teamId }}"
-              yarn update-team-id --repo-url "${{ parameters.repoUrl }}" --team-id "${{ parameters.teamId }}"
-            displayName: 'Run update-team-id script'
+              bash src/main/admin/github.update-team-id.sh --repo-url "${{ parameters.repoUrl }}" --team-id "${{ parameters.teamId }}"
+            displayName: 'Run update-team-id bash script'
             env:
               DATABASE_URL: $(db-url)
