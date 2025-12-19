@@ -38,8 +38,7 @@ stages:
     jobs:
       - job: RunUpdate
         displayName: 'Run update-team-id script'
-        pool:
-          vmImage: 'ubuntu-latest'
+        pool: hmcts-cftptl-agent-pool
 
         steps:
           - task: AzureKeyVault@2
