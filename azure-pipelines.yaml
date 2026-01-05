@@ -51,7 +51,6 @@ stages:
 
           - script: |
               echo "Environment: ${{ parameters.environment }}"
-              echo "Updating team_id for repo: ${{ parameters.repoUrl }} to team: ${{ parameters.teamId }}"
               bash src/main/admin/github.update-team-id.sh --repo-url "${{ parameters.repoUrl }}" --team-id "${{ parameters.teamId }}"
             displayName: 'Run update-team-id bash script'
             env:
