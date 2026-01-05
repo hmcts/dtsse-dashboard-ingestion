@@ -1,0 +1,57 @@
+name: Update Team ID for GitHub Repository
+
+trigger: none
+pr: none
+
+# Manual-only pipeline to update github.repository.team_id
+
+parameters:
+  - name: repoUrl
+    displayName: 'GitHub repository URL e.g. https://github.com/org/repo'
+    type: string
+  - name: teamId
+    displayName: 'Target team_id e.g. platform'
+    type: string
+  - name: environment
+    displayName: 'Target environment (aat or prod)'
+    type: string
+    default: 'aat'
+    values:
+      - 'aat'
+      - 'prod'
+
+variables:
+  - ${{ if eq(parameters.environment, 'aat') }}:
+      - name: azureServiceConnection
+        value: 'DCD-CNP-DEV'
+      - name: kvName
+        value: 'dtsse-aat'
+  - ${{ if eq(parameters.environment, 'prod') }}:
+      - name: azureServiceConnection
+        value: 'DCD-CNP-PROD'
+      - name: kvName
+        value: 'dtsse-prod'
+
+stages:
+  - stage: UpdateTeamId
+    displayName: 'Update github.repository.team_id'
+    jobs:
+      - job: RunUpdate
+        displayName: 'Run update-team-id script'
+        pool: hmcts-cftptl-agent-pool
+
+        steps:
+          - task: AzureKeyVault@2
+            displayName: 'Fetch db-url from Key Vault'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              KeyVaultName: $(kvName)
+              SecretsFilter: 'db-url'
+              RunAsPreJob: false
+
+          - script: |
+              echo "Environment: ${{ parameters.environment }}"
+              bash src/main/admin/github.update-team-id.sh --repo-url "${{ parameters.repoUrl }}" --team-id "${{ parameters.teamId }}"
+            displayName: 'Run update-team-id bash script'
+            env:
+              DATABASE_URL: $(db-url)
