@@ -44,20 +44,20 @@ echo "Updating github.repository.team_id for repo '$REPO_ID' to team_id=$TEAM_ID
 TEAM_ID_ESC=${TEAM_ID//\'/''}
 REPO_ID_ESC=${REPO_ID//\'/''}
 
-# Ensure the target team exists
-TEAM_COUNT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c "select count(1) from team where id = '$TEAM_ID_ESC';")
-TEAM_COUNT=$(echo "$TEAM_COUNT" | tr -d '[:space:]')
-
-if [[ "$TEAM_COUNT" != "1" ]]; then
-  echo "Team with id $TEAM_ID does not exist" >&2
-  exit 1
-fi
-
 if [[ "$TEAM_ID_ESC" == "null" || "$TEAM_ID_ESC" == "NULL" ]]; then
   # Update github.repository.team_id, matching on lower(html_url)
   RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
     "update github.repository set team_id = NULL where id = lower('$REPO_ID_ESC') returning id, team_id;")
 else 
+  # Ensure the target team exists
+  TEAM_COUNT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c "select count(1) from team where id = '$TEAM_ID_ESC';")
+  TEAM_COUNT=$(echo "$TEAM_COUNT" | tr -d '[:space:]')
+
+  if [[ "$TEAM_COUNT" != "1" ]]; then
+    echo "Team with id $TEAM_ID does not exist" >&2
+    exit 1
+  fi
+  
   # Update github.repository.team_id, matching on lower(html_url)
   RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
     "update github.repository set team_id = '$TEAM_ID_ESC' where id = lower('$REPO_ID_ESC') returning id, team_id;")
