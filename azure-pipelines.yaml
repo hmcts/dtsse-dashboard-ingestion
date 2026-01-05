@@ -13,7 +13,7 @@ parameters:
     displayName: 'Target team_id'
     type: string
   - name: environment
-    displayName: 'Target environment (aat or prod)'
+    displayName: 'Target environment'
     type: string
     default: 'aat'
     values:
