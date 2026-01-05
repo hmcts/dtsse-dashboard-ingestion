@@ -44,6 +44,7 @@ echo "Updating github.repository.team_id for repo '$REPO_ID' to team_id=$TEAM_ID
 TEAM_ID_ESC=${TEAM_ID//\'/''}
 REPO_ID_ESC=${REPO_ID//\'/''}
 
+# Some repositories may not have a team assigned; allow unsetting by passing null/NULL
 if [[ "$TEAM_ID_ESC" == "null" || "$TEAM_ID_ESC" == "NULL" ]]; then
   # Update github.repository.team_id, matching on lower(html_url)
   RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
@@ -57,7 +58,7 @@ else
     echo "Team with id $TEAM_ID does not exist" >&2
     exit 1
   fi
-  
+
   # Update github.repository.team_id, matching on lower(html_url)
   RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
     "update github.repository set team_id = '$TEAM_ID_ESC' where id = lower('$REPO_ID_ESC') returning id, team_id;")
