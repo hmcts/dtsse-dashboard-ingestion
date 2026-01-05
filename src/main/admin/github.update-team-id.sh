@@ -53,9 +53,15 @@ if [[ "$TEAM_COUNT" != "1" ]]; then
   exit 1
 fi
 
-# Update github.repository.team_id, matching on lower(html_url)
-RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
-  "update github.repository set team_id = '$TEAM_ID_ESC' where id = lower('$REPO_ID_ESC') returning id, team_id;")
+if [[ "$TEAM_ID_ESC" == "null" || "$TEAM_ID_ESC" == "NULL" ]]; then
+  # Update github.repository.team_id, matching on lower(html_url)
+  RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
+    "update github.repository set team_id = NULL where id = lower('$REPO_ID_ESC') returning id, team_id;")
+else 
+  # Update github.repository.team_id, matching on lower(html_url)
+  RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
+    "update github.repository set team_id = '$TEAM_ID_ESC' where id = lower('$REPO_ID_ESC') returning id, team_id;")
+fi
 
 if [[ -z "$RESULT" ]]; then
   echo "No github.repository row found with id/html_url '$REPO_ID'" >&2
