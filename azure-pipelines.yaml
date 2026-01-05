@@ -7,10 +7,10 @@ pr: none
 
 parameters:
   - name: repoUrl
-    displayName: 'GitHub repository URL e.g. https://github.com/org/repo'
+    displayName: 'GitHub repository URL(s)'
     type: string
   - name: teamId
-    displayName: 'Target team_id e.g. platform'
+    displayName: 'Target team_id'
     type: string
   - name: environment
     displayName: 'Target environment (aat or prod)'
