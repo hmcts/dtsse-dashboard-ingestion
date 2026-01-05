@@ -3,7 +3,7 @@
 set -euo pipefail
 
 print_usage() {
-  echo "Usage: $0 --repo-url <github-html-url> --team-id <team-id>" >&2
+  echo "Usage: $0 --repo-url <github-html-url[,github-html-url...]> --team-id <team-id>" >&2
   exit 1;
 }
 
@@ -38,19 +38,37 @@ if [[ -z "${DATABASE_URL:-}" ]]; then
   exit 1
 fi
 
-echo "Updating github.repository.team_id for repo '$REPO_ID' to team_id=$TEAM_ID"
+trim() {
+  local s="$1"
+  # Trim leading whitespace
+  s="${s#"${s%%[![:space:]]*}"}"
+  # Trim trailing whitespace
+  s="${s%"${s##*[![:space:]]}"}"
+  printf '%s' "$s"
+}
+
+# Split repo ids on commas and trim whitespace. Allow either "repo1, repo2" or "repo1,repo2".
+IFS=',' read -r -a REPO_IDS_RAW <<< "$REPO_ID"
+REPO_IDS=()
+for repo in "${REPO_IDS_RAW[@]}"; do
+  repo_trimmed="$(trim "$repo")"
+  if [[ -z "$repo_trimmed" ]]; then
+    echo "Invalid --repo-id/--repo-url value (empty entry)." >&2
+    exit 1
+  fi
+  REPO_IDS+=("$repo_trimmed")
+done
+
+echo "Updating github.repository.team_id for ${#REPO_IDS[@]} repo(s) to team_id=$TEAM_ID"
 
 # Escape single quotes to avoid breaking SQL literals
 TEAM_ID_ESC=${TEAM_ID//\'/''}
-REPO_ID_ESC=${REPO_ID//\'/''}
 
-# Some repositories may not have a team assigned; allow unsetting by passing null/NULL
+IS_NULL_TEAM=false
 if [[ "$TEAM_ID_ESC" == "null" || "$TEAM_ID_ESC" == "NULL" ]]; then
-  # Update github.repository.team_id, matching on lower(html_url)
-  RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
-    "update github.repository set team_id = NULL where id = lower('$REPO_ID_ESC') returning id, team_id;")
-else 
-  # Ensure the target team exists
+  IS_NULL_TEAM=true
+else
+  # Ensure the target team exists (once)
   TEAM_COUNT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c "select count(1) from team where id = '$TEAM_ID_ESC';")
   TEAM_COUNT=$(echo "$TEAM_COUNT" | tr -d '[:space:]')
 
@@ -58,16 +76,35 @@ else
     echo "Team with id $TEAM_ID does not exist" >&2
     exit 1
   fi
-
-  # Update github.repository.team_id, matching on lower(html_url)
-  RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
-    "update github.repository set team_id = '$TEAM_ID_ESC' where id = lower('$REPO_ID_ESC') returning id, team_id;")
 fi
 
-if [[ -z "$RESULT" ]]; then
-  echo "No github.repository row found with id/html_url '$REPO_ID'" >&2
+UPDATED_ROWS=0
+MISSING_REPOS=()
+
+for repo_id in "${REPO_IDS[@]}"; do
+  REPO_ID_ESC=${repo_id//\'/''}
+  echo "- Updating repo '$repo_id'"
+
+  if [[ "$IS_NULL_TEAM" == true ]]; then
+    RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
+      "update github.repository set team_id = NULL where id = lower('$REPO_ID_ESC') returning id, team_id;")
+  else
+    RESULT=$(psql "$DATABASE_URL" -X --tuples-only --no-align -c \
+      "update github.repository set team_id = '$TEAM_ID_ESC' where id = lower('$REPO_ID_ESC') returning id, team_id;")
+  fi
+
+  if [[ -z "$RESULT" ]]; then
+    MISSING_REPOS+=("$repo_id")
+    continue
+  fi
+
+  ROW_COUNT=$(echo "$RESULT" | wc -l | tr -d '[:space:]')
+  UPDATED_ROWS=$((UPDATED_ROWS + ROW_COUNT))
+done
+
+if [[ ${#MISSING_REPOS[@]} -gt 0 ]]; then
+  echo "No github.repository row found with id/html_url for: ${MISSING_REPOS[*]}" >&2
   exit 1
 fi
 
-ROW_COUNT=$(echo "$RESULT" | wc -l | tr -d '[:space:]')
-echo "Updated ${ROW_COUNT} row(s)."
+echo "Updated ${UPDATED_ROWS} row(s)."
