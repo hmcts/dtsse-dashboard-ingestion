@@ -8,7 +8,7 @@ export const run = async (pool: Pool) => {
 };
 
 // CVE reports are stored into cosmos db by the CNP jenkins library.
-// Two different tools are used to generate the reports; yarn audit (js) and owasp dependency check (java)
+// OWASP dependency check tool is used to generate the reports for Java apps
 // Our cosmos query gives us these reports as an array of json objects
 const processCosmosResults = async (pool: Pool, json: string) => {
   await pool.query(
@@ -18,37 +18,33 @@ const processCosmosResults = async (pool: Pool, json: string) => {
     to_timestamp((e->>'_ts')::bigint) as timestamp,
     g.repo_id,
     vulns.name,
-    lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity
+    lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity,
+    vulns.base_score,
+    vulns.description,
+    vulns.affected_package,
+    vulns.affected_versions
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
     left join github.repository g on lower(g.id) = lower(replace(e->'build'->>'git_url', '.git', ''))
-   /* Pull out the CVE details for both Java and Node reports */
+   /* Pull out the CVE details for Java OWASP dependency check reports */
     left join lateral (
-      /* Java OWASP dependency check reports */
       select
         s->>'name' as name,
-        coalesce(s->'cvssv3'->>'baseSeverity', s->'cvssv2'->>'severity') severity
+        coalesce(s->'cvssv3'->>'baseSeverity', s->'cvssv2'->>'severity') severity,
+        coalesce((s->'cvssv3'->>'baseScore')::numeric, (s->'cvssv2'->>'score')::numeric) base_score,
+        s->>'description' as description,
+        d->>'fileName' as affected_package,
+        s->>'affectedVersions' as affected_versions
       from
         jsonb_array_elements(e->'report'->'dependencies') d,
         jsonb_array_elements(coalesce(d->'suppressedVulnerabilities', '[]'::jsonb) || coalesce(d->'vulnerabilities', '[]'::jsonb)) s
-      union all
-      /* Yarn audit reports */
-      select
-        coalesce(cve, v->>'url'),
-        /* Yarn audit uses 'moderate' which we translate to the cvss scale */
-        replace(v->>'severity', 'moderate', 'medium')
-      from
-        jsonb_array_elements((e->'report'->'vulnerabilities') || (e->'report'->'suppressed')) v
-        -- Vulnerability may not have CVE identifiers but if not should have an advisory url
-        left join lateral jsonb_array_elements_text(v->'cves') cve on true
-      where jsonb_typeof(v->'cves') = 'array'
     ) vulns on true -- record the report even if no CVEs found
 )
 ,cves as (
   -- Insert any new CVEs
-  insert into security.cves(name, severity)
-  select distinct name, severity from details
+  insert into security.cves(name, severity, base_score, description, affected_package, affected_versions)
+  select distinct name, severity, base_score, description, affected_package, affected_versions from details
   where
       name is not null
       and name not in (select name from security.cves) -- Avoid (eventually) wrapping around the serial id
