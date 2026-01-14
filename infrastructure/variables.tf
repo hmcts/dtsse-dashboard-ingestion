@@ -26,6 +26,6 @@ variable "common_tags" {
 
 variable "dummy" {
   type = string
-  default "dummy"
+  default = "dummy"
 }
 
