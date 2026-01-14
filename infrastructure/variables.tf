@@ -23,3 +23,9 @@ variable "jenkins_AAD_objectId" {
 variable "common_tags" {
   type = map(string)
 }
+
+variable "dummy" {
+  type = string
+  default "dummy"
+}
+
