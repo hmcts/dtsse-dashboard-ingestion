@@ -50,9 +50,12 @@ const processCosmosResults = async (pool: Pool, json: string) => {
 )
 ,cves as (
   -- Insert or update CVEs with new fields (backfill mode)
+  -- Use DISTINCT ON to pick one row per CVE name (most recent by timestamp)
   insert into security.cves(name, severity, base_score, description, affected_package)
-  select distinct name, severity, base_score, description, affected_package from details
+  select distinct on (name) name, severity, base_score, description, affected_package 
+  from details
   where name is not null
+  order by name, timestamp desc
 
   on conflict (name) do update set
     base_score = EXCLUDED.base_score,
