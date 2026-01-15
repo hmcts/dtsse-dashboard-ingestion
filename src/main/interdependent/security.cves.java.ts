@@ -25,6 +25,9 @@ const processCosmosResults = async (pool: Pool, json: string) => {
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
+    /* Filter for Java apps only - Node.js CVEs will be handled separately */
+    where e->'build'->>'codebase_type' = 'java'
+  ) e
     left join github.repository g on 
       -- Normalize both sides: remove .git suffix and convert to lowercase for comparison
       lower(regexp_replace(g.id, '\\.git$', '', 'i')) = lower(
