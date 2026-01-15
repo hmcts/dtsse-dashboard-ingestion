@@ -95,7 +95,7 @@ export const getUnixTimeToQueryFrom = async (pool: Pool) => {
   `);
 
   return res.rows[0].max;
-  
+
   // ORIGINAL CODE (restore after backfill):
   // const res = await pool.query(`
   //   select coalesce(
