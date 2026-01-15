@@ -21,8 +21,7 @@ const processCosmosResults = async (pool: Pool, json: string) => {
     lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity,
     vulns.base_score,
     vulns.description,
-    vulns.affected_package,
-    vulns.affected_versions
+    vulns.affected_package
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
@@ -43,8 +42,7 @@ const processCosmosResults = async (pool: Pool, json: string) => {
         coalesce(s->'cvssv3'->>'baseSeverity', s->'cvssv2'->>'severity') severity,
         coalesce((s->'cvssv3'->>'baseScore')::numeric, (s->'cvssv2'->>'score')::numeric) base_score,
         s->>'description' as description,
-        d->>'fileName' as affected_package,
-        s->>'affectedVersions' as affected_versions
+        d->>'fileName' as affected_package
       from
         jsonb_array_elements(e->'report'->'dependencies') d,
         jsonb_array_elements(coalesce(d->'suppressedVulnerabilities', '[]'::jsonb) || coalesce(d->'vulnerabilities', '[]'::jsonb)) s
@@ -52,15 +50,14 @@ const processCosmosResults = async (pool: Pool, json: string) => {
 )
 ,cves as (
   -- Insert or update CVEs with new fields (backfill mode)
-  insert into security.cves(name, severity, base_score, description, affected_package, affected_versions)
-  select distinct name, severity, base_score, description, affected_package, affected_versions from details
+  insert into security.cves(name, severity, base_score, description, affected_package)
+  select distinct name, severity, base_score, description, affected_package from details
   where name is not null
 
   on conflict (name) do update set
     base_score = EXCLUDED.base_score,
     description = EXCLUDED.description,
     affected_package = EXCLUDED.affected_package,
-    affected_versions = EXCLUDED.affected_versions,
     severity = EXCLUDED.severity
   returning *
 ), all_cves as (
