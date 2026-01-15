@@ -26,7 +26,16 @@ const processCosmosResults = async (pool: Pool, json: string) => {
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
-    left join github.repository g on lower(g.id) = lower(replace(e->'build'->>'git_url', '.git', ''))
+    left join github.repository g on 
+      -- Normalize both sides: remove .git suffix and convert to lowercase for comparison
+      lower(regexp_replace(g.id, '\.git$', '', 'i')) = lower(
+        -- Normalize git URL to https://github.com/org/repo format
+        regexp_replace(
+          regexp_replace(
+            regexp_replace(e->'build'->>'git_url', '\.git$', '', 'i'),  -- Remove .git suffix
+            '^git@github\.com:', 'https://github.com/', 'i'),           -- Convert SSH to HTTPS
+            '^git://github\.com/', 'https://github.com/', 'i')          -- Convert git:// to https://
+      )
    /* Pull out the CVE details for Java OWASP dependency check reports */
     left join lateral (
       select
@@ -42,14 +51,17 @@ const processCosmosResults = async (pool: Pool, json: string) => {
     ) vulns on true -- record the report even if no CVEs found
 )
 ,cves as (
-  -- Insert any new CVEs
+  -- Insert or update CVEs with new fields (backfill mode)
   insert into security.cves(name, severity, base_score, description, affected_package, affected_versions)
   select distinct name, severity, base_score, description, affected_package, affected_versions from details
-  where
-      name is not null
-      and name not in (select name from security.cves) -- Avoid (eventually) wrapping around the serial id
+  where name is not null
 
-  on conflict do nothing
+  on conflict (name) do update set
+    base_score = EXCLUDED.base_score,
+    description = EXCLUDED.description,
+    affected_package = EXCLUDED.affected_package,
+    affected_versions = EXCLUDED.affected_versions,
+    severity = EXCLUDED.severity
   returning *
 ), all_cves as (
   select * from cves union select * from security.cves
@@ -79,14 +91,21 @@ on conflict do nothing
 };
 
 export const getUnixTimeToQueryFrom = async (pool: Pool) => {
-  // Base off the last import time if available, otherwise the last 12 months
+  // TEMPORARY: Query last 3 months to backfill new CVE fields for existing records
+  // TODO: Revert to normal after backfill completes
   const res = await pool.query(`
-    select coalesce(
-      extract (epoch from max(timestamp)),
-      extract (epoch from (now() - interval '5 day'))
-    )::bigint as max
-    from security.cve_report
+    select extract (epoch from (now() - interval '3 month'))::bigint as max
   `);
 
   return res.rows[0].max;
+  
+  // ORIGINAL CODE (restore after backfill):
+  // const res = await pool.query(`
+  //   select coalesce(
+  //     extract (epoch from max(timestamp)),
+  //     extract (epoch from (now() - interval '5 day'))
+  //   )::bigint as max
+  //   from security.cve_report
+  // `);
+  // return res.rows[0].max;
 };
