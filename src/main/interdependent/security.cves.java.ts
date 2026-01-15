@@ -25,9 +25,6 @@ const processCosmosResults = async (pool: Pool, json: string) => {
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
-    /* Filter for Java apps only - Node.js CVEs will be handled separately */
-    where e->'build'->>'codebase_type' = 'java'
-  ) e
     left join github.repository g on 
       -- Normalize both sides: remove .git suffix and convert to lowercase for comparison
       lower(regexp_replace(g.id, '\\.git$', '', 'i')) = lower(
@@ -50,6 +47,8 @@ const processCosmosResults = async (pool: Pool, json: string) => {
         jsonb_array_elements(e->'report'->'dependencies') d,
         jsonb_array_elements(coalesce(d->'suppressedVulnerabilities', '[]'::jsonb) || coalesce(d->'vulnerabilities', '[]'::jsonb)) s
     ) vulns on true -- record the report even if no CVEs found
+  /* Filter for Java apps only - Node.js CVEs will be handled separately */
+  where e->'build'->>'codebase_type' = 'java'
 )
 ,cves as (
   -- Insert or update CVEs with new fields (backfill mode)
