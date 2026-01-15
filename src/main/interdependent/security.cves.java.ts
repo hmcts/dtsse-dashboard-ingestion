@@ -27,13 +27,13 @@ const processCosmosResults = async (pool: Pool, json: string) => {
     jsonb_array_elements($1::jsonb) e
     left join github.repository g on 
       -- Normalize both sides: remove .git suffix and convert to lowercase for comparison
-      lower(regexp_replace(g.id, '\.git$', '', 'i')) = lower(
+      lower(regexp_replace(g.id, '\\.git$', '', 'i')) = lower(
         -- Normalize git URL to https://github.com/org/repo format
         regexp_replace(
           regexp_replace(
-            regexp_replace(e->'build'->>'git_url', '\.git$', '', 'i'),  -- Remove .git suffix
-            '^git@github\.com:', 'https://github.com/', 'i'),           -- Convert SSH to HTTPS
-            '^git://github\.com/', 'https://github.com/', 'i')          -- Convert git:// to https://
+            regexp_replace(e->'build'->>'git_url', '\\.git$', '', 'i'),  -- Remove .git suffix
+            '^git@github\\.com:', 'https://github.com/', 'i'),           -- Convert SSH to HTTPS
+            '^git://github\\.com/', 'https://github.com/', 'i')          -- Convert git:// to https://
       )
    /* Pull out the CVE details for Java OWASP dependency check reports */
     left join lateral (
