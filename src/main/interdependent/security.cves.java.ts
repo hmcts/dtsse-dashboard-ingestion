@@ -68,9 +68,10 @@ const processCosmosResults = async (pool: Pool, json: string) => {
 ), all_cves as (
   select * from cves union select * from security.cves
 ), reports as (
-  -- Insert new reports
+  -- Insert new reports (only for repos that match in database)
  insert into security.cve_report(timestamp, repo_id)
    select timestamp, repo_id from details d
+     where repo_id is not null  -- Skip reports that don't match any repository
      group by 1, 2
      order by 1 asc
    on conflict do nothing
