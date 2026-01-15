@@ -49,7 +49,9 @@ export const getCVEs = async (fromUnixtime: bigint) => {
 
   for (const connection of jenkinsConnections) {
     const querySpec = {
-      query: `SELECT * from c where c._ts >= ${fromUnixtime} and c.build.branch_name = "master" and c.build.codebase_type = "java" order by c._ts asc offset 0 limit 200`,
+      // TEMPORARY: Increased limit from 200 to 2000 for backfill of CVE enhanced fields
+      // TODO: Revert to limit 200 after backfill completes
+      query: `SELECT * from c where c._ts >= ${fromUnixtime} and c.build.branch_name = "master" and c.build.codebase_type = "java" order by c._ts asc offset 0 limit 2000`,
     };
     const { resources: items } = await connection.cveReports.items.query(querySpec).fetchAll();
     allItems = allItems.concat(items);
