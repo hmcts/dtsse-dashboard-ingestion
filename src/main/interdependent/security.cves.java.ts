@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import { getCVEs } from '../jenkins/cosmos';
 
+// Trigger build #13 - testing ACR agent availability
 export const run = async (pool: Pool) => {
   const items = await getCVEs(await getUnixTimeToQueryFrom(pool));
   await processCosmosResults(pool, items);
