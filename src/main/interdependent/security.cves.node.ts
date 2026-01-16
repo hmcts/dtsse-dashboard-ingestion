@@ -3,7 +3,7 @@ import { getCVEs } from '../jenkins/cosmos';
 import { getUnixTimeToQueryFrom } from './security.cves.common';
 
 export const run = async (pool: Pool) => {
-  const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'node');
+  const items = await getCVEs(await getUnixTimeToQueryFrom(pool, '3 month'), 'node');
   await processCosmosNodeResults(pool, items);
   return [];
 };
