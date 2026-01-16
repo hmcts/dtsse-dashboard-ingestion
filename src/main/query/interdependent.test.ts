@@ -136,10 +136,7 @@ describe('integration tests', () => {
       ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45688', 'high'],
       ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45689', 'high'],
       ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-9999', 'critical'],
-      ['https://github.com/hmcts/prl-ccd-definitions', 'CVE-2023-28155', 'medium'],
-      ['https://github.com/hmcts/prl-ccd-definitions', 'https://github.com/advisories/GHSA-56x4-j7p9-fcf9', 'low'],
-      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2020-24025', 'medium'],
-      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'medium'],
+      // Node.js apps (prl-ccd-definitions, sscs-submit-your-appeal) filtered out - separate ticket for Node.js CVEs
       // lau-frontend had CVEs on a prior report but not latest, so should not show up.
     ]);
   });
