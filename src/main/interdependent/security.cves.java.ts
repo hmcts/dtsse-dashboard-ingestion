@@ -94,21 +94,13 @@ on conflict do nothing
 };
 
 export const getUnixTimeToQueryFrom = async (pool: Pool) => {
-  // TEMPORARY: Query last 3 months to backfill new CVE fields for existing records
-  // TODO: Revert to normal after backfill completes
   const res = await pool.query(`
-    select extract (epoch from (now() - interval '3 month'))::bigint as max
+    select coalesce(
+      extract (epoch from max(timestamp)),
+      extract (epoch from (now() - interval '5 day'))
+    )::bigint as max
+    from security.cve_report
   `);
 
   return res.rows[0].max;
-
-  // ORIGINAL CODE (restore after backfill):
-  // const res = await pool.query(`
-  //   select coalesce(
-  //     extract (epoch from max(timestamp)),
-  //     extract (epoch from (now() - interval '5 day'))
-  //   )::bigint as max
-  //   from security.cve_report
-  // `);
-  // return res.rows[0].max;
 };
