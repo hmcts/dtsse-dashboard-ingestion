@@ -42,6 +42,7 @@ To run the script locally you will need some environment variables set in `.env`
 GITHUB_TOKEN=[your github token]
 DATABASE_URL=postgres://localhost:5432/dashboard
 COSMOS_KEY=[your token]
+COSMOS_DB_NAME=[your cosmos db name, for example: sandbox-pipeline-metrics]
 SONAR_TOKEN=[your token]
 SNOW_USERNAME=[your username]
 SNOW_PASSWORD=[your password]
