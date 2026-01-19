@@ -29,19 +29,11 @@ export const getMetrics = async (fromUnixtime: bigint) => {
   // Fetch Jenkins metrics from all configured databases
   // Repeated runs will bring the data up to date.
   // Any duplicated data will be ignored with `on conflict do nothing`.
-
-  // BACKFILL MODE: Query 7 days back to recover missing data from downtime (Dec 10-17)
-  // After backfill is complete, set BACKFILL_ENABLED to false and redeploy
-  const BACKFILL_ENABLED = false;
-  const backfillFromUnixtime = BACKFILL_ENABLED ? BigInt(Math.floor(Date.now() / 1000)) - BigInt(7 * 24 * 60 * 60) : fromUnixtime;
-
-  console.log(`[BACKFILL] Using timestamp: ${backfillFromUnixtime} (7 days ago: ${BACKFILL_ENABLED})`);
-
   let allItems: any[] = [];
 
   for (const connection of jenkinsConnections) {
     const querySpec = {
-      query: `SELECT * from c where c._ts >= ${backfillFromUnixtime} order by c._ts asc offset 0 limit 25000`,
+      query: `SELECT * from c where c._ts >= ${fromUnixtime} order by c._ts asc offset 0 limit 25000`,
     };
     const { resources: items } = await connection.pipelineMetrics.items.query(querySpec).fetchAll();
     console.log(`Processing ${items.length} Jenkins metrics from database: ${connection.name}`);
