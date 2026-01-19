@@ -40,14 +40,14 @@ describe('Jenkins validation utilities', () => {
       normalizeBuildResult('NOT_BUILT', {
         correlation_id: '123e4567-e89b-12d3-a456-426614174000',
         build_url: 'https://build.example.com/job/test/42',
-        step_name: 'Checkout'
+        step_name: 'Checkout',
       });
 
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining('NOT_BUILT'),
         expect.objectContaining({
           correlation_id: '123e4567-e89b-12d3-a456-426614174000',
-          raw_value: 'NOT_BUILT'
+          raw_value: 'NOT_BUILT',
         })
       );
 
@@ -63,15 +63,15 @@ describe('Jenkins validation utilities', () => {
           correlation_id: 'abc-123',
           current_step_name: 'Build',
           current_build_current_result: 'SUCCESS',
-          stage_timestamp: '2024-01-01T10:00:00Z'
+          stage_timestamp: '2024-01-01T10:00:00Z',
         },
         {
           id: '2',
           correlation_id: 'abc-124',
           current_step_name: 'Test',
           current_build_current_result: 'FAILURE',
-          stage_timestamp: '2024-01-01T10:05:00Z'
-        }
+          stage_timestamp: '2024-01-01T10:05:00Z',
+        },
       ];
 
       const { validatedRecords, stats } = validateBuildSteps(records);
@@ -90,15 +90,15 @@ describe('Jenkins validation utilities', () => {
           correlation_id: 'abc-123',
           current_step_name: 'Build',
           current_build_current_result: 'NOT_BUILT',
-          stage_timestamp: '2024-01-01T10:00:00Z'
+          stage_timestamp: '2024-01-01T10:00:00Z',
         },
         {
           id: '2',
           correlation_id: 'abc-124',
           current_step_name: 'Test',
           current_build_current_result: 'SUCCESS',
-          stage_timestamp: '2024-01-01T10:05:00Z'
-        }
+          stage_timestamp: '2024-01-01T10:05:00Z',
+        },
       ];
 
       const { validatedRecords, stats } = validateBuildSteps(records);
@@ -117,22 +117,22 @@ describe('Jenkins validation utilities', () => {
           correlation_id: 'abc-123',
           current_step_name: 'Build',
           current_build_current_result: 'NOT_BUILT',
-          stage_timestamp: '2024-01-01T10:00:00Z'
+          stage_timestamp: '2024-01-01T10:00:00Z',
         },
         {
           id: '2',
           correlation_id: 'abc-124',
           current_step_name: 'Test',
           current_build_current_result: 'INVALID_STATUS',
-          stage_timestamp: '2024-01-01T10:05:00Z'
+          stage_timestamp: '2024-01-01T10:05:00Z',
         },
         {
           id: '3',
           correlation_id: 'abc-125',
           current_step_name: 'Deploy',
           current_build_current_result: 'NOT_BUILT',
-          stage_timestamp: '2024-01-01T10:10:00Z'
-        }
+          stage_timestamp: '2024-01-01T10:10:00Z',
+        },
       ];
 
       const { validatedRecords, stats } = validateBuildSteps(records);
@@ -152,8 +152,8 @@ describe('Jenkins validation utilities', () => {
           correlation_id: 'abc-123',
           current_step_name: 'Build',
           current_build_current_result: 'NOT_BUILT',
-          stage_timestamp: '2024-01-01T10:00:00Z'
-        }
+          stage_timestamp: '2024-01-01T10:00:00Z',
+        },
       ];
 
       validateBuildSteps(records);
@@ -171,8 +171,8 @@ describe('Jenkins validation utilities', () => {
           current_build_current_result: 'NOT_BUILT',
           stage_timestamp: '2024-01-01T10:00:00Z',
           build_url: 'https://example.com/build/1',
-          custom_field: 'custom_value'
-        }
+          custom_field: 'custom_value',
+        },
       ];
 
       const { validatedRecords } = validateBuildSteps(records);
@@ -206,7 +206,7 @@ describe('Jenkins validation utilities', () => {
           stage_timestamp: '2024-12-10T14:30:00Z',
           build_url: 'https://build.platform.hmcts.net/job/HMCTS_a_to_c/job/ccd-elastic-search/job/master/123/',
           branch_name: 'master',
-          build_number: '123'
+          build_number: '123',
         },
         {
           id: '550e8400-e29b-41d4-a716-446655440001',
@@ -216,8 +216,8 @@ describe('Jenkins validation utilities', () => {
           stage_timestamp: '2024-12-10T14:35:00Z',
           build_url: 'https://build.platform.hmcts.net/job/HMCTS_a_to_c/job/ccd-elastic-search/job/master/123/',
           branch_name: 'master',
-          build_number: '123'
-        }
+          build_number: '123',
+        },
       ];
 
       const { validatedRecords, stats } = validateBuildSteps(cosmosData);
@@ -226,7 +226,7 @@ describe('Jenkins validation utilities', () => {
       expect(validatedRecords[0].current_build_current_result).toBeNull();
       // Second record should remain SUCCESS
       expect(validatedRecords[1].current_build_current_result).toBe('SUCCESS');
-      
+
       // Stats should reflect the normalization
       expect(stats.normalized).toBe(1);
       expect(stats.invalidValues.get('NOT_BUILT')).toBe(1);

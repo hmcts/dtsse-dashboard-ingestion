@@ -76,7 +76,7 @@ describe('Jenkins Validation Integration Tests', () => {
 
       const { validatedRecords, stats } = validateBuildSteps(cosmosRecords);
 
-      validValues.forEach((expectedValue) => {
+      validValues.forEach(expectedValue => {
         const found = validatedRecords.find((r: any) => r.current_build_current_result === expectedValue);
         expect(found).toBeDefined();
       });

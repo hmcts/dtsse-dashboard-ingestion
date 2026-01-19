@@ -1,6 +1,6 @@
 /**
  * Validation utilities for Jenkins data ingestion
- * 
+ *
  * Purpose: Prevent invalid enum values from breaking ingestion pipeline
  * Context: Ticket - Prevent invalid Jenkins build enum values (e.g. NOT_BUILT) from breaking ingestion
  */
@@ -11,11 +11,11 @@ const VALID_BUILD_RESULTS: Set<ValidBuildResult> = new Set(['ABORTED', 'FAILURE'
 
 /**
  * Validates and normalizes Jenkins build result values
- * 
+ *
  * @param value - The raw build result value from Cosmos DB
  * @param context - Additional context for logging (e.g., correlation_id, build_url)
  * @returns A valid build result or null if the value is invalid
- * 
+ *
  * Mapping strategy:
  * - NOT_BUILT → null (build hasn't executed yet, no meaningful result)
  * - Invalid values → null (log warning, don't break ingestion)
@@ -58,7 +58,7 @@ export const normalizeBuildResult = (
 
 /**
  * Validates an array of Jenkins build step records from Cosmos DB
- * 
+ *
  * @param records - Array of raw records from Cosmos
  * @returns Object containing validated records and validation statistics
  */
