@@ -24,7 +24,7 @@ describe('jenkins.metrics unit tests', () => {
 
   beforeEach(() => {
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-    
+
     mockClient = {
       query: jest.fn().mockResolvedValue({ rows: [] }),
       release: jest.fn(),
@@ -66,15 +66,13 @@ describe('jenkins.metrics unit tests', () => {
 
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 2, normalized: 1 }
+      stats: { total: 2, normalized: 1 },
     });
 
     const json = JSON.stringify(testData);
     await processCosmosResults(mockPool, json);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(
-      '[JENKINS INGESTION] Validated 2 records, normalized 1 invalid build results'
-    );
+    expect(consoleLogSpy).toHaveBeenCalledWith('[JENKINS INGESTION] Validated 2 records, normalized 1 invalid build results');
   });
 
   test('processCosmosResults should not log validation summary when no records are normalized', async () => {
@@ -94,15 +92,13 @@ describe('jenkins.metrics unit tests', () => {
 
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 1, normalized: 0 }
+      stats: { total: 1, normalized: 0 },
     });
 
     const json = JSON.stringify(testData);
     await processCosmosResults(mockPool, json);
 
-    expect(consoleLogSpy).not.toHaveBeenCalledWith(
-      expect.stringContaining('[JENKINS INGESTION]')
-    );
+    expect(consoleLogSpy).not.toHaveBeenCalledWith(expect.stringContaining('[JENKINS INGESTION]'));
   });
 
   test('processCosmosResults should handle multiple normalized records', async () => {
@@ -144,15 +140,13 @@ describe('jenkins.metrics unit tests', () => {
 
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 3, normalized: 2 }
+      stats: { total: 3, normalized: 2 },
     });
 
     const json = JSON.stringify(testData);
     await processCosmosResults(mockPool, json);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(
-      '[JENKINS INGESTION] Validated 3 records, normalized 2 invalid build results'
-    );
+    expect(consoleLogSpy).toHaveBeenCalledWith('[JENKINS INGESTION] Validated 3 records, normalized 2 invalid build results');
   });
 
   test('getUnixTimeToQueryFrom should return max timestamp from database', async () => {
@@ -164,9 +158,7 @@ describe('jenkins.metrics unit tests', () => {
     const result = await getUnixTimeToQueryFrom(mockPool);
 
     expect(result).toBe(mockTimestamp);
-    expect(mockPool.query).toHaveBeenCalledWith(
-      expect.stringContaining('select extract(epoch from coalesce')
-    );
+    expect(mockPool.query).toHaveBeenCalledWith(expect.stringContaining('select extract(epoch from coalesce'));
   });
 
   test('run should query metrics and process results', async () => {
@@ -192,17 +184,13 @@ describe('jenkins.metrics unit tests', () => {
     mockGetMetrics.mockResolvedValue(JSON.stringify(testData));
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 1, normalized: 0 }
+      stats: { total: 1, normalized: 0 },
     });
 
     await run(mockPool);
 
-    expect(mockPool.query).toHaveBeenCalledWith(
-      expect.stringContaining('max(stage_timestamp)')
-    );
+    expect(mockPool.query).toHaveBeenCalledWith(expect.stringContaining('max(stage_timestamp)'));
     expect(mockGetMetrics).toHaveBeenCalledWith(mockTimestamp);
-    expect(consoleLogSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Querying Jenkins metrics from')
-    );
+    expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('Querying Jenkins metrics from'));
   });
 });
