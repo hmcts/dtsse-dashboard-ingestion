@@ -26,13 +26,13 @@ describe('jenkins.metrics unit tests', () => {
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
     mockClient = {
-      query: jest.fn().mockResolvedValue({ rows: [] }),
+      query: (jest.fn() as any).mockResolvedValue({ rows: [] }),
       release: jest.fn(),
     };
 
     mockPool = {
-      query: jest.fn().mockResolvedValue({ rows: [] }),
-      connect: jest.fn().mockResolvedValue(mockClient),
+      query: (jest.fn() as any).mockResolvedValue({ rows: [] }),
+      connect: (jest.fn() as any).mockResolvedValue(mockClient),
     };
 
     jest.clearAllMocks();
@@ -66,13 +66,15 @@ describe('jenkins.metrics unit tests', () => {
 
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 2, normalized: 1 },
+      stats: { total: 2, normalized: 1, invalidValues: new Map() },
     });
 
     const json = JSON.stringify(testData);
     await processCosmosResults(mockPool, json);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith('[JENKINS INGESTION] Validated 2 records, normalized 1 invalid build results');
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      '[JENKINS INGESTION] Validated 2 records, normalized 1 invalid build results'
+    );
   });
 
   test('processCosmosResults should not log validation summary when no records are normalized', async () => {
@@ -92,7 +94,7 @@ describe('jenkins.metrics unit tests', () => {
 
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 1, normalized: 0 },
+      stats: { total: 1, normalized: 0, invalidValues: new Map() },
     });
 
     const json = JSON.stringify(testData);
@@ -140,7 +142,7 @@ describe('jenkins.metrics unit tests', () => {
 
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 3, normalized: 2 },
+      stats: { total: 3, normalized: 2, invalidValues: new Map() },
     });
 
     const json = JSON.stringify(testData);
@@ -151,9 +153,9 @@ describe('jenkins.metrics unit tests', () => {
 
   test('getUnixTimeToQueryFrom should return max timestamp from database', async () => {
     const mockTimestamp = 1672531200; // 2023-01-01 00:00:00 UTC
-    mockPool.query = jest.fn().mockResolvedValue({
+    mockPool.query.mockResolvedValue({
       rows: [{ max: mockTimestamp }],
-    });
+    } as any);
 
     const result = await getUnixTimeToQueryFrom(mockPool);
 
@@ -163,9 +165,9 @@ describe('jenkins.metrics unit tests', () => {
 
   test('run should query metrics and process results', async () => {
     const mockTimestamp = 1672531200;
-    mockPool.query = jest.fn().mockResolvedValue({
+    mockPool.query.mockResolvedValue({
       rows: [{ max: mockTimestamp }],
-    });
+    } as any);
 
     const testData = [
       {
@@ -184,7 +186,7 @@ describe('jenkins.metrics unit tests', () => {
     mockGetMetrics.mockResolvedValue(JSON.stringify(testData));
     mockValidateBuildSteps.mockReturnValueOnce({
       validatedRecords: testData,
-      stats: { total: 1, normalized: 0 },
+      stats: { total: 1, normalized: 0, invalidValues: new Map() },
     });
 
     await run(mockPool);
