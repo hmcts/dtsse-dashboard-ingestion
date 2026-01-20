@@ -48,8 +48,8 @@
   },
   "devDependencies": {
     "@testcontainers/postgresql": "^10.3.2",
-    "@typescript-eslint/eslint-plugin": "7.18.0",
-    "@typescript-eslint/parser": "7.18.0",
+    "@typescript-eslint/eslint-plugin": "8.53.1",
+    "@typescript-eslint/parser": "8.53.1",
     "dotenv": "16.6.1",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.2",
