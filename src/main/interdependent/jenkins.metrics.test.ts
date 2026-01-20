@@ -72,9 +72,7 @@ describe('jenkins.metrics unit tests', () => {
     const json = JSON.stringify(testData);
     await processCosmosResults(mockPool, json);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(
-      '[JENKINS INGESTION] Validated 2 records, normalized 1 invalid build results'
-    );
+    expect(consoleLogSpy).toHaveBeenCalledWith('[JENKINS INGESTION] Validated 2 records, normalized 1 invalid build results');
   });
 
   test('processCosmosResults should not log validation summary when no records are normalized', async () => {
