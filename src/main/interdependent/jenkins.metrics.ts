@@ -10,7 +10,7 @@ export const run = async (pool: Pool) => {
 };
 
 export const processCosmosResults = async (pool: Pool, json: string) => {
-  // Validate and normalize build results before processing
+  // Validate and normalise build results before processing
   const rawRecords = JSON.parse(json);
   const { validatedRecords, stats } = validateBuildSteps(rawRecords);
   const validatedJson = JSON.stringify(validatedRecords);
