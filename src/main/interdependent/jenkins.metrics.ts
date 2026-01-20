@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import { getMetrics } from '../jenkins/cosmos';
+import { validateBuildSteps } from '../jenkins/validation';
 
 export const run = async (pool: Pool) => {
   const time = await getUnixTimeToQueryFrom(pool);
@@ -9,6 +10,16 @@ export const run = async (pool: Pool) => {
 };
 
 export const processCosmosResults = async (pool: Pool, json: string) => {
+  // Validate and normalise build results before processing
+  const rawRecords = JSON.parse(json);
+  const { validatedRecords, stats } = validateBuildSteps(rawRecords);
+  const validatedJson = JSON.stringify(validatedRecords);
+
+  // Log validation summary for monitoring
+  if (stats.normalized > 0) {
+    console.log(`[JENKINS INGESTION] Validated ${stats.total} records, normalized ${stats.normalized} invalid build results`);
+  }
+
   await pool.query(
     `
   with builds as (
@@ -56,7 +67,7 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
   ) names on current_step_name = name
   order by stage_timestamp asc
   on conflict do nothing`,
-    [json]
+    [validatedJson]
   );
 
   // precompute the time taken by each build step
