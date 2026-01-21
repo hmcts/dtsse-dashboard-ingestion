@@ -4,7 +4,7 @@ import { validateBuildSteps } from '../jenkins/validation';
 
 export const run = async (pool: Pool) => {
   const time = await getUnixTimeToQueryFrom(pool);
-  console.log(`Querying Jenkins metrics from ${new Date(time * 1000).toISOString()}`);
+  console.log(`Querying Jenkins metrics from ${new Date(Number(time) * 1000).toISOString()}`);
   const items = await getMetrics(time);
   return processCosmosResults(pool, items);
 };
