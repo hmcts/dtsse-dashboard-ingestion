@@ -3,54 +3,53 @@ import { getCVEs } from '../jenkins/cosmos';
 import { getUnixTimeToQueryFrom } from './security.cves.common';
 
 export const run = async (pool: Pool) => {
-  const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'java');
-  await processCosmosJavaResults(pool, items);
+  const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'node');
+  await processCosmosNodeResults(pool, items);
   return [];
 };
 
-export const processCosmosJavaResults = async (pool: Pool, json: string) => {
+export const processCosmosNodeResults = async (pool: Pool, json: string) => {
   await pool.query(
     `
  with details as (
   select
     to_timestamp((e->>'_ts')::bigint) as timestamp,
     g.repo_id,
-    vulns.name,
+    vulns.name as name,
+    vulns.description as description,
+    vulns.affected_package as affected_package,
+    vulns.affected_versions as affected_versions,
     lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity,
-    vulns.base_score,
-    vulns.description,
-    vulns.affected_package
+    vulns.base_score
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
-    left join github.repository g on 
-      -- Normalize both sides: remove .git suffix and convert to lowercase for comparison
-      lower(regexp_replace(g.id, '\\.git$', '', 'i')) = lower(
-        -- Normalize git URL to https://github.com/org/repo format
-        regexp_replace(
-          regexp_replace(
-            regexp_replace(e->'build'->>'git_url', '\\.git$', '', 'i'),  -- Remove .git suffix
-            '^git@github\\.com:', 'https://github.com/', 'i'),           -- Convert SSH to HTTPS
-            '^git://github\\.com/', 'https://github.com/', 'i')          -- Convert git:// to https://
-      )
-   /* Pull out the CVE details for Java OWASP dependency check reports */
+    left join github.repository g on lower(g.id) = lower(replace(e->'build'->>'git_url', '.git', ''))
+   /* Pull out the CVE details for Node.js Yarn audit reports */
     left join lateral (
       select
-        s->>'name' as name,
-        coalesce(s->'cvssv3'->>'baseSeverity', s->'cvssv2'->>'severity') severity,
-        coalesce((s->'cvssv3'->>'baseScore')::numeric, (s->'cvssv2'->>'score')::numeric) base_score,
-        s->>'description' as description,
-        d->>'fileName' as affected_package
+        coalesce(cve, v->>'url') as name,
+        replace(v->>'severity', 'moderate', 'medium') as severity,
+        coalesce(v->>'title', 'none') as description,
+        coalesce(v->>'module_name', 'none') as affected_package,
+        coalesce(v->>'vulnerable_versions', 'none') as affected_versions,
+        /* Yarn 4.x does not provide the cvss score unlike Yarn 3.x did and like NPM audit does
+          To resolve this properly we should switch to using NPM audit or use some other better tool: 
+          Tech debt ticket: DTSPO-29657
+          Relevant Bug thread: https://github.com/yarnpkg/berry/issues/5781
+        */
+        null::numeric as base_score
       from
-        jsonb_array_elements(e->'report'->'dependencies') d,
-        jsonb_array_elements(coalesce(d->'suppressedVulnerabilities', '[]'::jsonb) || coalesce(d->'vulnerabilities', '[]'::jsonb)) s
+        jsonb_array_elements((e->'report'->'vulnerabilities') || (e->'report'->'suppressed')) v
+        left join lateral jsonb_array_elements_text(v->'cves') cve on true
+      where jsonb_typeof(v->'cves') = 'array'
     ) vulns on true -- record the report even if no CVEs found
 )
 ,cves as (
   -- Insert or update CVEs with new fields (backfill mode)
   -- Use DISTINCT ON to pick one row per CVE name (most recent by timestamp)
-  insert into security.cves(name, severity, base_score, description, affected_package)
-  select distinct on (name) name, severity, base_score, description, affected_package 
+  insert into security.cves(name, severity, base_score, description, affected_package, affected_versions)
+  select distinct on (name) name, severity, base_score, description, affected_package, affected_versions
   from details
   where name is not null
   order by name, timestamp desc
@@ -58,6 +57,7 @@ export const processCosmosJavaResults = async (pool: Pool, json: string) => {
     base_score = EXCLUDED.base_score,
     description = EXCLUDED.description,
     affected_package = EXCLUDED.affected_package,
+    affected_versions = EXCLUDED.affected_versions,
     severity = EXCLUDED.severity
   returning *
 ), all_cves as (

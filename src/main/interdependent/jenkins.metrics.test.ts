@@ -150,7 +150,7 @@ describe('jenkins.metrics unit tests', () => {
   });
 
   test('getUnixTimeToQueryFrom should return max timestamp from database', async () => {
-    const mockTimestamp = 1672531200; // 2023-01-01 00:00:00 UTC
+    const mockTimestamp = BigInt(1672531200); // 2023-01-01 00:00:00 UTC
     mockPool.query.mockResolvedValue({
       rows: [{ max: mockTimestamp }],
     } as any);
@@ -162,7 +162,7 @@ describe('jenkins.metrics unit tests', () => {
   });
 
   test('run should query metrics and process results', async () => {
-    const mockTimestamp = 1672531200;
+    const mockTimestamp = BigInt(1672531200);
     mockPool.query.mockResolvedValue({
       rows: [{ max: mockTimestamp }],
     } as any);

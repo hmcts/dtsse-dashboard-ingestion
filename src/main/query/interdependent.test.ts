@@ -18,7 +18,10 @@ jest.mock('../github/graphql', () => ({
 }));
 jest.mock('../jenkins/cosmos', () => ({
   getMetrics: () => fs.readFileSync('src/test/data/jenkins-metrics.json', 'utf-8'),
-  getCVEs: () => fs.readFileSync('src/test/data/cve-reports.json', 'utf-8'),
+  getCVEs: (_fromUnixtime: bigint, codebaseType: string) => {
+    const cve_reports = codebaseType === 'java' ? 'cve-java-reports.json' : 'cve-node-reports.json';
+    return fs.readFileSync(`src/test/data/${cve_reports}`, 'utf-8');
+  },
 }));
 
 describe('integration tests', () => {
@@ -136,8 +139,49 @@ describe('integration tests', () => {
       ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45688', 'high'],
       ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45689', 'high'],
       ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-9999', 'critical'],
-      // Node.js apps (prl-ccd-definitions, sscs-submit-your-appeal) filtered out - separate ticket for Node.js CVEs
+      ['https://github.com/hmcts/prl-ccd-definitions', 'CVE-2023-28155', 'medium'],
+      ['https://github.com/hmcts/prl-ccd-definitions', 'https://github.com/advisories/GHSA-56x4-j7p9-fcf9', 'low'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2020-24025', 'medium'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'medium'],
       // lau-frontend had CVEs on a prior report but not latest, so should not show up.
+    ]);
+  });
+
+  test('cves have expected fields populated', async () => {
+    const cves = (
+      await pool.query({
+        rowMode: 'array',
+        text: 'select name, severity, base_score, description, affected_package, affected_versions from security.cves order by name',
+      })
+    ).rows;
+    expect(cves.length).toBe(12);
+    expect(cves).toEqual([
+      [
+        '1091725',
+        'unknown',
+        null,
+        'The Request package through 2.88.2 for Node.js allows a bypass of SSRF mitigations via an attacker-controller server that does a cross-protocol redirect (HTTP to HTTPS, or HTTPS to HTTP). NOTE: This vulnerability only affects products that are no longer supported by the maintainer.',
+        null,
+        null,
+      ],
+      ['CVE-2020-24025', 'medium', null, 'Improper Certificate Validation in node-sass', 'node-sass', '>=2.0.0 <7.0.0'],
+      ['CVE-2022-45688', 'high', '7.5', null, null, null],
+      [
+        'CVE-2022-45689',
+        'high',
+        '7.5',
+        'A stack overflow in the XML.toJSONObject component of hutool-json v5.8.10 allows attackers to cause a Denial of Service (DoS) via crafted JSON or XML data.',
+        null,
+        null,
+      ],
+      ['CVE-2022-8643', 'medium', '4.3', null, null, null],
+      ['CVE-2022-9999', 'critical', '7.5', null, 'accessors-smart-2.4.8.jar', null],
+      ['CVE-2022-should-not-see-me', 'medium', '4.3', null, null, null],
+      ['CVE-2023-28155', 'medium', null, 'Server-Side Request Forgery in Request', 'request', '<=2.88.2'],
+      ['CVE-NONE-TEST', 'none', null, 'None test CVE', 'none-test-module', '>=0.0.0'],
+      ['https://github.com/advisories/CRITICAL-TEST', 'critical', null, 'Critical test CVE', 'critical-test-module', '>=0.0.1'],
+      ['https://github.com/advisories/GHSA-56x4-j7p9-fcf9', 'low', null, 'Command Injection in moment-timezone', 'moment-timezone', '>=0.1.0 <0.5.35'],
+      ['https://github.com/advisories/HIGH-TEST', 'high', null, 'High test CVE', 'high-test-module', '>=0.0.3'],
     ]);
   });
 
