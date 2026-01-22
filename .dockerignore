@@ -15,4 +15,8 @@
 !src/main/**
 !config/**
 !webpack.config.js
+# When building locally this will include both migrations/sqls/*.sql and migrations/*.js
 !migrations/**/*
+# But on Jenkins this additional pattern is needed, otherwise migrations/*.js files are skipped
+# which results in no migrations ever being run as the db-migrate cannot find any migration files
+!migrations/*.js
