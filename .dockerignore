@@ -16,3 +16,4 @@
 !config/**
 !webpack.config.js
 !migrations/**/*
+!migrations/*.js
