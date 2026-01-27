@@ -3006,12 +3006,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.19.27":
-  version: 20.19.27
-  resolution: "@types/node@npm:20.19.27"
+"@types/node@npm:20.19.30":
+  version: 20.19.30
+  resolution: "@types/node@npm:20.19.30"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/a36bdbbf3c3e25bd75454f295b01c72729128a7ab38e99b75dba5fad2ff44fb96179462197345381a086c85de462c10d994fe32868c9a07d42b852566a2e63a7
+  checksum: 10/4a25e5cbcdfc61b9bf45ebbbd199a6ce26efed34bd67c45c3472654a1cf988f7b58ec7c1574ffb5b83c6a772e7eaf1ca9de94fdafc3a36ae6efb852c1f0b6fb0
   languageName: node
   linkType: hard
 
@@ -5167,7 +5167,7 @@ __metadata:
     "@octokit/rest": "npm:20.1.2"
     "@testcontainers/postgresql": "npm:^11.11.0"
     "@types/jira-client": "npm:7.1.9"
-    "@types/node": "npm:20.19.27"
+    "@types/node": "npm:20.19.30"
     "@types/pg": "npm:8.16.0"
     "@types/pg-copy-streams": "npm:^1.2.5"
     "@types/pg-format": "npm:1.0.5"
