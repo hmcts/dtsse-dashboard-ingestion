@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure@DTSPO-29657-fix-missing-base-score-in-yarn-audit")
+@Library("Infrastructure")
 
 def type = "nodejs"
 def product = "dtsse"
