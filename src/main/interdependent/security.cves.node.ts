@@ -33,12 +33,7 @@ export const processCosmosNodeResults = async (pool: Pool, json: string) => {
         coalesce(v->>'title', 'none') as description,
         coalesce(v->>'module_name', 'none') as affected_package,
         coalesce(v->>'vulnerable_versions', 'none') as affected_versions,
-        /* Yarn 4.x does not provide the cvss score unlike Yarn 3.x did and like NPM audit does
-          To resolve this properly we should switch to using NPM audit or use some other better tool: 
-          Tech debt ticket: DTSPO-29657
-          Relevant Bug thread: https://github.com/yarnpkg/berry/issues/5781
-        */
-        null::numeric as base_score
+        coalesce((v->'cvss'->>'score')::numeric) as base_score
       from
         jsonb_array_elements((e->'report'->'vulnerabilities') || (e->'report'->'suppressed')) v
         left join lateral jsonb_array_elements_text(v->'cves') cve on true

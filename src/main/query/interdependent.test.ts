@@ -179,9 +179,9 @@ describe('integration tests', () => {
       ['CVE-2022-should-not-see-me', 'medium', '4.3', null, null, null],
       ['CVE-2023-28155', 'medium', null, 'Server-Side Request Forgery in Request', 'request', '<=2.88.2'],
       ['CVE-NONE-TEST', 'none', null, 'None test CVE', 'none-test-module', '>=0.0.0'],
-      ['https://github.com/advisories/CRITICAL-TEST', 'critical', null, 'Critical test CVE', 'critical-test-module', '>=0.0.1'],
+      ['https://github.com/advisories/CRITICAL-TEST', 'critical', '9.8', 'Critical test CVE', 'critical-test-module', '>=0.0.1'],
       ['https://github.com/advisories/GHSA-56x4-j7p9-fcf9', 'low', null, 'Command Injection in moment-timezone', 'moment-timezone', '>=0.1.0 <0.5.35'],
-      ['https://github.com/advisories/HIGH-TEST', 'high', null, 'High test CVE', 'high-test-module', '>=0.0.3'],
+      ['https://github.com/advisories/HIGH-TEST', 'high', '7.5', 'High test CVE', 'high-test-module', '>=0.0.3'],
     ]);
   });
 
