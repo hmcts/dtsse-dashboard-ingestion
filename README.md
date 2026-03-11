@@ -52,6 +52,20 @@ You will also need to have a local postgres database running on port 5432 with a
 
 ## Developing
 
+### Running with a local postgres server
+
+You can run a local postgres server in docker by running:
+
+```
+docker run --name dtsse-ingestion-postgres \
+ -e POSTGRES_PASSWORD=yourpwd \
+ -e POSTGRES_DB=dashboard \
+  -p 5432:5432 \
+  -d postgres
+```
+
+Point the scripts to this by setting the DATABASE_URL environment variable to `postgres://postgres:yourpwd@localhost:5432/dashboard`
+
 ### Queries and Interdependent Query
 
 #### Former Query (Deprecated)
