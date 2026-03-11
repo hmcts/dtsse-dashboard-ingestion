@@ -7,13 +7,8 @@ import { Pool } from 'pg';
 export const getUnixTimeToQueryFrom = async (pool: Pool, defaultInterval: string = '30 day') => {
   const res = await pool.query(
     `
-      select coalesce(
-        extract (epoch from max(timestamp)),
-        extract (epoch from (now() - $1::interval))
-      )::bigint as max
-      from security.cve_report
-    `,
-    [defaultInterval]
+      select extract (epoch from (now() - interval '30 day'))::bigint as max
+    `
   );
 
   return res.rows[0].max;

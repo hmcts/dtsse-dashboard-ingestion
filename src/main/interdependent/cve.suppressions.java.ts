@@ -16,6 +16,7 @@ with suppressed_details as (
     to_timestamp((e->>'_ts')::bigint) as timestamp,
     g.repo_id,
     s->>'name' as cve_name,
+    d->>'fileName' as affected_package_name,
     s->>'notes' as notes,
     s->>'source' as source,
     -- CVSS v3
@@ -63,6 +64,7 @@ matched_reports as (
   select 
     cve_report_id,
     sd.cve_name,
+    sd.affected_package_name,
     sd.notes,
     sd.source,
     sd.cvss_v3_base_score,
@@ -82,6 +84,7 @@ matched_reports as (
 insert into cve.suppressions(
   cve_report_id,
   cve_id,
+  affected_package_name,
   notes,
   source,
   cvss_v3_base_score,
@@ -96,6 +99,7 @@ insert into cve.suppressions(
 select 
   cve_report_id,
   cve_id,
+  affected_package_name,
   notes,
   source,
   cvss_v3_base_score,
@@ -107,18 +111,7 @@ select
   "references",
   vulnerable_software
 from matched_reports
-on conflict (cve_report_id, cve_id) do update set
-  notes = EXCLUDED.notes,
-  source = EXCLUDED.source,
-  cvss_v3_base_score = EXCLUDED.cvss_v3_base_score,
-  cvss_v3_severity = EXCLUDED.cvss_v3_severity,
-  cvss_v3_vector = EXCLUDED.cvss_v3_vector,
-  cvss_v2_score = EXCLUDED.cvss_v2_score,
-  cvss_v2_severity = EXCLUDED.cvss_v2_severity,
-  cwes = EXCLUDED.cwes,
-  "references" = EXCLUDED."references",
-  vulnerable_software = EXCLUDED.vulnerable_software
-  `,
+on conflict do nothing`,
     [json]
   );
 

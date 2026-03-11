@@ -3,24 +3,13 @@ import { getCVEs } from '../jenkins/cosmos';
 import { getUnixTimeToQueryFrom } from './security.cves.common';
 
 export const run = async (pool: Pool) => {
-  const time = await getUnixTimeToQueryFrom(pool);
-  console.log(`[JAVA CVE INGESTION] Querying from ${new Date(Number(time) * 1000).toISOString()}`);
-  const items = await getCVEs(time, 'java');
-  console.log(`[JAVA CVE INGESTION] Received ${items.length} characters of data from Cosmos`);
+  const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'java');
   const result = await processCosmosJavaResults(pool, items);
-  console.log(`[JAVA CVE INGESTION] Processing complete`);
   return result;
 };
 
 export const processCosmosJavaResults = async (pool: Pool, json: string) => {
-  if (!json || json.length === 0) {
-    console.log('[JAVA CVE INGESTION] WARNING: No CVE data received from Cosmos');
-    return [];
-  }
-  const parsed = JSON.parse(json);
-  console.log(`[JAVA CVE INGESTION] Parsed ${Array.isArray(parsed) ? parsed.length : 0} CVE reports`);
-  
-  const result = await pool.query(
+  await pool.query(
     `
  with details as (
   select
@@ -30,7 +19,8 @@ export const processCosmosJavaResults = async (pool: Pool, json: string) => {
     lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity,
     vulns.base_score,
     vulns.description,
-    vulns.affected_package
+     vulns.affected_package,
+     vulns.suppressed
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
@@ -51,10 +41,22 @@ export const processCosmosJavaResults = async (pool: Pool, json: string) => {
         coalesce(s->'cvssv3'->>'baseSeverity', s->'cvssv2'->>'severity') severity,
         coalesce((s->'cvssv3'->>'baseScore')::numeric, (s->'cvssv2'->>'score')::numeric) base_score,
         s->>'description' as description,
-        d->>'fileName' as affected_package
+        d->>'fileName' as affected_package,
+        true as suppressed
       from
         jsonb_array_elements(e->'report'->'dependencies') d,
-        jsonb_array_elements(coalesce(d->'suppressedVulnerabilities', '[]'::jsonb) || coalesce(d->'vulnerabilities', '[]'::jsonb)) s
+        jsonb_array_elements(coalesce(d->'suppressedVulnerabilities', '[]'::jsonb)) s
+      union all
+      select
+        s->>'name' as name,
+        coalesce(s->'cvssv3'->>'baseSeverity', s->'cvssv2'->>'severity') severity,
+        coalesce((s->'cvssv3'->>'baseScore')::numeric, (s->'cvssv2'->>'score')::numeric) base_score,
+        s->>'description' as description,
+        d->>'fileName' as affected_package,
+        false as suppressed
+      from
+        jsonb_array_elements(e->'report'->'dependencies') d,
+        jsonb_array_elements(coalesce(d->'vulnerabilities', '[]'::jsonb)) s
     ) vulns on true -- record the report even if no CVEs found
 )
 ,cves as (
@@ -84,17 +86,18 @@ export const processCosmosJavaResults = async (pool: Pool, json: string) => {
    returning *
  )
 -- Insert new report to CVE mappings
-insert into security.cve_report_to_cves
-  select cve_id, cve_report_id
+insert into security.cve_report_to_cves(cve_id, cve_report_id, suppressed)
+  select cve_id, cve_report_id, bool_or(suppressed) as suppressed
 from
   details d
   left join all_cves c using (name)
   left join reports using (timestamp, repo_id)
   where cve_id is not null and cve_report_id is not null
-on conflict do nothing
+  group by cve_id, cve_report_id
+on conflict (cve_id, cve_report_id) do update
+set suppressed = excluded.suppressed
   `,
     [json]
   );
-  console.log(`[JAVA CVE INGESTION] Database query completed. Rows affected: ${result.rowCount || 'unknown'}`);
   return [];
 };
