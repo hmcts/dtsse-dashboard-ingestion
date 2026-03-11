@@ -259,9 +259,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/cosmos@npm:4.9.0":
-  version: 4.9.0
-  resolution: "@azure/cosmos@npm:4.9.0"
+"@azure/cosmos@npm:4.9.1":
+  version: 4.9.1
+  resolution: "@azure/cosmos@npm:4.9.1"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -274,7 +274,7 @@ __metadata:
     priorityqueuejs: "npm:^2.0.0"
     semaphore: "npm:^1.1.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/b81514bddb28df6ebb9b4c4f22872653d97d53868cff49619e292860f8c7b73d35bc0149db1a7e04ae3571ead77a69eb431bc9d397473bda7e84471fd15677c5
+  checksum: 10/5405802c1d70d50f48219b54175d1c28ce8ae960fda0e6e4857aec3ccf3e42ec11fe4428d5c29d4b6f27845909c35c63e2bc5e2a35297d6c5e5a22b83acd0ffd
   languageName: node
   linkType: hard
 
@@ -517,8 +517,8 @@ __metadata:
   linkType: hard
 
 "@azure/storage-blob@npm:^12.23.0":
-  version: 12.30.0
-  resolution: "@azure/storage-blob@npm:12.30.0"
+  version: 12.31.0
+  resolution: "@azure/storage-blob@npm:12.31.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -531,16 +531,16 @@ __metadata:
     "@azure/core-util": "npm:^1.11.0"
     "@azure/core-xml": "npm:^1.4.5"
     "@azure/logger": "npm:^1.1.4"
-    "@azure/storage-common": "npm:^12.2.0"
+    "@azure/storage-common": "npm:^12.3.0"
     events: "npm:^3.0.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/2fe2190aa6f637b4a525a2f2d129fefd9182670b59d2bfdcb4a8fb3b6cd2d10e9970ab9ebc3a3ddcf45a7143553f3ae19f800142b7218087bb8d02c91cb7b59d
+  checksum: 10/19d5f48b62b54e8789bc87b90ec95efea74830c2088b4582de34abced873c5a7441d5c73bee4f12345f46600d1b1bba7ff1baf7566aa8afe385eb16d9a1308e6
   languageName: node
   linkType: hard
 
-"@azure/storage-common@npm:^12.2.0":
-  version: 12.2.0
-  resolution: "@azure/storage-common@npm:12.2.0"
+"@azure/storage-common@npm:^12.3.0":
+  version: 12.3.0
+  resolution: "@azure/storage-common@npm:12.3.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -551,7 +551,7 @@ __metadata:
     "@azure/logger": "npm:^1.1.4"
     events: "npm:^3.3.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/d178748f5c0c8b2d6be51ae56aad00085fd355f83e62b379bb8cd6656a5e2c4172ccf81c5e5d78d5296dc05cda84d8b58b5d75236d6661730c2911c1e39c157d
+  checksum: 10/e5bb4c9395a9f5d390e0766f2b9c64b7d223c1b12704e4557025396f65c680150d36e9ebb9d85a3801337d8e09b6f2dca571233ddc5e71e8887d917b4ce17bb5
   languageName: node
   linkType: hard
 
@@ -5159,7 +5159,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dtsse-dashboard-ingestion@workspace:."
   dependencies:
-    "@azure/cosmos": "npm:4.9.0"
+    "@azure/cosmos": "npm:4.9.1"
     "@azure/identity": "npm:^4.2.1"
     "@azure/storage-blob": "npm:^12.23.0"
     "@hmcts/properties-volume": "npm:^1.2.0"
