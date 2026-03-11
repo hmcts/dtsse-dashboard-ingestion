@@ -3,13 +3,24 @@ import { getCVEs } from '../jenkins/cosmos';
 import { getUnixTimeToQueryFrom } from './security.cves.common';
 
 export const run = async (pool: Pool) => {
-  const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'node');
-  await processCosmosNodeResults(pool, items);
-  return [];
+  const time = await getUnixTimeToQueryFrom(pool);
+  console.log(`[NODE CVE INGESTION] Querying from ${new Date(Number(time) * 1000).toISOString()}`);
+  const items = await getCVEs(time, 'node');
+  console.log(`[NODE CVE INGESTION] Received ${items.length} characters of data from Cosmos`);
+  const result = await processCosmosNodeResults(pool, items);
+  console.log(`[NODE CVE INGESTION] Processing complete`);
+  return result;
 };
 
 export const processCosmosNodeResults = async (pool: Pool, json: string) => {
-  await pool.query(
+  if (!json || json.length === 0) {
+    console.log('[NODE CVE INGESTION] WARNING: No CVE data received from Cosmos');
+    return [];
+  }
+  const parsed = JSON.parse(json);
+  console.log(`[NODE CVE INGESTION] Parsed ${Array.isArray(parsed) ? parsed.length : 0} CVE reports`);
+  
+  const result = await pool.query(
     `
  with details as (
   select
@@ -79,5 +90,6 @@ on conflict do nothing
   `,
     [json]
   );
+  console.log(`[NODE CVE INGESTION] Database query completed. Rows affected: ${result.rowCount || 'unknown'}`);
   return [];
 };
