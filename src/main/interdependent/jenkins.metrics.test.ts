@@ -1,6 +1,5 @@
 import { describe, expect, jest, test, beforeEach } from '@jest/globals';
-import { processCosmosResults, getUnixTimeToQueryFrom, run } from './jenkins.metrics';
-import { Pool } from 'pg';
+import { getUnixTimeToQueryFrom, processCosmosResults, run } from './jenkins.metrics';
 import { getMetrics } from '../jenkins/cosmos';
 import { validateBuildSteps } from '../jenkins/validation';
 
@@ -21,9 +20,12 @@ describe('jenkins.metrics unit tests', () => {
   let mockPool: any;
   let mockClient: any;
   let consoleLogSpy: jest.SpiedFunction<typeof console.log>;
+  let consoleWarnSpy: jest.SpiedFunction<typeof console.warn>;
 
   beforeEach(() => {
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    // there is a lot of NOT_BUILT warnings printed, suppress them to make test output easier to read
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
     mockClient = {
       query: (jest.fn() as any).mockResolvedValue({ rows: [] }),

@@ -149,9 +149,12 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
 };
 
 export const getUnixTimeToQueryFrom = async (pool: Pool) => {
-  // Always query the last 30 days regardless of what's in the database
   const res = await pool.query(`
-    select extract(epoch from (now() - interval '30 day'))::bigint as max
+    select extract(epoch from coalesce(
+      max(stage_timestamp),
+      now() - interval '12 month')
+    )::bigint as max
+    from jenkins.build_steps
   `);
 
   return res.rows[0].max;

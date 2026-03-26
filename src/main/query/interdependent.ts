@@ -15,7 +15,7 @@ export const runInterdependent = async (pool: Pool) => {
   // Import CVE suppressions after CVEs are imported
   await require('../interdependent/cve.suppressions.java').run(pool);
   await require('../interdependent/cve.suppressions.node').run(pool);
-  // await require('../interdependent/github.pull-request').run(pool);
-  // await require('../interdependent/github.dependabot').run(pool);
-  // await require('../interdependent/sonar.project').run(pool);
+  await require('../interdependent/github.pull-request').run(pool);
+  await require('../interdependent/github.dependabot').run(pool);
+  await require('../interdependent/sonar.project').run(pool);
 };
