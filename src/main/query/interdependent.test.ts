@@ -29,6 +29,9 @@ describe('integration tests', () => {
   beforeAll(async () => {
     await startPostgres();
 
+    // Ensure overwritten time interval query is not used
+    delete process.env.DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL;
+
     const { config } = require('../config');
     pool = new Pool({ connectionString: config.dbUrl });
     const { migrate } = require('../db/migrate');

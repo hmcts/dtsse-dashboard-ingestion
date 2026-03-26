@@ -209,6 +209,16 @@ Tests use [Jest](https://jestjs.io/).
 yarn test
 ```
 
+### Increasing reporting interval
+
+If you need to gather reports from a wider timeframe that normally you can use this environment variable:
+
+DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL='X day'
+
+It will cause the unix time query to be overwritten so that reports from a much wider time interval are gathered.
+This is useful when you need to test something on AAT but no recent reports with suitable data (such as suppressions or cves exist).
+Not recommended to use in production as the number of reports could overwhelm the app.
+
 ## Updating repository ownership
 
 In the DTSSE dashboard database, repositories are assigned a `team_id`.

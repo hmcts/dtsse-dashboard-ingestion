@@ -1,7 +1,6 @@
 import { Pool } from 'pg';
 import { getCVEs } from '../jenkins/cosmos';
 import { getUnixTimeToQueryFrom } from './security.cves.common';
-import { processCosmosJavaResults } from './security.cves.java';
 
 export const run = async (pool: Pool) => {
   const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'node');
@@ -11,7 +10,6 @@ export const run = async (pool: Pool) => {
 };
 
 export const processCosmosNodeResults = async (pool: Pool, json: string) => {
-  
   await pool.query(
     `
  with details as (
