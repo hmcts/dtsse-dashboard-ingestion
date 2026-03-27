@@ -33,30 +33,12 @@ The skill guides users through a safe cleanup process with confirmation prompts:
 
 ## What Gets Cleaned
 
-- ✅ Stops and removes `dtsse-ingestion-postgres` container
-- ✅ Stops and removes `dtsse-ingestion-app` container
-- ✅ Removes local `dtsse/dashboard-ingestion` images
-- ✅ Optionally removes Docker network `dtsse-net`
-- ✅ Optionally removes `.env` file (Key Vault credentials)
-- ✅ Optionally removes `secrets/` directory (Docker mounted secrets)
-
-## What Stays Protected
-
-- 🛡️ Source code and repository files (NOT touched)
-- 🛡️ Other Docker containers/images (NOT affected)
-- 🛡️ Any files not explicitly removed by user confirmation
-
-## Prerequisites
-
-- Docker installed and running
-- User has permissions to manage containers
-
-## Safety Features
-
-- ✅ User confirmation required for **every** removal action
-- ✅ Clear display of what will be removed before confirmation
-- ✅ Can be cancelled at any step (prompts for each action)
-- ✅ Safe handling of optional vs. required cleanups
+- Stops and removes `dtsse-ingestion-postgres` container
+- Stops and removes `dtsse-ingestion-app` container
+- Removes local `dtsse/dashboard-ingestion` images
+- Optionally removes Docker network `dtsse-net`
+- Optionally removes `.env` file (Key Vault credentials)
+- Optionally removes `secrets/` directory (Docker mounted secrets)
 
 ## Output
 
