@@ -2,6 +2,9 @@
 
 Interactive skill to help developers run the DTSSE dashboard ingestion app locally with Azure authentication and Key Vault credentials.
 
+## Important
+- Do not infer singular/fragmentary commands based on the scripts, scripts are already executable so simply run the scripts as required and allow user to answer prompts.
+
 ## Trigger Phrases
 
 This skill activates when users ask:
@@ -16,15 +19,20 @@ This skill activates when users ask:
 
 The skill guides users through a three-step interactive journey:
 
+### Pre-check: Existing Credentials
+**Before running any script**, check whether `/tmp/.env` already exists:
+- If `/tmp/.env` **exists** → skip Steps 1 and 2 entirely and go straight to Step 3.
+- If `/tmp/.env` **does not exist** → proceed with Steps 1, 2, and 3 in order.
+
 ### Step 1: Azure Authentication
-Executes `scripts/01-azure-login.sh` to authenticate with Azure and ACR.
+Executes `.github/skills/dtsse-local-run/scripts/01-azure-login.sh` to authenticate with Azure and ACR.
 
 **Actions:**
 - Run `az login` to authenticate with Azure
 - Run `az acr login --name hmctsprod` to authenticate with Azure Container Registry
 
 ### Step 2: Fetch Key Vault Credentials
-Executes `scripts/02-fetch-keyvault.sh` to retrieve credentials from Azure Key Vault.
+Executes `.github/skills/dtsse-local-run/scripts/02-fetch-keyvault.sh` to retrieve credentials from Azure Key Vault.
 
 **Actions:**
 - Prompt user for Key Vault name (required)
@@ -36,15 +44,16 @@ Executes `scripts/02-fetch-keyvault.sh` to retrieve credentials from Azure Key V
   - `jenkins-databases`
 
 **Output:**
-- Creates or updates `.env` file with fetched credentials
+- Creates or updates `/tmp/.env` file with fetched credentials (cleared on reboot by the OS)
 
 ### Step 3: Run Application
-Executes `scripts/03-run-app.sh` to start the application.
+Executes `.github/skills/dtsse-local-run/scripts/03-run-app.sh` to start the application.
 
 **Actions:**
 - Prompt user to choose: **Node.js** or **Docker**
   - **Node.js**: Uses fetched credentials to run `yarn start:dev`
-  - **Docker**: Creates secrets directory and runs ACR image with mounted secrets
+  - **Docker**: Creates secrets directory at `/tmp/dashboard-secrets/dtsse/` and runs ACR image with mounted secrets
+- Prompt user to optionally set `DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL` for testing purposes.
 
 **Prerequisites for Node.js path:**
 - Node.js v18.0.0 or later
@@ -61,7 +70,7 @@ Executes `scripts/03-run-app.sh` to start the application.
 After successful execution, developers will have:
 - Azure CLI authenticated
 - ACR access enabled
-- Local `.env` file with Key Vault credentials
+- `/tmp/.env` file with Key Vault credentials (stored in /tmp, cleared on reboot)
 - Application running via their preferred runtime (Node.js or Docker)
 
 ## Notes

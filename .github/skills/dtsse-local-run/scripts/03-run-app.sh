@@ -33,6 +33,7 @@ run_nodejs() {
     export COSMOS_KEY
     export COSMOS_DB_NAME
     export JENKINS_DATABASES
+    export DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL
 
     yarn start:dev
 }
@@ -50,15 +51,15 @@ run_docker() {
 
     # Create secrets directory
     echo "Creating secrets directory..."
-    mkdir -p ~/dashboard-secrets/dtsse
+    mkdir -p /tmp/dashboard-secrets/dtsse
 
-    echo "$DATABASE_URL" > ~/dashboard-secrets/dtsse/db-url
-    echo "$GITHUB_TOKEN" > ~/dashboard-secrets/dtsse/github-token
-    echo "$COSMOS_KEY" > ~/dashboard-secrets/dtsse/cosmos-key
-    echo "$JENKINS_DATABASES" > ~/dashboard-secrets/dtsse/jenkins-databases
-    echo "$COSMOS_DB_NAME" > ~/dashboard-secrets/dtsse/cosmos-db-name
+    echo "$DATABASE_URL" > /tmp/dashboard-secrets/dtsse/db-url
+    echo "$GITHUB_TOKEN" > /tmp/dashboard-secrets/dtsse/github-token
+    echo "$COSMOS_KEY" > /tmp/dashboard-secrets/dtsse/cosmos-key
+    echo "$JENKINS_DATABASES" > /tmp/dashboard-secrets/dtsse/jenkins-databases
+    echo "$COSMOS_DB_NAME" > /tmp/dashboard-secrets/dtsse/cosmos-db-name
 
-    echo "Secrets created in ~/dashboard-secrets/dtsse/"
+    echo "Secrets created in /tmp/dashboard-secrets/dtsse/"
     echo ""
 
     # Create network if it doesn't exist
@@ -77,23 +78,29 @@ run_docker() {
     echo "Starting Docker container..."
     echo ""
 
-    docker run \
-        --name dtsse-ingestion-app \
-        --network dtsse-net \
-        -v ~/dashboard-secrets:/mnt/secrets \
-        "hmctsprod.azurecr.io/dtsse/dashboard-ingestion:$IMAGE_TAG"
+    docker_args=(
+        --name dtsse-ingestion-app
+        --network dtsse-net
+        -v /tmp/dashboard-secrets:/mnt/secrets
+    )
+
+    if [ -n "$DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL" ]; then
+        docker_args+=("-e" "DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL=$DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL")
+    fi
+
+    docker run "${docker_args[@]}" "hmctsprod.azurecr.io/dtsse/dashboard-ingestion:$IMAGE_TAG"
 }
 
 # Check if .env file exists
-if [ ! -f .env ]; then
-    echo ".env file not found!"
+if [ ! -f /tmp/.env ]; then
+    echo "/tmp/.env file not found!"
     echo "Please run: ./scripts/02-fetch-keyvault.sh"
     exit 1
 fi
 
 # Load .env file
 set -a
-source .env
+source /tmp/.env
 set +a
 
 # Ensure PostgreSQL container is running
@@ -129,6 +136,21 @@ while true; do
             ;;
     esac
 done
+
+echo ""
+echo "Optional: set DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL (example: 7 day)"
+if [ -e /dev/tty ]; then
+    read -r -p "Enter lookback interval (press Enter to skip): " DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL < /dev/tty
+else
+    read -r -p "Enter lookback interval (press Enter to skip): " DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL
+fi
+
+if [ -n "$DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL" ]; then
+    echo "Using DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL=$DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL"
+else
+    echo "No lookback interval override set"
+fi
+echo ""
 
 case "$CHOICE" in
     1)

@@ -119,42 +119,42 @@ remove_docker_network() {
 
 # Remove .env file
 remove_env_file() {
-    echo "Checking for .env file..."
+    echo "Checking for /tmp/.env file..."
     
-    if [ ! -f ".env" ]; then
-        echo "No .env file found"
+    if [ ! -f "/tmp/.env" ]; then
+        echo "No /tmp/.env file found"
         return 0
     fi
     
     echo ""
-    echo "Found .env file (contains Key Vault credentials)"
+    echo "Found /tmp/.env file (contains Key Vault credentials)"
     echo ""
     
-    if confirm "Remove .env file?"; then
-        rm ".env"
-        echo ".env file removed"
+    if confirm "Remove /tmp/.env file?"; then
+        rm "/tmp/.env"
+        echo "/tmp/.env file removed"
     else
-        echo "Skipped .env removal"
+        echo "Skipped /tmp/.env removal"
     fi
 }
 
 # Remove secrets directory
 remove_secret_directory() {
-    echo "Checking for secrets directory..."
+    echo "Checking for /tmp/dashboard-secrets directory..."
     
-    if [ ! -d "secrets" ]; then
-        echo "No secrets directory found"
+    if [ ! -d "/tmp/dashboard-secrets" ]; then
+        echo "No /tmp/dashboard-secrets directory found"
         return 0
     fi
     
     echo ""
-    echo "Found secrets directory"
-    ls -la secrets/ 2>/dev/null || true
+    echo "Found /tmp/dashboard-secrets directory"
+    ls -la /tmp/dashboard-secrets/ 2>/dev/null || true
     echo ""
     
-    if confirm "Remove secrets directory?"; then
-        rm -rf "secrets"
-        echo "Secrets directory removed"
+    if confirm "Remove /tmp/dashboard-secrets directory?"; then
+        rm -rf "/tmp/dashboard-secrets"
+        echo "/tmp/dashboard-secrets directory removed"
     else
         echo "Skipped secrets directory removal"
     fi

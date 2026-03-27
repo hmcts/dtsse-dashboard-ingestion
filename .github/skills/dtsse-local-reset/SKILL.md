@@ -1,6 +1,9 @@
-# DTSSE Reset Local Skill
+# DTSSE Local Reset Skill
 
 Interactive skill to reset and clean up local development Docker containers and images for the DTSSE dashboard ingestion app.
+
+## Important
+- Do not infer singular/fragmentary commands based on the reset script, script is already executable so simply run the script as required and allow user to answer prompts.
 
 ## Trigger Phrases
 
@@ -37,12 +40,12 @@ The skill guides users through a safe cleanup process with confirmation prompts:
 - Stops and removes `dtsse-ingestion-app` container
 - Removes local `dtsse/dashboard-ingestion` images
 - Optionally removes Docker network `dtsse-net`
-- Optionally removes `.env` file (Key Vault credentials)
-- Optionally removes `secrets/` directory (Docker mounted secrets)
+- Optionally removes `/tmp/.env` file (Key Vault credentials)
+- Optionally removes `/tmp/dashboard-secrets/` directory (Docker mounted secrets)
 
 ## Output
 
 After successful cleanup:
 - All specified containers removed
 - All specified images removed
-- Ready to start fresh with `./scripts/01-azure-login.sh`
+- Ready to start fresh with `.github/skills/dtsse-local-reset/scripts/01-azure-login.sh`

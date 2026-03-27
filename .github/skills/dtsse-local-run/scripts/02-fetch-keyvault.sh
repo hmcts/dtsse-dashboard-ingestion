@@ -11,6 +11,14 @@ echo "Step 2: Fetch Key Vault Credentials"
 echo "=========================================="
 echo ""
 
+# Skip if credentials already exist
+if [ -f "/tmp/.env" ]; then
+    echo "/tmp/.env already exists — skipping Key Vault fetch."
+    echo "To refresh credentials, delete /tmp/.env and re-run this script."
+    echo ""
+    exit 0
+fi
+
 # Prompt for Key Vault name
 read -p "Enter Key Vault name: " KV_NAME
 if [ -z "$KV_NAME" ]; then
@@ -42,15 +50,15 @@ JENKINS_DATABASES=$(az keyvault secret show --vault-name "$KV_NAME" --name "jenk
 
 # Create .env file
 echo ""
-echo "Creating .env file..."
-cat > .env << EOF
+echo "Creating /tmp/.env file..."
+cat > /tmp/.env << EOF
 GITHUB_TOKEN=$GITHUB_TOKEN
 COSMOS_KEY=$COSMOS_KEY
 COSMOS_DB_NAME=$COSMOS_DB_NAME
 JENKINS_DATABASES=$JENKINS_DATABASES
 EOF
 
-echo "Credentials fetched and .env file created!"
+echo "Credentials fetched and /tmp/.env file created!"
 echo ""
-echo "Note: .env file contains secrets. Make sure it's in .gitignore"
+echo "Note: secrets are stored in /tmp/.env and will be cleared by the OS on reboot"
 echo ""

@@ -41,7 +41,7 @@ This repository includes GitHub Copilot Skills to automate the local setup proce
 Skills should be automatically picked up by the Copilot but you can also use slash commands imn the Copilot chat:
 
 - /dtsse-local-run
-- /dtsse-reset-local
+- /dtsse-local-reset
 
 #### Available skills
 

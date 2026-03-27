@@ -10,6 +10,15 @@ echo "DTSSE Dashboard Ingestion - Local Setup"
 echo "Step 1: Azure Authentication"
 echo "=========================================="
 echo ""
+
+# Skip if credentials already exist
+if [ -f "/tmp/.env" ]; then
+    echo "/tmp/.env already exists — skipping Azure login."
+    echo "To re-authenticate, delete /tmp/.env and re-run this script."
+    echo ""
+    exit 0
+fi
+
 echo ""
 echo "Step 1a: Authenticating with Azure..."
 echo ""
