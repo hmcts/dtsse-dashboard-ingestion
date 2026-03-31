@@ -29,6 +29,9 @@ describe('integration tests', () => {
   beforeAll(async () => {
     await startPostgres();
 
+    // Ensure overwritten time interval query is not used
+    delete process.env.DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL;
+
     const { config } = require('../config');
     pool = new Pool({ connectionString: config.dbUrl });
     const { migrate } = require('../db/migrate');
@@ -164,7 +167,7 @@ describe('integration tests', () => {
         null,
         null,
       ],
-      ['CVE-2020-24025', 'medium', null, 'Improper Certificate Validation in node-sass', 'node-sass', '>=2.0.0 <7.0.0'],
+      ['CVE-2020-24025', 'medium', '6.1', 'Improper Certificate Validation in node-sass', 'node-sass', '>=2.0.0 <7.0.0'],
       ['CVE-2022-45688', 'high', '7.5', null, null, null],
       [
         'CVE-2022-45689',
@@ -206,4 +209,144 @@ describe('integration tests', () => {
   //   expect(rows[0].vulnerabilities).toEqual(3);
   //   expect(rows[0].files).toEqual(676);
   // });
+
+  test('suppressions are correctly ingested', async () => {
+    const count = await pool.query('select count(*) from cve.suppressions');
+    expect(count.rows[0].count).toBe('8');
+  });
+
+  test('java suppressions have expected fields populated', async () => {
+    const suppressions = (
+      await pool.query({
+        rowMode: 'array',
+        text: `
+          select g.id as git_url, c.name as cve_name, s.source,
+                 s.cvss_v3_base_score, s.cvss_v3_severity, s.cvss_v3_vector,
+                 s.cvss_v2_score, s.cvss_v2_severity, s.cwes
+          from cve.suppressions s
+          join security.cves c using (cve_id)
+          join security.cve_report cr using (cve_report_id)
+          join github.repository g using (repo_id)
+          where s.source != 'yarn-audit' or s.source is null
+          order by g.id, c.name
+        `,
+      })
+    ).rows;
+
+    expect(suppressions.length).toBe(4);
+    expect(suppressions).toEqual([
+      // ccd-data-store-api (newer report): 1091725 - NPM source, no CVSS, no cwes
+      ['https://github.com/hmcts/ccd-data-store-api', '1091725', 'NPM', null, null, null, null, null, []],
+      // ccd-data-store-api (newer report): CVE-2022-8643 - CVSS v2 only, no source (second occurrence skipped via on conflict do nothing)
+      ['https://github.com/hmcts/ccd-data-store-api', 'CVE-2022-8643', null, null, null, null, '4.3', 'MEDIUM', ['CWE-787']],
+      // ccd-data-store-api (older report): CVE-2022-should-not-see-me - CVSS v2, NVD source
+      ['https://github.com/hmcts/ccd-data-store-api', 'CVE-2022-should-not-see-me', 'NVD', null, null, null, '4.3', 'MEDIUM', ['CWE-787']],
+      // fpl-ccd-configuration: CVE-2022-45688 - full CVSS v3, NVD source, vector built from components
+      [
+        'https://github.com/hmcts/fpl-ccd-configuration',
+        'CVE-2022-45688',
+        'NVD',
+        '7.5',
+        'HIGH',
+        'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H',
+        null,
+        null,
+        ['CWE-787'],
+      ],
+    ]);
+  });
+
+  test('node suppressions have expected fields populated', async () => {
+    const suppressions = (
+      await pool.query({
+        rowMode: 'array',
+        text: `
+          select g.id as git_url, c.name as cve_name, s.source,
+                 s.cvss_v3_base_score, s.cvss_v3_severity, s.cvss_v3_vector,
+                 s.cvss_v2_score, s.cvss_v2_severity, s.cwes,
+                 s.affected_package_name, s.notes
+          from cve.suppressions s
+          join security.cves c using (cve_id)
+          join security.cve_report cr using (cve_report_id)
+          join github.repository g using (repo_id)
+          where s.source = 'yarn-audit'
+          order by g.id, c.name
+        `,
+      })
+    ).rows;
+
+    expect(suppressions.length).toBe(4);
+    expect(suppressions).toEqual([
+      [
+        'https://github.com/hmcts/lau-frontend',
+        'CVE-2023-28155',
+        'yarn-audit',
+        null,
+        'medium',
+        null,
+        null,
+        null,
+        ['CWE-918'],
+        'request',
+        'Server-Side Request Forgery in Request',
+      ],
+      [
+        'https://github.com/hmcts/prl-ccd-definitions',
+        'CVE-2023-28155',
+        'yarn-audit',
+        null,
+        'medium',
+        null,
+        null,
+        null,
+        ['CWE-918'],
+        'request',
+        'Server-Side Request Forgery in Request',
+      ],
+      [
+        'https://github.com/hmcts/sscs-submit-your-appeal',
+        'CVE-2020-24025',
+        'yarn-audit',
+        '6.1',
+        'medium',
+        'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N',
+        null,
+        null,
+        ['CWE-295'],
+        'node-sass',
+        'Improper Certificate Validation in node-sass',
+      ],
+      [
+        'https://github.com/hmcts/sscs-submit-your-appeal',
+        'CVE-2023-28155',
+        'yarn-audit',
+        null,
+        'medium',
+        null,
+        null,
+        null,
+        ['CWE-918'],
+        'request',
+        'Server-Side Request Forgery in Request',
+      ],
+    ]);
+  });
+
+  test('current suppressions shows suppressions from most recent report only', async () => {
+    const suppressions = (
+      await pool.query({
+        rowMode: 'array',
+        text: 'select git_url, cve_name, source from cve.current_suppressions order by git_url, cve_name',
+      })
+    ).rows;
+
+    expect(suppressions).toEqual([
+      ['https://github.com/hmcts/ccd-data-store-api', '1091725', 'NPM'],
+      ['https://github.com/hmcts/ccd-data-store-api', 'CVE-2022-8643', null],
+      ['https://github.com/hmcts/fpl-ccd-configuration', 'CVE-2022-45688', 'NVD'],
+      ['https://github.com/hmcts/prl-ccd-definitions', 'CVE-2023-28155', 'yarn-audit'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2020-24025', 'yarn-audit'],
+      ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'yarn-audit'],
+    ]);
+  });
 });

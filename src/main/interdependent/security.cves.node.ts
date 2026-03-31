@@ -4,6 +4,7 @@ import { getUnixTimeToQueryFrom } from './security.cves.common';
 
 export const run = async (pool: Pool) => {
   const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'node');
+
   await processCosmosNodeResults(pool, items);
   return [];
 };
@@ -20,7 +21,8 @@ export const processCosmosNodeResults = async (pool: Pool, json: string) => {
     vulns.affected_package as affected_package,
     vulns.affected_versions as affected_versions,
     lower(coalesce(vulns.severity, 'unknown'))::security.cve_severity severity,
-    vulns.base_score
+    vulns.base_score,
+    vulns.suppressed
   from
     /* Go through each CVE report */
     jsonb_array_elements($1::jsonb) e
@@ -33,9 +35,23 @@ export const processCosmosNodeResults = async (pool: Pool, json: string) => {
         coalesce(v->>'title', 'none') as description,
         coalesce(v->>'module_name', 'none') as affected_package,
         coalesce(v->>'vulnerable_versions', 'none') as affected_versions,
-        coalesce((v->'cvss'->>'score')::numeric) as base_score
+        coalesce((v->'cvss'->>'score')::numeric) as base_score,
+        false as suppressed
       from
-        jsonb_array_elements((e->'report'->'vulnerabilities') || (e->'report'->'suppressed')) v
+        jsonb_array_elements(e->'report'->'vulnerabilities') v
+        left join lateral jsonb_array_elements_text(v->'cves') cve on true
+      where jsonb_typeof(v->'cves') = 'array'
+      union all
+      select
+        coalesce(cve, v->>'url') as name,
+        replace(v->>'severity', 'moderate', 'medium') as severity,
+        coalesce(v->>'title', 'none') as description,
+        coalesce(v->>'module_name', 'none') as affected_package,
+        coalesce(v->>'vulnerable_versions', 'none') as affected_versions,
+        coalesce((v->'cvss'->>'score')::numeric) as base_score,
+        true as suppressed
+      from
+        jsonb_array_elements(e->'report'->'suppressed') v
         left join lateral jsonb_array_elements_text(v->'cves') cve on true
       where jsonb_typeof(v->'cves') = 'array'
     ) vulns on true -- record the report even if no CVEs found
@@ -68,14 +84,16 @@ export const processCosmosNodeResults = async (pool: Pool, json: string) => {
    returning *
  )
 -- Insert new report to CVE mappings
-insert into security.cve_report_to_cves
-  select cve_id, cve_report_id
+insert into security.cve_report_to_cves(cve_id, cve_report_id, suppressed)
+  select cve_id, cve_report_id, bool_or(suppressed) as suppressed
 from
   details d
   left join all_cves c using (name)
   left join reports using (timestamp, repo_id)
   where cve_id is not null and cve_report_id is not null
-on conflict do nothing
+  group by cve_id, cve_report_id
+on conflict (cve_id, cve_report_id) do update
+set suppressed = excluded.suppressed
   `,
     [json]
   );

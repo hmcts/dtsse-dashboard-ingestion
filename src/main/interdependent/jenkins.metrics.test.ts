@@ -1,6 +1,5 @@
 import { describe, expect, jest, test, beforeEach } from '@jest/globals';
-import { processCosmosResults, getUnixTimeToQueryFrom, run } from './jenkins.metrics';
-import { Pool } from 'pg';
+import { getUnixTimeToQueryFrom, processCosmosResults, run } from './jenkins.metrics';
 import { getMetrics } from '../jenkins/cosmos';
 import { validateBuildSteps } from '../jenkins/validation';
 
@@ -21,9 +20,15 @@ describe('jenkins.metrics unit tests', () => {
   let mockPool: any;
   let mockClient: any;
   let consoleLogSpy: jest.SpiedFunction<typeof console.log>;
+  let consoleWarnSpy: jest.SpiedFunction<typeof console.warn>;
 
   beforeEach(() => {
+    // Ensure overwritten time interval query is not used
+    delete process.env.DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL;
+
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    // there is a lot of NOT_BUILT warnings printed, suppress them to make test output easier to read
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
     mockClient = {
       query: (jest.fn() as any).mockResolvedValue({ rows: [] }),
@@ -159,6 +164,19 @@ describe('jenkins.metrics unit tests', () => {
 
     expect(result).toBe(mockTimestamp);
     expect(mockPool.query).toHaveBeenCalledWith(expect.stringContaining('select extract(epoch from coalesce'));
+  });
+
+  test('getUnixTimeToQueryFrom should use forced lookback interval when configured', async () => {
+    process.env.DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL = '30 day';
+    const forcedTimestamp = BigInt(1711324800);
+    mockPool.query.mockResolvedValue({
+      rows: [{ max: forcedTimestamp }],
+    } as any);
+
+    const result = await getUnixTimeToQueryFrom(mockPool);
+
+    expect(result).toBe(forcedTimestamp);
+    expect(mockPool.query).toHaveBeenCalledWith(expect.stringContaining('now() - $1::interval'), ['30 day']);
   });
 
   test('run should query metrics and process results', async () => {

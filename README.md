@@ -1,196 +1,301 @@
 # dtsse-dashboard-ingestion
 
-K8S job to import data to the DTSSE dashboard database.
+Kubernetes job to import data into the DTSSE dashboard database.
 
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
-Running the script requires the following tools to be installed in your environment:
+Install the following tools in your environment:
 
 - [Node.js](https://nodejs.org/) v18.0.0 or later
 - [yarn](https://yarnpkg.com/) v3.6.4
-- [Docker](https://www.docker.com) Optional
-- [Nvm](https://github.com/nvm-sh/nvm) To manage node versions
-- [Postgres](https://www.postgresql.org/download/)
+- [Docker](https://www.docker.com) (optional)
+- [nvm](https://github.com/nvm-sh/nvm) (optional, or any Node.js version manager)
+- [PostgreSQL](https://www.postgresql.org/download/) (optional, if not using Docker)
 
-### Running the script
+### Infrastructure
 
-Install dependencies by executing the following command:
+Grafana, Key Vault, and dashboard configuration that depend on this ingestion app are managed in the [grafana-infrastructure repository](https://github.com/hmcts/grafana-infrastructure/).
 
-```bash
-$ yarn install
-```
-
-Test:
+### Install dependencies
 
 ```bash
-$ yarn test
+yarn install
 ```
 
-Run:
+### Run tests
 
 ```bash
-$ yarn start
+yarn test
 ```
 
-### Local environment variables
+## Running locally
 
-To run the script locally you will need some environment variables set in `.env`:
+### Agent skills
+
+This repository includes GitHub Copilot Skills to automate the local setup process. Skills are automatically loaded when you open this repository in VS Code with the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) installed.
+
+#### How to use the skills
+
+Skills should be automatically picked up by the Copilot but you can also use slash commands imn the Copilot chat:
+
+- /dtsse-local-run
+- /dtsse-local-reset
+
+#### Available skills
+
+| Skill | Purpose | Trigger phrases |
+|-------|---------|-----------------|
+| **DTSSE Local Run** | Automated setup: Azure auth → Key Vault credentials → local run | "How do I run the app locally?", "Help me run this locally", "Set up local environment" |
+| **DTSSE Reset Local** | Clean up containers and reset the database | "Reset local", "Clean up Docker" |
+
+### Manually
+
+Set the following values in `.env`:
 
 ```dotenv
-GITHUB_TOKEN=[your github token]
-DATABASE_URL=postgres://localhost:5432/dashboard
-COSMOS_KEY=[your token]
-COSMOS_DB_NAME=[your cosmos db name, for example: sandbox-pipeline-metrics]
-SONAR_TOKEN=[your token]
-SNOW_USERNAME=[your username]
-SNOW_PASSWORD=[your password]
+GITHUB_TOKEN=[Your GitHub token, or token from the AAT DTSSE Key Vault]
+DATABASE_URL=[URL of your local PostgreSQL database]
+COSMOS_KEY=[Your Cosmos DB key, or key from the AAT DTSSE Key Vault]
+COSMOS_DB_NAME=[Cosmos DB name, e.g. sandbox-pipeline-metrics]
+SONAR_TOKEN=[From Key Vault; not required for basic CVE/suppressions ingestion]
+SNOW_USERNAME=[No longer used]
+SNOW_PASSWORD=[No longer used]
 ```
 
-You will also need to have a local postgres database running on port 5432 with a database called `dashboard` and a schema called `github`.
+Running directly against shared environments (for example AAT) is not recommended, as it can cause side effects for others.
+Use a local PostgreSQL instance instead.
 
-## Developing
+### Start a local PostgreSQL container
 
-### Running with a local postgres server
+```bash
+# Optional: create a network if using Docker for both Postgres and this app
+docker network create dtsse-net
 
-You can run a local postgres server in docker by running:
-
-```
+# Run the Postgres container
 docker run --name dtsse-ingestion-postgres \
- -e POSTGRES_PASSWORD=yourpwd \
- -e POSTGRES_DB=dashboard \
+  --network dtsse-net \
+  -e POSTGRES_PASSWORD=<mysecretpassword> \
+  -e POSTGRES_DB=dashboard \
   -p 5432:5432 \
   -d postgres
 ```
 
-Point the scripts to this by setting the DATABASE_URL environment variable to `postgres://postgres:yourpwd@localhost:5432/dashboard`
-
-### Queries and Interdependent Query
-
-#### Former Query (Deprecated)
-
-All queries in `./src/main/query` will be executed and the rows returned will be persisted in the database. The `store` function expects a
-table with the file name of the query to have been created with the migration scripts. Hyphens will be converted to underscores, so results from
-`query/github.pull-request.ts` will be stored in the `github.pull_request` table.
-
-To run an individual query use:
+Stop and remove it when done:
 
 ```bash
-yarn start:dev [your-query-file-name] # e.g. yarn start:dev pull-request
+docker ps
+docker stop <container_id>
+docker rm <container_id>
 ```
 
-#### One query for all with Interdependent
+### Run with Node.js
 
-Because over time the queries became interdependent it's better to use only this query and comment out what not needed in interdependent.ts
+Useful while developing features before an image is built.
 
 ```bash
-yarn start:dev [your-query-file-name] # e.g. yarn start:dev interdependent
+export DATABASE_URL='postgres://postgres:mysecretpassword@localhost:5432/dashboard' && \
+export GITHUB_TOKEN='<github_token_from_dtsse_keyvault>' && \
+export COSMOS_KEY='<cosmos_key_from_dtsse_keyvault>' && \
+export JENKINS_DATABASES='jenkins,sds-jenkins' && \
+export COSMOS_DB_NAME='sandbox-pipeline-metrics' && \
+yarn start:dev
 ```
+
+### Run with an existing ACR image
+
+Useful when you want to run exactly what is deployed in pipeline/environment.
+
+1. Log in to ACR:
+
+```bash
+az login
+az acr login --name hmctsprod
+```
+
+2. Create secrets for mounting into the container:
+
+```bash
+mkdir -p ~/dashboard-secrets/dtsse && \
+echo 'postgres://postgres:mysecretpassword@localhost:5432/dashboard' > ~/dashboard-secrets/dtsse/db-url && \
+echo '<github_token_from_keyvault>' > ~/dashboard-secrets/dtsse/github-token && \
+echo '<cosmos_key_from_keyvault>' > ~/dashboard-secrets/dtsse/cosmos-key && \
+echo 'jenkins,sds-jenkins' > ~/dashboard-secrets/dtsse/jenkins-databases && \
+echo 'sandbox-pipeline-metrics' > ~/dashboard-secrets/dtsse/cosmos-db-name
+```
+
+3. Run the container:
+
+```bash
+docker run \
+  --name dtsse-ingestion-app \
+  --network dtsse-net \
+  -v ./dashboard-secrets:/mnt/secrets \
+  hmctsprod.azurecr.io/dtsse/dashboard-ingestion:<DESIRED-TAG-FROM-HMCTSPROD-ACR>
+```
+
+4. Inspect the Postgres database:
+
+```bash
+psql -h localhost -U postgres -d dashboard
+\d
+\dt security.*
+\dt cve.*
+\dt github.*
+```
+
+## Developing
+
+### Queries
+
+#### Former query flow (deprecated)
+
+All queries in `./src/main/query` are executed and persisted to the database.
+The `store` function expects a table matching the query file name, created by migrations.
+Hyphens are converted to underscores, so `query/github.pull-request.ts` maps to `github.pull_request`.
+
+Run an individual query:
+
+```bash
+yarn start:dev [your-query-file-name]
+# example: yarn start:dev pull-request
+```
+
+#### Interdependent query flow (recommended)
+
+Because queries became interdependent over time, use the interdependent query and comment out what is not needed in `interdependent.ts`.
+
+```bash
+yarn start:dev [your-query-file-name]
+# example: yarn start:dev interdependent
+```
+
+### CVE suppressions
+
+For full documentation, see [docs/CVE-SUPPRESSIONS.md](./docs/CVE-SUPPRESSIONS.md).
 
 ### Migrations
 
-Run: `yarn migration:create [name]` to create a new migration.
+Create a new migration:
 
-Migrations are automatically run when before the queries are executed.
+```bash
+yarn migration:create [name]
+```
 
-To roll back a migration run: `Run: `yarn migration:down [name]`.
+Migrations run automatically before queries are executed.
+
+Roll back a migration:
+
+```bash
+yarn migration:down [name]
+```
 
 ### Code style
 
-We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
+Linting uses [ESLint](https://github.com/typescript-eslint/typescript-eslint).
 
-Running the linting with auto fix:
-
-```bash
-$ yarn lint --fix
-```
-
-### Running the tests
-
-This template app uses [Jest](https://jestjs.io//) as the test engine. You can run unit tests by executing
-the following command:
+Run with auto-fix:
 
 ```bash
-$ yarn test
+yarn lint --fix
 ```
 
-## Updating ownership of a repository
+### Tests
 
-In the dtsse-dashboard database, repositories are assigned a `team_id`. This value is used to determine the owner of the repository and which team it will fall under in Grafana reporting.
+Tests use [Jest](https://jestjs.io/).
 
-As repositories sometimes change ownership, we have created an Azure Pipeline that can be used to update the `team_id` for specific repositories so that they show under the correct team in Grafana.
+```bash
+yarn test
+```
 
-To update the `team_id` on a repository, follow these steps:
+### Increasing reporting interval
 
-- Navigate to the [Azure DevOps Pipeline](https://dev.azure.com/hmcts/PlatformOperations/_build?definitionId=1175).
-- Click `Run Pipeline` and enter:
-  1.  The URL(s) of the GitHub repo you want to update (For multiple, use a comma-separated list)
-  2.  The new `team_id` (List of current IDs below)
-  3.  The environment (Determines which database will be updated)
+If you need to gather reports from a wider timeframe that normally you can use this environment variable:
 
-This will kick of a build and update the appropriate records in the flexible server database.
+DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL='X day'
 
-### Team_id mappings
+It will cause the unix time query to be overwritten so that reports from a much wider time interval are gathered.
+This is useful when you need to test something on AAT but no recent reports with suitable data (such as suppressions or cves exist).
+Not recommended to use in production as the number of reports could overwhelm the app.
 
-| Team_id        | Team Name                      |
-| -------------- | ------------------------------ |
-| adoption       | Adoption                       |
-| am             | Access Management              |
-| bsp            | Bulk Scan and Print            |
-| ccd            | CCD                            |
-| civil          | Civil Damages                  |
-| cmc            | CMC                            |
-| da             | Domestic Abuse                 |
-| div            | Divorce                        |
-| em             | Evidence Management            |
-| et             | Employment Tribunals           |
-| ethos          | ETHOS                          |
-| fees-and-pay   | Fees & Pay                     |
-| fis            | Family Integration             |
-| fpla           | FPLA                           |
-| hwf            | Help With Fees                 |
-| ia             | I & A                          |
-| idam           | IDAM                           |
-| nfdiv          | No Fault Divorce               |
-| prl            | Private Law                    |
-| probate        | Probate                        |
-| rd             | Ref Data                       |
-| rpx            | XUI                            |
-| sptribs        | Special Tribunals              |
-| sscs           | SSCS                           |
-| wa             | Work Allocation                |
-| mi             | Management Information         |
-| fprl           | Family Private Law             |
-| finrem         | Financial Remedy               |
-| civil-sdt      | Civil Secure Data Transfer     |
-| dtsse          | DTSSE                          |
-| platform       | Platform                       |
-| ctsc           | CTSC                           |
-| fact           | FACT                           |
-| lau            | LAU                            |
-| pcq            | PCQ                            |
-| pre            | Pre-recorded Evidence          |
-| rpts           | RPTS                           |
-| snl            | Scheduling and Listing         |
-| pip            | Publishing & Information       |
-| vh             | Video Hearings                 |
-| et-pet         | Employment Tribunals (Legacy)  |
-| hmc            | hmc                            |
-| other          | Misc other projects            |
-| jps            | Judicial Payment Service       |
-| cuira          | CUI Reasonable Adjustments     |
-| perftest       | Performance Test               |
-| appreg         | Applications Register          |
-| opal           | Green on Black                 |
-| pdda           | PDDA                           |
-| pdm            | PDM                            |
-| courtfines     | Court Fines                    |
-| dcs-automation | DCS Automation                 |
-| juror          | Juror                          |
-| mrd            | MRD                            |
+## Updating repository ownership
+
+In the DTSSE dashboard database, repositories are assigned a `team_id`.
+This determines repository ownership and the team grouping used in Grafana reporting.
+
+As repository ownership can change, an Azure Pipeline is available to update `team_id` for specific repositories.
+
+To update `team_id`:
+
+- Go to the [Azure DevOps Pipeline](https://dev.azure.com/hmcts/PlatformOperations/_build?definitionId=1175).
+- Click `Run Pipeline` and provide:
+  1. GitHub repository URL(s) (comma-separated for multiple repos)
+  2. New `team_id` (see list below)
+  3. Target environment (determines which database is updated)
+
+This triggers a build and updates the relevant records in the flexible server database.
+
+### `team_id` mappings
+
+| team_id        | Team name                     |
+| -------------- | ----------------------------- |
+| adoption       | Adoption                      |
+| am             | Access Management             |
+| bsp            | Bulk Scan and Print           |
+| ccd            | CCD                           |
+| civil          | Civil Money Claims            |
+| cmc            | Old CMC                       |
+| da             | Domestic Abuse                |
+| div            | Divorce                       |
+| em             | Evidence Management           |
+| et             | Employment Tribunals          |
+| ethos          | ETHOS                         |
+| fees-and-pay   | Fees & Pay                    |
+| fis            | Family Integration            |
+| fpla           | FPLA                          |
+| hwf            | Help With Fees                |
+| ia             | I & A                         |
+| idam           | IDAM                          |
+| nfdiv          | No Fault Divorce              |
+| prl            | Private Law                   |
+| probate        | Probate                       |
+| rd             | Ref Data                      |
+| rpx            | XUI                           |
+| sptribs        | Special Tribunals             |
+| sscs           | SSCS                          |
+| wa             | Work Allocation               |
+| mi             | Management Information        |
+| fprl           | Family Private Law            |
+| finrem         | Financial Remedy              |
+| civil-sdt      | Civil Secure Data Transfer    |
+| dtsse          | DTSSE                         |
+| platform       | Platform                      |
+| ctsc           | CTSC                          |
+| fact           | FACT                          |
+| lau            | LAU                           |
+| pcq            | PCQ                           |
+| pre            | Pre-recorded Evidence         |
+| rpts           | RPTS                          |
+| snl            | Scheduling and Listing        |
+| pip            | Publishing & Information      |
+| vh             | Video Hearings                |
+| et-pet         | Employment Tribunals (Legacy) |
+| hmc            | hmc                           |
+| other          | Misc other projects           |
+| jps            | Judicial Payment Service      |
+| cuira          | CUI Reasonable Adjustments    |
+| perftest       | Performance Test              |
+| appreg         | Applications Register         |
+| opal           | Green on Black                |
+| pdda           | PDDA                          |
+| pdm            | PDM                           |
+| courtfines     | Court Fines                   |
+| dcs-automation | DCS Automation                |
+| juror          | Juror                         |
+| mrd            | MRD                           |
 | hmi            | Hearing Management Information |
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
