@@ -259,9 +259,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/cosmos@npm:4.9.1":
-  version: 4.9.1
-  resolution: "@azure/cosmos@npm:4.9.1"
+"@azure/cosmos@npm:4.9.2":
+  version: 4.9.2
+  resolution: "@azure/cosmos@npm:4.9.2"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -274,7 +274,7 @@ __metadata:
     priorityqueuejs: "npm:^2.0.0"
     semaphore: "npm:^1.1.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/5405802c1d70d50f48219b54175d1c28ce8ae960fda0e6e4857aec3ccf3e42ec11fe4428d5c29d4b6f27845909c35c63e2bc5e2a35297d6c5e5a22b83acd0ffd
+  checksum: 10/4d054166323e11d28853b011b6a22b96ffbbed819762f263a8b9c9508005bd8134d33c5ce9fe593e732cb76c30bdf718c5d685d72c0cb0dbf0deeceb975cb3b6
   languageName: node
   linkType: hard
 
@@ -307,8 +307,8 @@ __metadata:
   linkType: hard
 
 "@azure/identity@npm:^4.13.0, @azure/identity@npm:^4.2.1, @azure/identity@npm:^4.6.0":
-  version: 4.13.0
-  resolution: "@azure/identity@npm:4.13.0"
+  version: 4.13.1
+  resolution: "@azure/identity@npm:4.13.1"
   dependencies:
     "@azure/abort-controller": "npm:^2.0.0"
     "@azure/core-auth": "npm:^1.9.0"
@@ -317,11 +317,11 @@ __metadata:
     "@azure/core-tracing": "npm:^1.0.0"
     "@azure/core-util": "npm:^1.11.0"
     "@azure/logger": "npm:^1.0.0"
-    "@azure/msal-browser": "npm:^4.2.0"
-    "@azure/msal-node": "npm:^3.5.0"
+    "@azure/msal-browser": "npm:^5.5.0"
+    "@azure/msal-node": "npm:^5.1.0"
     open: "npm:^10.1.0"
     tslib: "npm:^2.2.0"
-  checksum: 10/8b97154ac85bb33abc0216ac7f45f41ccebaa8516db2173fbe029bbdd6c4dd227a83d7a6da6bb51c28b9189944a26cf6322bc52d79cbe4e75389e74266abc4b0
+  checksum: 10/f07734f811d734d29b49ad7f8345a53d680b90d075dcd9bfbc28e2e18bda3f1688de4faf44cc4727302c9aa91c13d4444ac2de6edb88a79c99c9efc660137609
   languageName: node
   linkType: hard
 
@@ -466,30 +466,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-browser@npm:^4.2.0":
-  version: 4.13.0
-  resolution: "@azure/msal-browser@npm:4.13.0"
+"@azure/msal-browser@npm:^5.5.0":
+  version: 5.6.2
+  resolution: "@azure/msal-browser@npm:5.6.2"
   dependencies:
-    "@azure/msal-common": "npm:15.7.0"
-  checksum: 10/6f8006043cc6751a98ca289729c5769f56edd0f90e09a871251e1b96eb2bb226b91362aecb6116c1ad9ae0ccbd59c281f30e0afee9c85c3c771b5d2d6986ca27
+    "@azure/msal-common": "npm:16.4.0"
+  checksum: 10/c87c2a7a081df2118edd36a1081e796fe8aff5f3db89cf0f147d88042adec62a28b879235bc8777023fcc8a8eea6881a4c90e194167c6c71577a5f0b21c8baf3
   languageName: node
   linkType: hard
 
-"@azure/msal-common@npm:15.7.0":
-  version: 15.7.0
-  resolution: "@azure/msal-common@npm:15.7.0"
-  checksum: 10/641fcf94f18136afc5e9ae8b8de95267236de9cab082a2828c53da16f6372a620c1c581ed1d625765f526c2313dd8f84070fd8d5ab3077a436f8f85b284fbd86
+"@azure/msal-common@npm:16.4.0":
+  version: 16.4.0
+  resolution: "@azure/msal-common@npm:16.4.0"
+  checksum: 10/0e479175648206cf4212d6f4e6883fb49a53cf24152f22b23229f234bbec57588f72dbc51730751f765786d4d11a0804b485ca17b143c07ad62eb29bed1ebe20
   languageName: node
   linkType: hard
 
-"@azure/msal-node@npm:^3.5.0":
-  version: 3.6.0
-  resolution: "@azure/msal-node@npm:3.6.0"
+"@azure/msal-node@npm:^5.1.0":
+  version: 5.1.1
+  resolution: "@azure/msal-node@npm:5.1.1"
   dependencies:
-    "@azure/msal-common": "npm:15.7.0"
+    "@azure/msal-common": "npm:16.4.0"
     jsonwebtoken: "npm:^9.0.0"
     uuid: "npm:^8.3.0"
-  checksum: 10/e0da2dae7fea610533da60f06a37288cf4cc7c8a15acaddbf9d4a3f1dd8c25cb132e26fa7ee3d0e700055e8599831614c9762243f93efadea62dd10f1abbc919
+  checksum: 10/01f3b870de2b23094c8ae1102b265018fbe800f493f8dd3024a6afa5e5c931640c3919fb0ab453c3cfe556d7ee4548e21825a3d1f1c2c551dadb0348456ed2f8
   languageName: node
   linkType: hard
 
@@ -5170,7 +5170,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dtsse-dashboard-ingestion@workspace:."
   dependencies:
-    "@azure/cosmos": "npm:4.9.1"
+    "@azure/cosmos": "npm:4.9.2"
     "@azure/identity": "npm:^4.2.1"
     "@azure/storage-blob": "npm:^12.23.0"
     "@hmcts/properties-volume": "npm:^1.2.0"
