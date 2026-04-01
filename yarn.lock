@@ -5152,10 +5152,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.6.1":
-  version: 16.6.1
-  resolution: "dotenv@npm:16.6.1"
-  checksum: 10/1d1897144344447ffe62aa1a6d664f4cd2e0784e0aff787eeeec1940ded32f8e4b5b506d665134fc87157baa086fce07ec6383970a2b6d2e7985beaed6a4cc14
+"dotenv@npm:17.4.0":
+  version: 17.4.0
+  resolution: "dotenv@npm:17.4.0"
+  checksum: 10/b78852cf21de5eeb7db0777bebcf40871cd776b43edb4c52e1dcebadf6794eb35524abe68ea2436dd0f1691ccb8d273ec5cf301b8ca5071f56340308a317e199
   languageName: node
   linkType: hard
 
@@ -5190,7 +5190,7 @@ __metadata:
     csv-stringify: "npm:^6.5.0"
     db-migrate: "npm:0.11.14"
     db-migrate-pg: "npm:1.5.2"
-    dotenv: "npm:16.6.1"
+    dotenv: "npm:17.4.0"
     eslint: "npm:9.39.4"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-import: "npm:2.32.0"
