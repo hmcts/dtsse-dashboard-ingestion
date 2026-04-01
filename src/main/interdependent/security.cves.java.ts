@@ -1,9 +1,8 @@
 import { Pool } from 'pg';
 import { getCVEs } from '../jenkins/cosmos';
-import { getUnixTimeToQueryFrom } from './security.cves.common';
 
-export const run = async (pool: Pool) => {
-  const items = await getCVEs(await getUnixTimeToQueryFrom(pool), 'java');
+export const run = async (pool: Pool, cutoff: bigint) => {
+  const items = await getCVEs(cutoff, 'java');
   const result = await processCosmosJavaResults(pool, items);
   return result;
 };

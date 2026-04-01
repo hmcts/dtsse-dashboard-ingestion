@@ -349,4 +349,17 @@ describe('integration tests', () => {
       ['https://github.com/hmcts/sscs-submit-your-appeal', 'CVE-2023-28155', 'yarn-audit'],
     ]);
   });
+
+  test('same cutoff timestamp is used for java and node CVE ingestion', async () => {
+    const cosmosMock = require('../jenkins/cosmos');
+    const getCVEsSpy = jest.spyOn(cosmosMock, 'getCVEs');
+    const { runInterdependent } = require('./interdependent');
+
+    await runInterdependent(pool);
+
+    const cutoffs = new Map(getCVEsSpy.mock.calls.map(([cutoff, type]) => [type as string, cutoff]));
+    expect(cutoffs.get('java')).toStrictEqual(cutoffs.get('node'));
+
+    getCVEsSpy.mockRestore();
+  });
 });
