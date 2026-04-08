@@ -6,7 +6,9 @@ export const run = async (pool: Pool) => {
   const time = await getUnixTimeToQueryFrom(pool);
   console.log(`Querying Jenkins metrics from ${new Date(Number(time) * 1000).toISOString()}`);
   const items = await getMetrics(time);
-  return processCosmosResults(pool, items);
+  const count = JSON.parse(items)?.length ?? 0;
+  await processCosmosResults(pool, items);
+  return `processed ${count} Jenkins records`;
 };
 
 export const processCosmosResults = async (pool: Pool, json: string) => {

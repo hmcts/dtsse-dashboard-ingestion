@@ -3,8 +3,9 @@ import { getCVEs } from '../jenkins/cosmos';
 
 export const run = async (pool: Pool, cutoff: bigint) => {
   const items = await getCVEs(cutoff, 'node');
+  const count = JSON.parse(items)?.length ?? 0;
   await processNodeSuppressions(pool, items);
-  return [];
+  return `processed ${count} Node CVE suppressions`;
 };
 
 export const processNodeSuppressions = async (pool: Pool, json: string) => {

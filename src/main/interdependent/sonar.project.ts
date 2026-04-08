@@ -40,7 +40,7 @@ export const run = async (pool: Pool) => {
   on conflict do nothing
   `;
   await pool.query(sql, [JSON.stringify(results)]);
-  return [];
+  return `processed ${results.length} Sonar projects`;
 };
 
 const getProjects = async (page = 1, pageSize = 100): Promise<Project[]> => {
