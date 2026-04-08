@@ -3,8 +3,9 @@ import { getCVEs } from '../jenkins/cosmos';
 
 export const run = async (pool: Pool, cutoff: bigint) => {
   const items = await getCVEs(cutoff, 'java');
+  const count = JSON.parse(items)?.length ?? 0;
   await processJavaSuppressions(pool, items);
-  return [];
+  return `processed ${count} Java CVE suppressions`;
 };
 
 export const processJavaSuppressions = async (pool: Pool, json: string) => {

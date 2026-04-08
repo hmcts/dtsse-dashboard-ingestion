@@ -3,9 +3,9 @@ import { getCVEs } from '../jenkins/cosmos';
 
 export const run = async (pool: Pool, cutoff: bigint) => {
   const items = await getCVEs(cutoff, 'node');
-
+  const count = JSON.parse(items)?.length ?? 0;
   await processCosmosNodeResults(pool, items);
-  return [];
+  return `processed ${count} Node CVE reports`;
 };
 
 export const processCosmosNodeResults = async (pool: Pool, json: string) => {

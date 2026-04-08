@@ -3,6 +3,7 @@ import { Pool } from 'pg';
 
 export const run = async (pool: Pool) => {
   const results = await listRepos();
+  const count = JSON.parse(results)?.length ?? 0;
 
   const sql = `
   insert into github.repository(id, team_id, git_url, web_url, short_name, is_archived, language)
@@ -24,4 +25,5 @@ export const run = async (pool: Pool) => {
   set is_archived = excluded.is_archived, language = excluded.language
   `;
   await pool.query(sql, [results]);
+  return `saved ${count} repositories`;
 };
