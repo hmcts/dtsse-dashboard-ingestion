@@ -226,4 +226,18 @@ describe('jenkins.metrics unit tests', () => {
     const result = await run(mockPool);
     expect(result).toBe('processed 3 Jenkins records');
   });
+
+  test('run returns 0 when metrics payload parses to null', async () => {
+    const mockTimestamp = BigInt(1672531200);
+    mockPool.query.mockResolvedValue({ rows: [{ max: mockTimestamp }] } as any);
+
+    mockGetMetrics.mockResolvedValue(JSON.stringify(null));
+    mockValidateBuildSteps.mockReturnValueOnce({
+      validatedRecords: [],
+      stats: { total: 0, normalized: 0, invalidValues: new Map() },
+    });
+
+    const result = await run(mockPool);
+    expect(result).toBe('processed 0 Jenkins records');
+  });
 });

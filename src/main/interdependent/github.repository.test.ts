@@ -25,4 +25,10 @@ describe('github.repository', () => {
     const result = await run(mockPool);
     expect(result).toBe('saved 0 repositories');
   });
+
+  test('run returns 0 when repositories payload parses to null', async () => {
+    mockListRepos.mockResolvedValue(JSON.stringify(null));
+    const result = await run(mockPool);
+    expect(result).toBe('saved 0 repositories');
+  });
 });

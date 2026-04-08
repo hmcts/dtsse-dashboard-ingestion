@@ -25,4 +25,10 @@ describe('security.cves.node', () => {
     const result = await run(mockPool, 0n);
     expect(result).toBe('processed 0 Node CVE reports');
   });
+
+  test('run returns 0 when items parses to null', async () => {
+    mockGetCVEs.mockResolvedValue(JSON.stringify(null));
+    const result = await run(mockPool, 0n);
+    expect(result).toBe('processed 0 Node CVE reports');
+  });
 });
