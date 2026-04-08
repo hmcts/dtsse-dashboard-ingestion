@@ -211,4 +211,19 @@ describe('jenkins.metrics unit tests', () => {
     expect(mockGetMetrics).toHaveBeenCalledWith(mockTimestamp);
     expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('Querying Jenkins metrics from'));
   });
+
+  test('run returns count of processed Jenkins records', async () => {
+    const mockTimestamp = BigInt(1672531200);
+    mockPool.query.mockResolvedValue({ rows: [{ max: mockTimestamp }] } as any);
+
+    const testData = [{ id: '1' }, { id: '2' }, { id: '3' }];
+    mockGetMetrics.mockResolvedValue(JSON.stringify(testData));
+    mockValidateBuildSteps.mockReturnValueOnce({
+      validatedRecords: testData,
+      stats: { total: 3, normalized: 0, invalidValues: new Map() },
+    });
+
+    const result = await run(mockPool);
+    expect(result).toBe('processed 3 Jenkins records');
+  });
 });
