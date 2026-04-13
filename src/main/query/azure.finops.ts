@@ -111,8 +111,8 @@ function rowToString(row: any) {
     builtFromTag === null || builtFromTag.startsWith('https://github.com/hmcts')
       ? builtFromTag
       : builtFromTag.startsWith('hmcts/')
-      ? 'https://github.com/' + builtFromTag
-      : 'https://github.com/hmcts/' + builtFromTag;
+        ? 'https://github.com/' + builtFromTag
+        : 'https://github.com/hmcts/' + builtFromTag;
 
   const data = {
     subscription_id: row.SubscriptionId,
