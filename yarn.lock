@@ -306,7 +306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/identity@npm:^4.13.0, @azure/identity@npm:^4.13.1, @azure/identity@npm:^4.6.0":
+"@azure/identity@npm:4.13.1, @azure/identity@npm:^4.13.0, @azure/identity@npm:^4.6.0":
   version: 4.13.1
   resolution: "@azure/identity@npm:4.13.1"
   dependencies:
@@ -522,7 +522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/storage-blob@npm:^12.31.0":
+"@azure/storage-blob@npm:12.31.0":
   version: 12.31.0
   resolution: "@azure/storage-blob@npm:12.31.0"
   dependencies:
@@ -1287,7 +1287,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:^10.0.1":
+"@eslint/js@npm:10.0.1":
   version: 10.0.1
   resolution: "@eslint/js@npm:10.0.1"
   peerDependencies:
@@ -1361,7 +1361,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hmcts/properties-volume@npm:^1.3.2":
+"@hmcts/properties-volume@npm:1.3.2":
   version: 1.3.2
   resolution: "@hmcts/properties-volume@npm:1.3.2"
   dependencies:
@@ -2802,7 +2802,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testcontainers/postgresql@npm:^11.14.0":
+"@testcontainers/postgresql@npm:11.14.0":
   version: 11.14.0
   resolution: "@testcontainers/postgresql@npm:11.14.0"
   dependencies:
@@ -3025,7 +3025,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg-copy-streams@npm:^1.2.5":
+"@types/pg-copy-streams@npm:1.2.5":
   version: 1.2.5
   resolution: "@types/pg-copy-streams@npm:1.2.5"
   dependencies:
@@ -4031,7 +4031,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.15.0":
+"axios@npm:1.15.0":
   version: 1.15.0
   resolution: "axios@npm:1.15.0"
   dependencies:
@@ -4809,14 +4809,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^6.2.1":
+"csv-parse@npm:6.2.1":
   version: 6.2.1
   resolution: "csv-parse@npm:6.2.1"
   checksum: 10/7fbde1225c6df6aaea01a202934e1f15ce16ed55e544ead0d066b0c4dc9ae1a2fc881b412889cbf115cd74cbf14ea17388b394e8a31e05cb412dd7dc6114bebd
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:^6.7.0":
+"csv-stringify@npm:6.7.0":
   version: 6.7.0
   resolution: "csv-stringify@npm:6.7.0"
   checksum: 10/aa635f1c941b4682ac17479c640f7cf48825e5e442e28f093696a345006dbfe481f7962530ca314147bc88ff85d2cffc0690682934991e35f8c31a055aaa4566
@@ -5196,24 +5196,24 @@ __metadata:
   resolution: "dtsse-dashboard-ingestion@workspace:."
   dependencies:
     "@azure/cosmos": "npm:4.9.2"
-    "@azure/identity": "npm:^4.13.1"
-    "@azure/storage-blob": "npm:^12.31.0"
-    "@eslint/js": "npm:^10.0.1"
-    "@hmcts/properties-volume": "npm:^1.3.2"
+    "@azure/identity": "npm:4.13.1"
+    "@azure/storage-blob": "npm:12.31.0"
+    "@eslint/js": "npm:10.0.1"
+    "@hmcts/properties-volume": "npm:1.3.2"
     "@octokit/graphql": "npm:7.1.1"
     "@octokit/rest": "npm:20.1.2"
-    "@testcontainers/postgresql": "npm:^11.14.0"
+    "@testcontainers/postgresql": "npm:11.14.0"
     "@types/jira-client": "npm:7.1.9"
     "@types/node": "npm:25.6.0"
     "@types/pg": "npm:8.20.0"
-    "@types/pg-copy-streams": "npm:^1.2.5"
+    "@types/pg-copy-streams": "npm:1.2.5"
     "@types/pg-format": "npm:1.0.5"
     "@typescript-eslint/eslint-plugin": "npm:8.58.1"
     "@typescript-eslint/parser": "npm:8.58.1"
     applicationinsights: "npm:3.14.0"
-    axios: "npm:^1.15.0"
-    csv-parse: "npm:^6.2.1"
-    csv-stringify: "npm:^6.7.0"
+    axios: "npm:1.15.0"
+    csv-parse: "npm:6.2.1"
+    csv-stringify: "npm:6.7.0"
     db-migrate: "npm:0.11.14"
     db-migrate-pg: "npm:1.5.2"
     dotenv: "npm:17.4.2"
@@ -5226,11 +5226,11 @@ __metadata:
     jira-client: "npm:8.2.2"
     lint-staged: "npm:16.4.0"
     pg: "npm:8.20.0"
-    pg-copy-streams: "npm:^7.0.0"
+    pg-copy-streams: "npm:7.0.0"
     pg-format: "npm:1.0.4"
     prettier: "npm:3.8.2"
     testcontainers: "npm:11.14.0"
-    tough-cookie: "npm:^6.0.1"
+    tough-cookie: "npm:6.0.1"
     ts-jest: "npm:29.4.9"
     ts-node: "npm:10.9.2"
     typescript: "npm:6.0.2"
@@ -8943,7 +8943,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-copy-streams@npm:^7.0.0":
+"pg-copy-streams@npm:7.0.0":
   version: 7.0.0
   resolution: "pg-copy-streams@npm:7.0.0"
   checksum: 10/f62f883e5b3add845283d6df1864ee686a4aa4c0281145128e6c92d4699408cdb9ddcc1fd8fc86a6e160b38610c980173d87ec969d67f5bc33be69a9b0a37b3f
@@ -10629,7 +10629,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tough-cookie@npm:^6.0.1":
+"tough-cookie@npm:6.0.1":
   version: 6.0.1
   resolution: "tough-cookie@npm:6.0.1"
   dependencies:
