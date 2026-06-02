@@ -55,6 +55,8 @@ describe('jenkins.metrics unit tests', () => {
         build_number: '42',
         build_url: 'https://build.example.com/job/test/42/',
         git_commit: 'abc123',
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       },
       {
         id: '223e4567-e89b-12d3-a456-426614174001',
@@ -66,6 +68,8 @@ describe('jenkins.metrics unit tests', () => {
         build_number: '42',
         build_url: 'https://build.example.com/job/test/42/',
         git_commit: 'abc123',
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       },
     ];
 
@@ -92,6 +96,8 @@ describe('jenkins.metrics unit tests', () => {
         build_number: '42',
         build_url: 'https://build.example.com/job/test/42/',
         git_commit: 'abc123',
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       },
     ];
 
@@ -118,6 +124,8 @@ describe('jenkins.metrics unit tests', () => {
         build_number: '42',
         build_url: 'https://build.example.com/job/test/42/',
         git_commit: 'abc123',
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       },
       {
         id: '223e4567-e89b-12d3-a456-426614174001',
@@ -129,6 +137,8 @@ describe('jenkins.metrics unit tests', () => {
         build_number: '43',
         build_url: 'https://build.example.com/job/test/43/',
         git_commit: 'def456',
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       },
       {
         id: '323e4567-e89b-12d3-a456-426614174002',
@@ -140,6 +150,8 @@ describe('jenkins.metrics unit tests', () => {
         build_number: '44',
         build_url: 'https://build.example.com/job/test/44/',
         git_commit: 'ghi789',
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       },
     ];
 
@@ -196,6 +208,8 @@ describe('jenkins.metrics unit tests', () => {
         build_number: '42',
         build_url: 'https://build.example.com/job/test/42/',
         git_commit: 'abc123',
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       },
     ];
 

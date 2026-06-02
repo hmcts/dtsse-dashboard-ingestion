@@ -32,6 +32,8 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
       build_number,
       build_url,
       git_commit,
+      shared_library_name,
+      shared_library_version,
       repo.repo_id
     from
       jsonb_populate_recordset(null::jenkins_impl.builds, $1::jsonb) r
