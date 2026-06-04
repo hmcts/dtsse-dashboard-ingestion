@@ -259,9 +259,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/cosmos@npm:4.9.2":
-  version: 4.9.2
-  resolution: "@azure/cosmos@npm:4.9.2"
+"@azure/cosmos@npm:4.9.3":
+  version: 4.9.3
+  resolution: "@azure/cosmos@npm:4.9.3"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -274,7 +274,7 @@ __metadata:
     priorityqueuejs: "npm:^2.0.0"
     semaphore: "npm:^1.1.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/4d054166323e11d28853b011b6a22b96ffbbed819762f263a8b9c9508005bd8134d33c5ce9fe593e732cb76c30bdf718c5d685d72c0cb0dbf0deeceb975cb3b6
+  checksum: 10/4bf1492e87168fc821e32e0b09bc138e5fb3e3a95fb135ba6b936b1a9bf5d9ce83fd167824d18f5c400e58383bf9922f34bc4be03d57535788a6376afe156582
   languageName: node
   linkType: hard
 
@@ -5145,7 +5145,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dtsse-dashboard-ingestion@workspace:."
   dependencies:
-    "@azure/cosmos": "npm:4.9.2"
+    "@azure/cosmos": "npm:4.9.3"
     "@azure/identity": "npm:4.13.1"
     "@azure/storage-blob": "npm:12.31.0"
     "@eslint/js": "npm:10.0.1"
