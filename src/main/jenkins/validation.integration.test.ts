@@ -19,6 +19,8 @@ describe('Jenkins Validation Integration Tests', () => {
           build_url: 'https://build.platform.hmcts.net/job/HMCTS_a_to_c/job/ccd-elastic-search/job/master/123/',
           branch_name: 'master',
           build_number: '123',
+          shared_library_name: 'shared-lib',
+          shared_library_version: '1.0.0',
         },
         {
           id: '550e8400-e29b-41d4-a716-446655440001',
@@ -29,6 +31,8 @@ describe('Jenkins Validation Integration Tests', () => {
           build_url: 'https://build.platform.hmcts.net/job/HMCTS_a_to_c/job/ccd-elastic-search/job/master/123/',
           branch_name: 'master',
           build_number: '123',
+          shared_library_name: 'shared-lib',
+          shared_library_version: '1.0.0',
         },
       ];
 
@@ -53,6 +57,8 @@ describe('Jenkins Validation Integration Tests', () => {
         current_build_current_result: value,
         stage_timestamp: '2024-12-10T14:30:00Z',
         build_url: `https://jenkins.test/job/test/${index}`,
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       }));
 
       const { validatedRecords, stats } = validateBuildSteps(cosmosRecords);
@@ -72,6 +78,8 @@ describe('Jenkins Validation Integration Tests', () => {
         current_build_current_result: value,
         stage_timestamp: '2024-12-10T14:30:00Z',
         build_url: `https://jenkins.test/job/test/${index}`,
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       }));
 
       const { validatedRecords, stats } = validateBuildSteps(cosmosRecords);
@@ -93,6 +101,8 @@ describe('Jenkins Validation Integration Tests', () => {
         current_build_current_result: i % 10 === 0 ? 'NOT_BUILT' : 'SUCCESS',
         stage_timestamp: '2024-12-10T14:30:00Z',
         build_url: `https://jenkins.test/job/test/${i}`,
+        shared_library_name: 'shared-lib',
+        shared_library_version: '1.0.0',
       }));
 
       const startTime = Date.now();

@@ -25,13 +25,24 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
   await pool.query(
     `
   with builds as (
-    insert into jenkins_impl.builds
+    insert into jenkins_impl.builds (
+      correlation_id,
+      branch_name,
+      build_number,
+      build_url,
+      git_commit,
+      shared_library_name,
+      shared_library_version,
+      repo_id
+    )
     select distinct on (correlation_id)
       correlation_id,
       branch_name,
       build_number,
       build_url,
       git_commit,
+      shared_library_name,
+      shared_library_version,
       repo.repo_id
     from
       jsonb_populate_recordset(null::jenkins_impl.builds, $1::jsonb) r

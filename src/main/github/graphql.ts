@@ -132,7 +132,7 @@ export interface Result {
 export const getDependabotConfig = async (): Promise<Result[]> => {
   const q = `
 {
-    search(query: "org:hmcts archived:false", type: REPOSITORY, first: 50%after) {
+    search(query: "org:hmcts archived:false", type: REPOSITORY, first: 20%after) {
         pageInfo {
             startCursor
             hasNextPage
