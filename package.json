@@ -35,7 +35,7 @@
     "applicationinsights": "3.14.0",
     "axios": "1.16.1",
     "csv-parse": "6.2.1",
-    "csv-stringify": "6.7.0",
+    "csv-stringify": "6.8.0",
     "db-migrate": "0.11.14",
     "db-migrate-pg": "1.5.2",
     "jira-client": "8.2.2",
