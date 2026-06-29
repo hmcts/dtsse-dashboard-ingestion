@@ -5169,7 +5169,7 @@ __metadata:
     dotenv: "npm:17.4.2"
     eslint: "npm:10.4.1"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-import: "npm:2.32.0"
+    eslint-plugin-import: "npm:^2.32.0"
     eslint-plugin-jest: "npm:29.15.2"
     husky: "npm:9.1.7"
     jest: "npm:30.3.0"
@@ -5610,7 +5610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:2.32.0":
+"eslint-plugin-import@npm:^2.32.0":
   version: 2.32.0
   resolution: "eslint-plugin-import@npm:2.32.0"
   dependencies:
