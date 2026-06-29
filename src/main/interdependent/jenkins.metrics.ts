@@ -33,21 +33,31 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
       git_commit,
       shared_library_name,
       shared_library_version,
-      repo_id
+      repo_id,
+      scheduled_time,
+      started_time
     )
-    select distinct on (correlation_id)
-      correlation_id,
-      branch_name,
-      build_number,
-      build_url,
-      git_commit,
-      shared_library_name,
-      shared_library_version,
-      repo.repo_id
+    select distinct on (r->>'correlation_id')
+      (r->>'correlation_id')::uuid,
+      r->>'branch_name',
+      r->>'build_number',
+      r->>'build_url',
+      r->>'git_commit',
+      r->>'shared_library_name',
+      r->>'shared_library_version',
+      repo.repo_id,
+      -- When the build entered the Jenkins queue
+      (r->>'current_build_scheduled_time')::timestamp,
+      -- When the build began executing on an agent.
+      -- current_build_duration is the elapsed ms at the time this step was emitted,
+      -- so subtracting it from stage_timestamp gives the true build start.
+      -- We use the first step (order by stage_timestamp asc) for best accuracy.
+      (r->>'stage_timestamp')::timestamp - ((r->>'current_build_duration')::bigint * interval '1 millisecond')
     from
-      jsonb_populate_recordset(null::jenkins_impl.builds, $1::jsonb) r
+      jsonb_array_elements($1::jsonb) r
       left join github.repository repo
-        on lower(repo.web_url) = lower('https://github.com/hmcts/' || split_part(build_url, '/', 7))
+        on lower(repo.web_url) = lower('https://github.com/hmcts/' || split_part(r->>'build_url', '/', 7))
+    order by r->>'correlation_id', (r->>'stage_timestamp')::timestamp asc
     on conflict do nothing
   ),
   steps as (
