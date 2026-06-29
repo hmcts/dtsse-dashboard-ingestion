@@ -1,5 +1,4 @@
 import { listPR, listUpTo100PRsSince } from '../github/rest';
-
 import { Pool } from 'pg';
 
 export const run = async (pool: Pool) => {
@@ -19,7 +18,7 @@ export const run = async (pool: Pool) => {
 
   const withPrInfo = await Promise.all(prs);
   await savePRs(pool, withPrInfo);
-  return [];
+  return `saved ${withPrInfo.length} PRs`;
 };
 
 const savePRs = async (pool: Pool, prs: Result[]) => {
@@ -38,6 +37,12 @@ const savePRs = async (pool: Pool, prs: Result[]) => {
   await pool.query(sql, [JSON.stringify(prs)]);
 };
 
+// Some PR titles are extremely long and breach the PG var char limit of 512 so truncate those.
+const truncate = (value: string | null | undefined, max = 512): string | null => {
+  if (!value) return value ?? null;
+  return value.length > max ? value.substring(0, max) : value;
+};
+
 const addPrData = async (issue: Result) => {
   const pull = (await listPR(issue.repository.name, issue.number)).data;
 
@@ -45,6 +50,7 @@ const addPrData = async (issue: Result) => {
     id: issue.url,
     repository: issue.repository?.name,
     author: issue.user.login,
+    title: truncate(issue.title),
     body_text: issue.body,
     labels: issue.labels.map(label => label.name).join(','),
     jira_refs: jiraRef(issue.title + issue.body)?.join(',') || null,

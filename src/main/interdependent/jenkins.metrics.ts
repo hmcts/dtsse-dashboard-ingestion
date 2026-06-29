@@ -1,22 +1,48 @@
 import { Pool } from 'pg';
 import { getMetrics } from '../jenkins/cosmos';
+import { validateBuildSteps } from '../jenkins/validation';
 
 export const run = async (pool: Pool) => {
-  const items = await getMetrics(await getUnixTimeToQueryFrom(pool));
-  return processCosmosResults(pool, items);
+  const time = await getUnixTimeToQueryFrom(pool);
+  console.log(`Querying Jenkins metrics from ${new Date(Number(time) * 1000).toISOString()}`);
+  const items = await getMetrics(time);
+  const count = JSON.parse(items)?.length ?? 0;
+  await processCosmosResults(pool, items);
+  return `processed ${count} Jenkins records`;
 };
 
 export const processCosmosResults = async (pool: Pool, json: string) => {
+  // Validate and normalise build results before processing
+  const rawRecords = JSON.parse(json);
+  const { validatedRecords, stats } = validateBuildSteps(rawRecords);
+  const validatedJson = JSON.stringify(validatedRecords);
+
+  // Log validation summary for monitoring
+  if (stats.normalized > 0) {
+    console.log(`[JENKINS INGESTION] Validated ${stats.total} records, normalized ${stats.normalized} invalid build results`);
+  }
+
   await pool.query(
     `
   with builds as (
-    insert into jenkins_impl.builds
+    insert into jenkins_impl.builds (
+      correlation_id,
+      branch_name,
+      build_number,
+      build_url,
+      git_commit,
+      shared_library_name,
+      shared_library_version,
+      repo_id
+    )
     select distinct on (correlation_id)
       correlation_id,
       branch_name,
       build_number,
       build_url,
       git_commit,
+      shared_library_name,
+      shared_library_version,
       repo.repo_id
     from
       jsonb_populate_recordset(null::jenkins_impl.builds, $1::jsonb) r
@@ -54,7 +80,7 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
   ) names on current_step_name = name
   order by stage_timestamp asc
   on conflict do nothing`,
-    [json]
+    [validatedJson]
   );
 
   // precompute the time taken by each build step
@@ -136,7 +162,18 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
 };
 
 export const getUnixTimeToQueryFrom = async (pool: Pool) => {
-  // Base off the last import time if available, otherwise the last 12 months
+  const forcedLookbackInterval = process.env.DTSSE_INGESTION_FORCE_LOOKBACK_INTERVAL;
+  if (forcedLookbackInterval) {
+    const res = await pool.query(
+      `
+        select extract(epoch from (now() - $1::interval))::bigint as max
+      `,
+      [forcedLookbackInterval]
+    );
+
+    return res.rows[0].max;
+  }
+
   const res = await pool.query(`
     select extract(epoch from coalesce(
       max(stage_timestamp),

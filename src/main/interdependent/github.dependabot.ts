@@ -27,5 +27,5 @@ export const run = async (pool: Pool) => {
 
   // Either known to have it or not
   await pool.query(`update github.repository set has_dependabot_or_renovate = (id = any($1))`, [res]);
-  return [];
+  return `found ${res.length} repos with dependabot or renovate config out of ${Object.keys(uniqueResults).length}`;
 };
