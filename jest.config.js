@@ -6,4 +6,8 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
+  moduleNameMapper: {
+    '^@octokit/rest$': '<rootDir>/__mocks__/@octokit/rest.js',
+    '^@octokit/graphql$': '<rootDir>/__mocks__/@octokit/graphql.js',
+  },
 };
