@@ -16,7 +16,7 @@
     "test:coverage": "jest --coverage",
     "test:a11y": "exit 0",
     "cichecks": "yarn lint && yarn test",
-    "prepare": "husky install",
+    "prepare": "husky",
     "migration:create": "ts-node -r dotenv/config src/main/run.ts create --",
     "migration:down": "yarn start:dev down"
   },
