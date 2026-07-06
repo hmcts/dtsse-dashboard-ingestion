@@ -10,9 +10,10 @@ def component = "dashboard-ingestion"
 
 withPipeline(type, product, component) {
   nonServiceApp()
+}
 
-  afterAlways('build') {
-    //yarnBuilder.yarn('build')
-  }
+  // afterAlways('build') {
+  //   //yarnBuilder.yarn('build')
+  // }
 
 }
