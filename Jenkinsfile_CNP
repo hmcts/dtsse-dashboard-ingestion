@@ -6,13 +6,13 @@ def type = "nodejs"
 def product = "dtsse"
 def component = "dashboard-ingestion"
 
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+//def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withPipeline(type, product, component) {
   nonServiceApp()
 
   afterAlways('build') {
-    yarnBuilder.yarn('build')
+    //yarnBuilder.yarn('build')
   }
 
 }
