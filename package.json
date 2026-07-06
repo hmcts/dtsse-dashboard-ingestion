@@ -44,6 +44,7 @@
     "db-migrate-pg": "^1.5.2",
     "globals": "^17.7.0",
     "jira-client": "^8.2.2",
+    "node-gyp": "^13.0.1",
     "pg": "^8.22.0",
     "pg-copy-streams": "^7.0.0",
     "pg-format": "^1.0.4",

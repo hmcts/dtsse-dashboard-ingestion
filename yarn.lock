@@ -3488,6 +3488,7 @@ __metadata:
     jest: "npm:^30.4.2"
     jira-client: "npm:^8.2.2"
     lint-staged: "npm:^17.0.8"
+    node-gyp: "npm:^13.0.1"
     pg: "npm:^8.22.0"
     pg-copy-streams: "npm:^7.0.0"
     pg-format: "npm:^1.0.4"
@@ -6170,7 +6171,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:latest":
+"node-gyp@npm:^13.0.1, node-gyp@npm:latest":
   version: 13.0.1
   resolution: "node-gyp@npm:13.0.1"
   dependencies:
