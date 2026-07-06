@@ -28,6 +28,7 @@
   "dependencies": {
     "@azure/cosmos": "^4.9.3",
     "@azure/identity": "^4.13.1",
+    "@eslint/js": "^10.0.1",
     "@hmcts/properties-volume": "^1.4.0",
     "@octokit/graphql": "^9.0.3",
     "@octokit/rest": "^22.0.1",
@@ -42,7 +43,6 @@
     "db-migrate": "^0.11.14",
     "db-migrate-pg": "^1.5.2",
     "globals": "^17.7.0",
-    "@eslint/js": "^10.0.1",
     "jira-client": "^8.2.2",
     "pg": "^8.22.0",
     "pg-copy-streams": "^7.0.0",
