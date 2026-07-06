@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "start": "AZURE_LOG_LEVEL=info NODE_ENV=production timeout 3600 ts-node src/main/run.ts",
@@ -28,7 +28,6 @@
   "dependencies": {
     "@azure/cosmos": "^4.9.3",
     "@azure/identity": "^4.13.1",
-    "@azure/storage-blob": "^12.33.0",
     "@hmcts/properties-volume": "^1.4.0",
     "@octokit/graphql": "^9.0.3",
     "@octokit/rest": "^22.0.1",
@@ -37,7 +36,6 @@
     "@types/pg": "^8.20.0",
     "@types/pg-copy-streams": "^1.2.5",
     "@types/pg-format": "^1.0.5",
-    "applicationinsights": "^3.15.1",
     "axios": "^1.18.1",
     "csv-parse": "^7.0.0",
     "csv-stringify": "^6.8.0",
