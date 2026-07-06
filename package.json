@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=22.19.0"
+    "node": ">=22.22.1"
   },
   "scripts": {
     "start": "AZURE_LOG_LEVEL=info NODE_ENV=production timeout 3600 ts-node src/main/run.ts",
