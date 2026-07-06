@@ -40,7 +40,7 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
     select distinct on (r->>'correlation_id')
       (r->>'correlation_id')::uuid,
       r->>'branch_name',
-      r->>'build_number',
+      (r->>'build_number')::integer,
       r->>'build_url',
       r->>'git_commit',
       r->>'shared_library_name',
