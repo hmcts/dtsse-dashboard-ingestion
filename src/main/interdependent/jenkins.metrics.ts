@@ -138,7 +138,8 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
                 -- Ensure we get Pipeline Succeeded as the last step of successful builds
                 when 'Pipeline Succeeded' then 1
                 -- Ensure we do not get 'pipeline failed' as the last step of failed builds, but the step that actually went wrong.
-                when 'Pipeline Failed' then 3
+                when 'Pipeline Failed' then 3,
+            duration = excluded.duration
                 else 2
              end asc
         ) steps
