@@ -148,7 +148,8 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
         on conflict(correlation_id) do update set
             current_step_name = excluded.current_step_name,
             current_build_current_result = excluded.current_build_current_result,
-            stage_timestamp = excluded.stage_timestamp
+            stage_timestamp = excluded.stage_timestamp,
+            duration = excluded.duration
             -- Only do the update where we need to to avoid bloating the table.
            where jenkins_impl.terminal_build_steps_materialized.current_step_name <> excluded.current_step_name;
       -- Reset the sequence to the next free value to avoid exhausting it, since it gets incremented even when no rows are added.
