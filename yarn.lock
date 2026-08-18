@@ -111,8 +111,8 @@ __metadata:
   linkType: hard
 
 "@azure/cosmos@npm:^4.9.3":
-  version: 4.9.3
-  resolution: "@azure/cosmos@npm:4.9.3"
+  version: 4.10.0
+  resolution: "@azure/cosmos@npm:4.10.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -125,7 +125,7 @@ __metadata:
     priorityqueuejs: "npm:^2.0.0"
     semaphore: "npm:^1.1.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/4bf1492e87168fc821e32e0b09bc138e5fb3e3a95fb135ba6b936b1a9bf5d9ce83fd167824d18f5c400e58383bf9922f34bc4be03d57535788a6376afe156582
+  checksum: 10/544ca6dbcde85e42051be45e25c9b4c6dc09327be3d0d9da0293da3e0ba48587461389ff37116fae6b9b50f9dd3878f1e9c98eb22b34411707169306c53d5651
   languageName: node
   linkType: hard
 
