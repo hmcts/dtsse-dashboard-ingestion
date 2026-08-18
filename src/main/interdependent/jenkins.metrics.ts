@@ -56,7 +56,9 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
      (r->>'correlation_id')::uuid correlation_id,
      r->>'current_step_name' current_step_name,
      (r->>'current_build_current_result')::jenkins.buildresult current_build_current_result,
-     (r->>'stage_timestamp')::timestamp stage_timestamp
+     (r->>'stage_timestamp')::timestamp stage_timestamp,
+     r->>'node_name' node_name,
+     r->>'node_labels' node_labels
    from jsonb_array_elements($1::jsonb) r
   ),
   -- insert any new step names
@@ -66,14 +68,19 @@ export const processCosmosResults = async (pool: Pool, json: string) => {
    on conflict do nothing
    returning *
   )
+  -- Explicit column list: jenkins_impl.steps has gained columns over time and
+  -- a positional insert would silently depend on table column order.
   insert into jenkins_impl.steps
+    (id, correlation_id, current_build_current_result, stage_timestamp, duration, step_id, node_name, node_labels)
   select
     id,
     correlation_id,
     current_build_current_result,
     stage_timestamp,
     null duration,
-    names.step_id
+    names.step_id,
+    node_name,
+    node_labels
   from steps join (
     -- Cannot see the names we just inserted into jenkins.step_names so must union here.
     select * from jenkins_impl.step_names union select * from new_names
