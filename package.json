@@ -28,6 +28,7 @@
   "dependencies": {
     "@azure/cosmos": "^4.9.3",
     "@azure/identity": "^4.13.1",
+    "@azure/storage-blob": "^12.33.0",
     "@eslint/js": "^10.0.1",
     "@hmcts/properties-volume": "^1.4.0",
     "@octokit/graphql": "^9.0.3",
