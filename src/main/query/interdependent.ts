@@ -26,6 +26,7 @@ export const runInterdependent = async (pool: Pool) => {
   await logStep('cve.suppressions.java', () => require('../interdependent/cve.suppressions.java').run(pool, cveCutoff));
   await logStep('cve.suppressions.node', () => require('../interdependent/cve.suppressions.node').run(pool, cveCutoff));
   await logStep('github.pull-request', () => require('../interdependent/github.pull-request').run(pool));
+  await logStep('github.pull-request-reconcile', () => require('../interdependent/github.pull-request-reconcile').run(pool));
   await logStep('github.dependabot', () => require('../interdependent/github.dependabot').run(pool));
   await logStep('sonar.project', () => require('../interdependent/sonar.project').run(pool));
 };

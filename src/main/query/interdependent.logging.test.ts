@@ -36,6 +36,10 @@ jest.mock('../interdependent/github.pull-request', () => ({
   run: jest.fn(async () => 'saved 5 PRs'),
 }));
 
+jest.mock('../interdependent/github.pull-request-reconcile', () => ({
+  run: jest.fn(async () => 'reconciled 3 of 12 pull requests'),
+}));
+
 jest.mock('../interdependent/github.dependabot', () => ({
   run: jest.fn(async () => 'found 2 repos with dependabot or renovate config out of 9'),
 }));
@@ -60,6 +64,7 @@ describe('runInterdependent logging', () => {
 
     expect(consoleLogSpy).toHaveBeenCalledWith('[interdependent] Starting: github.repository');
     expect(consoleLogSpy).toHaveBeenCalledWith('[interdependent] Completed: github.repository - saved 10 repositories');
+    expect(consoleLogSpy).toHaveBeenCalledWith('[interdependent] Completed: github.pull-request-reconcile - reconciled 3 of 12 pull requests');
     expect(consoleLogSpy).toHaveBeenCalledWith('[interdependent] Starting: github.dependabot');
     expect(consoleLogSpy).toHaveBeenCalledWith('[interdependent] Completed: github.dependabot - found 2 repos with dependabot or renovate config out of 9');
     expect(consoleLogSpy).toHaveBeenCalledWith('[interdependent] Completed: sonar.project - processed 8 Sonar projects');
