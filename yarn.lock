@@ -3234,9 +3234,9 @@ __metadata:
   linkType: hard
 
 "csv-stringify@npm:^6.8.0":
-  version: 6.8.1
-  resolution: "csv-stringify@npm:6.8.1"
-  checksum: 10/b866fa222277e1be2819d98286d49a2e158cf9d3a90c670106c1a8b6d45837201dc7b468f531397c449fc87f181d29ed41879a4f9f4ccc3462b2a001afedaeb8
+  version: 6.8.3
+  resolution: "csv-stringify@npm:6.8.3"
+  checksum: 10/288465886c5ebca7c87c02cda0df4dfe9ba0bb4df264b64e7962821a890df89efded9dbf5120c9fdd848a76ed781a7a6cfd6332893ed5c60a7a62b368635fc9f
   languageName: node
   linkType: hard
 
