@@ -1,6 +1,11 @@
 job:
   image: hmctsprod.azurecr.io/dtsse/dashboard-ingestion:latest
   aadIdentityName: dtsse
+  environment:
+    SLACKBOT_COSMOS_ENABLED: "false"
+    SLACK_COSMOS_ACCOUNT_NAME: "platops-slack-help-bot-ptl"
+    SLACK_COSMOS_DATABASE: "help-requests"
+    SLACK_COSMOS_CONTAINER: "help-requests"
   keyVaults:
     dtsse:
       secrets:
