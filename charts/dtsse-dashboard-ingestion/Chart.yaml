@@ -6,5 +6,5 @@ home: https://github.com/hmcts/dtsse-dashboard-ingestion
 version: 0.0.23
 dependencies:
   - name: job
-    version: 2.2.1
+    version: 2.2.2
     repository: oci://hmctsprod.azurecr.io/helm
