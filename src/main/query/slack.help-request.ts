@@ -36,6 +36,10 @@ export const toRow = (item: HelpRequest) => {
 };
 
 export const run = async () => {
+  if (!config.slackCosmosEnabled) {
+    console.log('Slack help request import disabled');
+    return [];
+  }
   if (!config.slackCosmosKey) throw new Error('SLACKBOT_COSMOS_KEY or the slackbot-cosmos-key vault secret is required');
   const cosmos = new CosmosClient({ endpoint: `https://${config.slackCosmosAccountName}.documents.azure.com:443/`, key: config.slackCosmosKey });
   const container = cosmos.database(config.slackCosmosDatabase).container(config.slackCosmosContainer);

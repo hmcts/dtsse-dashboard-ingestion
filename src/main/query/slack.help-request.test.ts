@@ -1,6 +1,7 @@
 import { beforeEach, expect, jest, test } from '@jest/globals';
 jest.mock('../config', () => ({
   config: {
+    slackCosmosEnabled: true,
     slackCosmosKey: 'test-key',
     slackCosmosAccountName: 'example',
     slackCosmosDatabase: 'help-requests',
