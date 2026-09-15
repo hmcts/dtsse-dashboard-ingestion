@@ -18,7 +18,7 @@ const unencodedDbUrl = process.env.DATABASE_URL || vault['secrets']?.['dtsse']?.
 const encodedDbUrl = (process.env.DATABASE_URL = getConnectionString(unencodedDbUrl));
 
 export const config = {
-  slackCosmosKey: process.env.SLACK_COSMOS_KEY || vault['secrets']?.['dtsse']?.['slack-cosmos-key'],
+  slackCosmosKey: process.env.SLACKBOT_COSMOS_KEY || vault['secrets']?.['dtsse']?.['slackbot-cosmos-key'],
   slackCosmosAccountName: process.env.SLACK_COSMOS_ACCOUNT_NAME || 'platops-slack-help-bot-ptl',
   slackCosmosDatabase: process.env.SLACK_COSMOS_DATABASE || 'help-requests',
   slackCosmosContainer: process.env.SLACK_COSMOS_CONTAINER || 'help-requests',

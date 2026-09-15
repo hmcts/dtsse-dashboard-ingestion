@@ -86,6 +86,6 @@ test('initial backfill starts from zero', async () => {
 
 test('fails before connecting when the enabled importer has no key', async () => {
   config.slackCosmosKey = '';
-  await expect(run()).rejects.toThrow('SLACK_COSMOS_KEY');
+  await expect(run()).rejects.toThrow('SLACKBOT_COSMOS_KEY');
   expect(pool.connect).not.toHaveBeenCalled();
 });
