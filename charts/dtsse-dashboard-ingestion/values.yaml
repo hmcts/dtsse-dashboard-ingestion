@@ -21,6 +21,7 @@ job:
         - jenkins-databases
         - snow-username
         - snow-password
+        - slackbot-cosmos-key
   schedule: "0/10 * * * *"
 global:
   jobKind: CronJob
