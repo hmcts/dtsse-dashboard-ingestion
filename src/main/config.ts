@@ -18,6 +18,10 @@ const unencodedDbUrl = process.env.DATABASE_URL || vault['secrets']?.['dtsse']?.
 const encodedDbUrl = (process.env.DATABASE_URL = getConnectionString(unencodedDbUrl));
 
 export const config = {
+  slackCosmosKey: process.env.SLACK_COSMOS_KEY || vault['secrets']?.['dtsse']?.['slack-cosmos-key'],
+  slackCosmosAccountName: process.env.SLACK_COSMOS_ACCOUNT_NAME || 'platops-slack-help-bot-ptl',
+  slackCosmosDatabase: process.env.SLACK_COSMOS_DATABASE || 'help-requests',
+  slackCosmosContainer: process.env.SLACK_COSMOS_CONTAINER || 'help-requests',
   appinsightsKey: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING || vault['secrets']?.['dtsse']?.['AppInsightsConnectionString'],
   azureFinOpsConnectionString: process.env.AZURE_FINOPS_CONNECTION_STRING || vault['secrets']?.['dtsse']?.['azure-finops-connection-string'],
   jiraToken: process.env.JIRA_TOKEN || vault['secrets']?.['dtsse']?.['jira-token'],
