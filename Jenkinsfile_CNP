@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure@DTSPO-35113/master")
+@Library("Infrastructure@2.8.0")
 
 def type = "nodejs"
 def product = "dtsse"
