@@ -55,19 +55,8 @@ test('maps analytics events for PostgreSQL', () => {
       source: 'conversational',
       occurred_at: '2026-09-21T12:00:00Z',
       _ts: 1000,
-    }),
-  ).toEqual([
-    'event-1',
-    'D1:1.000',
-    'user-hash',
-    'ticket_created',
-    null,
-    'conversational',
-    null,
-    null,
-    new Date('2026-09-21T12:00:00Z'),
-    1000,
-  ]);
+    })
+  ).toEqual(['event-1', 'D1:1.000', 'user-hash', 'ticket_created', null, 'conversational', null, null, new Date('2026-09-21T12:00:00Z'), 1000]);
 });
 
 test('reads all pages, imports old tickets, and commits imported modification timestamps', async () => {

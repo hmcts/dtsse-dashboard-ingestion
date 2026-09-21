@@ -54,7 +54,18 @@ export const analyticsEventToRow = (item: AnalyticsEvent) => {
   }
   const occurredAt = new Date(item.occurred_at);
   if (Number.isNaN(occurredAt.getTime())) throw new Error(`Invalid occurred_at for analytics event ${item.id}`);
-  return [item.id, item.session_id, item.user_id_hash, item.step, nullableText(item.step_value), item.source, nullableText(item.area), nullableText(item.ticket_key), occurredAt, item._ts];
+  return [
+    item.id,
+    item.session_id,
+    item.user_id_hash,
+    item.step,
+    nullableText(item.step_value),
+    item.source,
+    nullableText(item.area),
+    nullableText(item.ticket_key),
+    occurredAt,
+    item._ts,
+  ];
 };
 
 export const run = async () => {
@@ -104,13 +115,14 @@ export const run = async () => {
     const analyticsLatest = Number(analyticsLatestResult.rows[0]?.source_ts ?? 0);
     const analyticsIterator = container.items.query<AnalyticsEvent>(
       {
-        query: 'SELECT c.id, c.session_id, c.user_id_hash, c.step, c.step_value, c.source, c.area, c.ticket_key, c.occurred_at, c._ts FROM c WHERE c.document_type = @type AND c._ts >= @since',
+        query:
+          'SELECT c.id, c.session_id, c.user_id_hash, c.step, c.step_value, c.source, c.area, c.ticket_key, c.occurred_at, c._ts FROM c WHERE c.document_type = @type AND c._ts >= @since',
         parameters: [
           { name: '@type', value: 'help_request_funnel_event' },
           { name: '@since', value: Math.max(0, analyticsLatest - 300) },
         ],
       },
-      { maxItemCount: 100 },
+      { maxItemCount: 100 }
     );
     while (analyticsIterator.hasMoreResults()) {
       const { resources } = await analyticsIterator.fetchNext();
@@ -124,7 +136,7 @@ export const run = async () => {
              area = EXCLUDED.area, ticket_key = EXCLUDED.ticket_key,
              occurred_at = EXCLUDED.occurred_at, source_ts = EXCLUDED.source_ts, imported_at = now()
            WHERE EXCLUDED.source_ts >= slack.help_request_analytics_event.source_ts`,
-          analyticsEventToRow(item),
+          analyticsEventToRow(item)
         );
       }
     }
