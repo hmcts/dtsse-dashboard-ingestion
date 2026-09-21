@@ -14,7 +14,7 @@ jest.mock('@azure/cosmos', () => ({ CosmosClient: jest.fn() }));
 import { CosmosClient } from '@azure/cosmos';
 import { pool } from '../db/store';
 import { config } from '../config';
-import { run, toRow } from './slack.help-request';
+import { analyticsEventToRow, run, toRow } from './slack.help-request';
 
 const document = {
   id: '1',
@@ -43,6 +43,20 @@ beforeEach(() => {
 test('preserves missing classifications and rejects malformed dates', () => {
   expect(toRow({ id: '1', _ts: 1 })).toEqual(['1', null, null, null, null, null, null, null, 1]);
   expect(() => toRow({ id: '1', _ts: 1, created_at: 'invalid' })).toThrow('Invalid created_at');
+});
+
+test('maps analytics events for PostgreSQL', () => {
+  expect(
+    analyticsEventToRow({
+      id: 'event-1',
+      session_id: 'D1:1.000',
+      user_id_hash: 'user-hash',
+      step: 'ticket_created',
+      source: 'conversational',
+      occurred_at: '2026-09-21T12:00:00Z',
+      _ts: 1000,
+    })
+  ).toEqual(['event-1', 'D1:1.000', 'user-hash', 'ticket_created', null, 'conversational', null, null, new Date('2026-09-21T12:00:00Z'), 1000]);
 });
 
 test('reads all pages, imports old tickets, and commits imported modification timestamps', async () => {
