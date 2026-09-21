@@ -14,6 +14,19 @@ interface HelpRequest {
   _ts: number;
 }
 
+interface AnalyticsEvent {
+  id: string;
+  session_id: string;
+  user_id_hash: string;
+  step: string;
+  step_value?: string;
+  source: string;
+  area?: string;
+  ticket_key?: string;
+  occurred_at: string;
+  _ts: number;
+}
+
 const nullableText = (value: unknown): string | null => (typeof value === 'string' && value.trim() ? value : null);
 
 export const toRow = (item: HelpRequest) => {
@@ -35,6 +48,15 @@ export const toRow = (item: HelpRequest) => {
   ];
 };
 
+export const analyticsEventToRow = (item: AnalyticsEvent) => {
+  if (!item.id || !item.session_id || !item.user_id_hash || !item.step || !item.source || !Number.isSafeInteger(item._ts) || item._ts < 0) {
+    throw new Error('Invalid analytics event identity or timestamp');
+  }
+  const occurredAt = new Date(item.occurred_at);
+  if (Number.isNaN(occurredAt.getTime())) throw new Error(`Invalid occurred_at for analytics event ${item.id}`);
+  return [item.id, item.session_id, item.user_id_hash, item.step, nullableText(item.step_value), item.source, nullableText(item.area), nullableText(item.ticket_key), occurredAt, item._ts];
+};
+
 export const run = async () => {
   if (!config.slackCosmosEnabled) {
     console.log('Slack help request import disabled');
@@ -53,7 +75,7 @@ export const run = async () => {
     const iterator = container.items.query<HelpRequest>(
       {
         query:
-          'SELECT c.id, c.key, c.created_at, c.closed_at, c.status, c.resolution_type, c.resolution_sub_type, c.ticket_type, c._ts FROM c WHERE c._ts >= @since',
+          'SELECT c.id, c.key, c.created_at, c.closed_at, c.status, c.resolution_type, c.resolution_sub_type, c.ticket_type, c._ts FROM c WHERE (NOT IS_DEFINED(c.document_type) OR c.document_type = "help_request") AND c._ts >= @since',
         parameters: [{ name: '@since', value: Math.max(0, latest - 300) }],
       },
       { maxItemCount: 100 }
@@ -74,6 +96,36 @@ export const run = async () => {
           toRow(item)
         );
         count++;
+      }
+    }
+
+    await client.query("SELECT pg_advisory_xact_lock(hashtext('slack.help_request_analytics_event'))");
+    const analyticsLatestResult = await client.query('SELECT COALESCE(MAX(source_ts), 0) AS source_ts FROM slack.help_request_analytics_event');
+    const analyticsLatest = Number(analyticsLatestResult.rows[0]?.source_ts ?? 0);
+    const analyticsIterator = container.items.query<AnalyticsEvent>(
+      {
+        query: 'SELECT c.id, c.session_id, c.user_id_hash, c.step, c.step_value, c.source, c.area, c.ticket_key, c.occurred_at, c._ts FROM c WHERE c.document_type = @type AND c._ts >= @since',
+        parameters: [
+          { name: '@type', value: 'help_request_funnel_event' },
+          { name: '@since', value: Math.max(0, analyticsLatest - 300) },
+        ],
+      },
+      { maxItemCount: 100 },
+    );
+    while (analyticsIterator.hasMoreResults()) {
+      const { resources } = await analyticsIterator.fetchNext();
+      for (const item of resources) {
+        await client.query(
+          `INSERT INTO slack.help_request_analytics_event (id, session_id, user_id_hash, step, step_value, source, area, ticket_key, occurred_at, source_ts)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+           ON CONFLICT (id) DO UPDATE SET
+             session_id = EXCLUDED.session_id, user_id_hash = EXCLUDED.user_id_hash,
+             step = EXCLUDED.step, step_value = EXCLUDED.step_value, source = EXCLUDED.source,
+             area = EXCLUDED.area, ticket_key = EXCLUDED.ticket_key,
+             occurred_at = EXCLUDED.occurred_at, source_ts = EXCLUDED.source_ts, imported_at = now()
+           WHERE EXCLUDED.source_ts >= slack.help_request_analytics_event.source_ts`,
+          analyticsEventToRow(item),
+        );
       }
     }
     await client.query('COMMIT');
