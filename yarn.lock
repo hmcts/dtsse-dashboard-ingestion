@@ -3539,24 +3539,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"db-migrate-base@npm:^2.3.0":
-  version: 2.3.1
-  resolution: "db-migrate-base@npm:2.3.1"
+"db-migrate-base@npm:^2.5.0":
+  version: 2.5.1
+  resolution: "db-migrate-base@npm:2.5.1"
   dependencies:
     bluebird: "npm:^3.1.1"
-  checksum: 10/ee3057a2570b453b2d4691fcdb8205257ca92805c545ff9d7174bb15dc6ee5cfa0e5544c67233a67eb958f4e34e4883b6607649a0335042b64683625d14e9b45
+  checksum: 10/53f26baa78a51033d5c91a28568e302d5cbdb6fb6fc9c29318dd23ba3af5a2374123dd4df429863869a76f6735d14e6fd9905ddddf845bf791ef02944f485eb8
   languageName: node
   linkType: hard
 
 "db-migrate-pg@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "db-migrate-pg@npm:1.5.2"
+  version: 1.7.1
+  resolution: "db-migrate-pg@npm:1.7.1"
   dependencies:
     bluebird: "npm:^3.1.1"
-    db-migrate-base: "npm:^2.3.0"
+    db-migrate-base: "npm:^2.5.0"
     pg: "npm:^8.11.2"
     semver: "npm:^7.5.4"
-  checksum: 10/7bd6a34aea1e95ea898e9882cc34c8d76ebdfceadd921a9e4c59aec631f1d94900e1fc0de482a0c60ecaed29a125baa528f0ad7375a0007c886ceb4f7b78b7a2
+  checksum: 10/a3f315445ad37611bdf33d3342627edbb2f692be1413488b88582beb3f463b46d4e24731114b6b28e5eefc70b528b931af68f19626167d20dfe796aae5e70553
   languageName: node
   linkType: hard
 
