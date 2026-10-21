@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS github.app_rate_limit;

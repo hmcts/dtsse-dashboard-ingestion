@@ -33,6 +33,7 @@ export const config = {
   jenkinsDatabases: process.env.JENKINS_DATABASES || vault['secrets']?.['dtsse']?.['jenkins-databases'],
   snowUsername: process.env.SNOW_USERNAME || vault['secrets']?.['dtsse']?.['snow-username'],
   snowPassword: process.env.SNOW_PASSWORD || vault['secrets']?.['dtsse']?.['snow-password'],
+  githubAppRateLimitsEnabled: process.env.GITHUB_APP_RATE_LIMITS_ENABLED === 'true',
   dbUrl: encodedDbUrl,
 };
 
