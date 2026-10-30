@@ -174,8 +174,8 @@ __metadata:
   linkType: hard
 
 "@azure/identity@npm:^4.13.0, @azure/identity@npm:^4.13.3":
-  version: 4.14.0
-  resolution: "@azure/identity@npm:4.14.0"
+  version: 4.14.1
+  resolution: "@azure/identity@npm:4.14.1"
   dependencies:
     "@azure/abort-controller": "npm:^2.0.0"
     "@azure/core-auth": "npm:^1.9.0"
@@ -186,10 +186,10 @@ __metadata:
     "@azure/core-util": "npm:^1.11.0"
     "@azure/logger": "npm:^1.0.0"
     "@azure/msal-browser": "npm:^5.5.0"
-    "@azure/msal-node": "npm:^6.0.0"
+    "@azure/msal-node": "npm:^7.1.0"
     open: "npm:^11.0.0"
     tslib: "npm:^2.2.0"
-  checksum: 10/03de09943418670049f99bf618ab178c82f971de949f003b72402ebbd2f7cac16566916450604ff1bdfec035a3b0c2c7fc1ea7bd14daa68adc15482b2e665e07
+  checksum: 10/c1b6cb9fa210661b79b8413522a6e7527e376a72d120b0931a643bfae6fb27417296700d65ddb5a0a7f54e8e9213aae7f91f48e21532f8dd5da30abbd60d9755
   languageName: node
   linkType: hard
 
@@ -273,20 +273,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-common@npm:16.14.0":
-  version: 16.14.0
-  resolution: "@azure/msal-common@npm:16.14.0"
-  checksum: 10/be2becb84a5e063571bc400b5efacc812ca1c795d7c2db4335aa2045dc9d3e923834a2b415bc189aaa8877e61ded9f4cc760991fe8a4114518241b8ec80c2506
+"@azure/msal-common@npm:16.15.0":
+  version: 16.15.0
+  resolution: "@azure/msal-common@npm:16.15.0"
+  checksum: 10/359f55848b13bbf3bc27281ec89f3c886e5a38ed4dee74d19a62e87569d14eb085aaec18081ebf56bddd4719034ff8e563ff22186faf2e0ab8025deee93e5dcc
   languageName: node
   linkType: hard
 
-"@azure/msal-node@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@azure/msal-node@npm:6.0.0"
+"@azure/msal-node@npm:^7.1.0":
+  version: 7.1.2
+  resolution: "@azure/msal-node@npm:7.1.2"
   dependencies:
-    "@azure/msal-common": "npm:16.14.0"
+    "@azure/msal-common": "npm:16.15.0"
     jsonwebtoken: "npm:^9.0.0"
-  checksum: 10/e94d5e3f548bfc5ca58ca54774aa60c754e897e5466b447beadb19b0ddf36e3e5d6811532f9b2194ae3df6cfe24d6e08820cfaeb6c5077d789b4a06ffb7c5345
+  checksum: 10/22ae1c46b645c3c31634be2681b3f11f41231a52058318f0bdb9d5901b15de3f935ba86402e5066624c61412dd5102b7b452dfa804c0866736762974d05a012f
   languageName: node
   linkType: hard
 
