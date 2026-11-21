@@ -1802,11 +1802,11 @@ __metadata:
   linkType: hard
 
 "@testcontainers/postgresql@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "@testcontainers/postgresql@npm:12.1.0"
+  version: 12.2.2
+  resolution: "@testcontainers/postgresql@npm:12.2.2"
   dependencies:
-    testcontainers: "npm:^12.1.0"
-  checksum: 10/28f45e53f9e9e567dd0876a7d8bab1de947fccbedf0ed0b13431e579e8dad529daffc4427fb70c9c362b66160f0735ec7e270326c25dc83f1c1db6a9335d21dc
+    testcontainers: "npm:^12.2.2"
+  checksum: 10/dbffa02da95293c1020d69c15fcccadc84777fc0e40728601eb67174b57ffb359486ec48ffa9476d19694ec034236513ffddad37b7ee96242b74a1bc2ae2e956
   languageName: node
   linkType: hard
 
@@ -1898,14 +1898,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dockerode@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@types/dockerode@npm:4.0.1"
+"@types/dockerode@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@types/dockerode@npm:4.0.2"
   dependencies:
     "@types/docker-modem": "npm:*"
     "@types/node": "npm:*"
     "@types/ssh2": "npm:*"
-  checksum: 10/d16b3a69a20fac269b2317a978442a6752dea158729a264511a3812dcb4c756e0ee079b39b61068cee182f268661e27e32aa7a28815262f0e088ffeb9f2f48c5
+  checksum: 10/daeabf4b62cc3de36bf9d466bf88fcd686204c9c959031eb48fff503e9134650cba99e4b299d4cf41e923007ffbfcc8ccc3cd9fc15d0f6e9d7c5c5a47c944c70
   languageName: node
   linkType: hard
 
@@ -2017,31 +2017,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ssh2-streams@npm:*":
-  version: 0.1.13
-  resolution: "@types/ssh2-streams@npm:0.1.13"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10/182c9de8384e11fcfed04e447c3c1d37f898ed4e7f0be0cc58b3bd5b23e22957c17939b68f709092cece758a4befa92913dd967115f643fa0e2dc629fc2e2383
-  languageName: node
-  linkType: hard
-
 "@types/ssh2@npm:*":
   version: 1.15.5
   resolution: "@types/ssh2@npm:1.15.5"
   dependencies:
     "@types/node": "npm:^18.11.18"
   checksum: 10/dd6f29f4e96ea43aa61d29a4a3ad87ad8d11bf1bef637b2848958abd94b05d28754cc611eac13f52d43bd1f51afe7c660cd1c8533ae06878b5739888f4ea0d99
-  languageName: node
-  linkType: hard
-
-"@types/ssh2@npm:^0.5.48":
-  version: 0.5.52
-  resolution: "@types/ssh2@npm:0.5.52"
-  dependencies:
-    "@types/node": "npm:*"
-    "@types/ssh2-streams": "npm:*"
-  checksum: 10/fc2584af091da49da9d6628dd8a5e851b217bb9b1b732b0361903894f2730ab3fdf8634f954be34c5a513f7eb0b2772d059d64062bcf6b4a0eb73bfc83c4b858
   languageName: node
   linkType: hard
 
@@ -2759,10 +2740,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async-lock@npm:^1.4.1":
-  version: 1.4.1
-  resolution: "async-lock@npm:1.4.1"
-  checksum: 10/80d55ac95f920e880a865968b799963014f6d987dd790dd08173fae6e1af509d8cd0ab45a25daaca82e3ef8e7c939f5d128cd1facfcc5c647da8ac2409e20ef9
+"async-lock@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "async-lock@npm:1.5.0"
+  checksum: 10/ea99e3c1a48b47496c3015644ed8ba680d8f25205240a091ac31f297993e355958e20248d9cfec366210120ace4d09cb2bb1102aa8f839177a0deafa6f351e23
   languageName: node
   linkType: hard
 
@@ -3658,12 +3639,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docker-compose@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "docker-compose@npm:1.4.2"
+"docker-compose@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "docker-compose@npm:1.5.0"
   dependencies:
     yaml: "npm:^2.2.2"
-  checksum: 10/def0c2da93e29a65315525a17e3e7bf47a8fc6918b45cac4468f0b3aa33cc286d5b33c4dd31101ff76d901ac4f2644771fc8b0c2b0c08d4f60791cd83106efb5
+  checksum: 10/8f5ce9127be52f3de1cf3578251459fedca0f6c649a7e979ac791882414e9426c0b7fb7c788ae72fcfb9557e6fe91a5da0014ae2385e9958cd631854676332e4
   languageName: node
   linkType: hard
 
@@ -7336,17 +7317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ssh-remote-port-forward@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "ssh-remote-port-forward@npm:1.0.4"
-  dependencies:
-    "@types/ssh2": "npm:^0.5.48"
-    ssh2: "npm:^1.4.0"
-  checksum: 10/c6c04c5ddfde7cb06e9a8655a152bd28fe6771c6fe62ff0bc08be229491546c410f30b153c968b8d6817a57d38678a270c228f30143ec0fe1be546efc4f6b65a
-  languageName: node
-  linkType: hard
-
-"ssh2@npm:^1.15.0, ssh2@npm:^1.4.0":
+"ssh2@npm:^1.15.0, ssh2@npm:^1.17.0":
   version: 1.17.0
   resolution: "ssh2@npm:1.17.0"
   dependencies:
@@ -7679,26 +7650,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "testcontainers@npm:12.1.0"
+"testcontainers@npm:^12.1.0, testcontainers@npm:^12.2.2":
+  version: 12.2.2
+  resolution: "testcontainers@npm:12.2.2"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
-    "@types/dockerode": "npm:^4.0.1"
+    "@types/dockerode": "npm:^4.0.2"
     archiver: "npm:^7.0.1"
-    async-lock: "npm:^1.4.1"
+    async-lock: "npm:^1.5.0"
     byline: "npm:^5.0.0"
     debug: "npm:^4.4.3"
-    docker-compose: "npm:^1.4.2"
+    docker-compose: "npm:^1.5.0"
     dockerode: "npm:^5.0.1"
     get-port: "npm:^5.1.1"
     proper-lockfile: "npm:^4.1.2"
     properties-reader: "npm:^3.0.1"
-    ssh-remote-port-forward: "npm:^1.0.4"
+    ssh2: "npm:^1.17.0"
     tar-fs: "npm:^3.1.3"
     tmp: "npm:^0.2.7"
-    undici: "npm:^8.9.0"
-  checksum: 10/8695f49cac89a80a94ac49e01f38ed46d60b3bd12b6b5f0d44dc76c72bb6ef667cfd2315f69720d4553572c93fd034a25116ca4ad6764b7028b0731e078cb3d4
+    undici: "npm:^8.12.4"
+  checksum: 10/ee4ecdf28d0ac43e554fb3c0365ea75e727ed0dd8b25d84a7c4d12d1871d3f46a27a7114faa8bb1e78d9047a49aa41a62a115cd2744fc29ffd3301b25db329c3
   languageName: node
   linkType: hard
 
@@ -8020,7 +7991,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^8.4.1, undici@npm:^8.9.0":
+"undici@npm:^8.12.4":
+  version: 8.13.1
+  resolution: "undici@npm:8.13.1"
+  checksum: 10/6409e6a4ee7eae5f67f97b92232ab00417db4a0af1b4bc42a13d59ebac0775534b8e340c9dfbf7ce34d4cbde349b6fd52fc95dd92a1fdf00cf951119a5aa431f
+  languageName: node
+  linkType: hard
+
+"undici@npm:^8.4.1":
   version: 8.10.2
   resolution: "undici@npm:8.10.2"
   checksum: 10/90f7ba3d3e9543f25d47552282239faa395eaa66d0db7272ebf57055c8ced34e4c948923c734be5571bfce0cc56080e93c0e2f960e9c5fba163759fce112bab4
